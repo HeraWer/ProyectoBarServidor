@@ -31,9 +31,9 @@ public class configTablesDialog extends JDialog {
 	private JTextField setTables;
 	private JButton okButton;
 	private JButton cancelButton;
-	private JFrame mainWindow;
+	private MainWindow mainWindow;
 	
-	public configTablesDialog(JFrame mainWindow) {
+	public configTablesDialog(MainWindow mainWindow) {
 		super(mainWindow, true);
 		this.mainWindow = mainWindow;
 		this.setSize(300, 150);
@@ -103,6 +103,9 @@ public class configTablesDialog extends JDialog {
 					} catch (XPathExpressionException e1) {
 						e1.printStackTrace();
 					}
+					
+						mainWindow.resetTables();
+					
 					configTablesDialog.this.dispose();
 				}
 			}

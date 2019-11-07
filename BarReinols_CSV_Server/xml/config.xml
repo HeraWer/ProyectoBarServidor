@@ -1,11 +1,11 @@
-<config>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><config>
   <server>
-      <ip></ip>
+      <ip/>
   </server>
   <pda>
-    <nom></nom>
+    <nom/>
   </pda>
   <mesas>
-      <cantidad></cantidad>
+      <cantidad>20</cantidad>
   </mesas>
 </config>

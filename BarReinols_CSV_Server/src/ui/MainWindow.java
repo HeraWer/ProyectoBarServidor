@@ -4,19 +4,24 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
+
+import xmlManager.XMLFileManager;
 
 public class MainWindow extends JFrame {
 
 	private JInternalFrame mainFrame;
-	private JInternalFrame tablesFrame;
+	private TablesFrame tablesFrame;
 	private MainMenuBar mainMenu;
 	
 
@@ -33,7 +38,7 @@ public class MainWindow extends JFrame {
 
 	public void initialize() {
 		mainFrame = new JInternalFrame();
-		tablesFrame = new JInternalFrame();
+		tablesFrame = new TablesFrame();
 		mainMenu = new MainMenuBar(this);
 		
 	}
@@ -53,9 +58,37 @@ public class MainWindow extends JFrame {
 		this.getContentPane().add(mainFrame, MAINFRAMECARD);
 		this.getContentPane().add(tablesFrame, TABLESFRAMECARD);
 	}
+	
+	public TablesFrame getTablesFrame() {
+		return tablesFrame;
+	}
+	
+	public void resetTables() {
+		tablesFrame.dispose();
+		tablesFrame = new TablesFrame();
+		this.add(tablesFrame, TABLESFRAMECARD);
+		mainMenu.getSwitchTablesFrame().doClick();
+	}
 
 	public static void main(String[] args) {
+		XMLFileManager xml = null;
+		try {
+			xml = new XMLFileManager();
+		} catch (TransformerException e1) {
+			e1.printStackTrace();
+		} catch (ParserConfigurationException e1) {
+			e1.printStackTrace();
+		} catch (SAXException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		MainWindow m = new MainWindow();
-		new configTablesDialog(m).setVisible(true);
+		try {
+			while(xml.isElementEquals("//mesas/cantidad", ""))
+				new configTablesDialog(m).setVisible(true);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
 	}
 }

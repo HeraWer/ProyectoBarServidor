@@ -17,10 +17,10 @@ public class MainMenuBar extends JMenuBar{
 	private JMenu configMenu;
 	private JMenuItem configTables;
 	
-	private JFrame parent;
+	private MainWindow parent;
 	
 	
-	public MainMenuBar(JFrame parent) {
+	public MainMenuBar(MainWindow parent) {
 		this.parent = parent;
 		initialize();
 		add();
@@ -71,5 +71,9 @@ public class MainMenuBar extends JMenuBar{
 			}
 		});
 		
+	}
+	
+	public JMenuItem getSwitchTablesFrame() {
+		return switchTablesFrame;
 	}
 }

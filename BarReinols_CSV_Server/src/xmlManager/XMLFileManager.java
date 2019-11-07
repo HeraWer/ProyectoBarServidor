@@ -1,6 +1,7 @@
 package xmlManager;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -39,7 +40,7 @@ public class XMLFileManager {
 		doc = builder.parse(f);
 	}
 	
-	public void createConfig() throws TransformerException {
+	public void createConfig() throws TransformerException, SAXException, IOException {
 		
 		Element root = doc.createElement("config");;
 		doc.appendChild(root);
@@ -73,24 +74,28 @@ public class XMLFileManager {
 	public boolean isElementEquals(String xPath, String text) throws XPathExpressionException {
 		Element quantity = getElement(xPath);
 		if(quantity.getTextContent().equals(text))
-			return false;
-		return true;
+			return true;
+		return false;
 	}
 	
-	public void writeInElement(String xPath, String textContent) throws XPathExpressionException, TransformerException {
+	public void writeInElement(String xPath, String textContent) throws XPathExpressionException, TransformerException, SAXException, IOException {
 		Element find = getElement(xPath);
 		find.setTextContent(textContent);
 		writeFile();
 	}
 	
-	public void writeFile() throws TransformerException {
+	public String getElementTextContent(String xpathExpression) throws XPathExpressionException {
+		Element find = getElement(xpathExpression);
+		return find.getTextContent();
+	}
+	
+	public void writeFile() throws TransformerException, SAXException, IOException {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transf = tf.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult sr = new StreamResult(f);
+		StreamResult sr = new StreamResult(new FileWriter(f));
 		transf.transform(source, sr);
-	}
-	
-	
+		doc = builder.parse(f);
+	}	
 	
 }
