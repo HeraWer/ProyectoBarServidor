@@ -51,10 +51,11 @@ public class MainWindow extends JFrame {
 		return ticketsFrame;
 	}
 
-	public void resetTables() {
+	public void resetUIForUpdates() {
 		tablesFrame.dispose();
 		tablesFrame = new TablesFrame(this);
 		this.add(tablesFrame, TABLESFRAMECARD);
 		mainMenu.getSwitchTablesFrame().doClick();
 	}
+	
 }

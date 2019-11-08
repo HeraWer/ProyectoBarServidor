@@ -6,7 +6,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import bar.Main;
 import bar.Product;
+import bar.Ticket;
 
 public class TicketsJTable extends JTable {
 	
@@ -40,6 +42,12 @@ public class TicketsJTable extends JTable {
 		listModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		tableModel.setDataVector(new Object[][] {
+			{true, "1", "Camaron", "27,95", "5"},
+			{true, "1", "Camaron", "27,95", "5"},
+			{true, "1", "Camaron", "27,95", "5"},
+			{true, "1", "Camaron", "27,95", "5"},
+			{true, "1", "Camaron", "27,95", "5"},
+			{true, "1", "Camaron", "27,95", "5"},
 			{true, "1", "Camaron", "27,95", "5"},
 			{true, "1", "Camaron", "27,95", "5"},
 			{true, "1", "Camaron", "27,95", "5"},

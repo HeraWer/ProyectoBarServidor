@@ -34,4 +34,8 @@ public class PanelTickets extends JPanel {
 		jTablePanel.add(jScroll, BorderLayout.CENTER);
 		this.add(jTablePanel, BorderLayout.CENTER);
 	}
+	
+	public TicketsJTable getProductsTable() {
+		return this.productsTable;
+	}
 }

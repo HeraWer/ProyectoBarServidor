@@ -104,7 +104,7 @@ public class configTablesDialog extends JDialog {
 						e1.printStackTrace();
 					}
 					
-						mainWindow.resetTables();
+						mainWindow.resetUIForUpdates();
 					
 					configTablesDialog.this.dispose();
 				}

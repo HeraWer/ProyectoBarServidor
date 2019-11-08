@@ -1,9 +1,18 @@
 package ui;
 
+import java.io.IOException;
+
 import javax.swing.JInternalFrame;
 import javax.swing.JTabbedPane;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 
+import org.xml.sax.SAXException;
+
+import bar.Product;
 import bar.Ticket;
+import xmlManager.XMLFileManager;
 
 public class TicketsFrame extends JInternalFrame {
 
@@ -14,7 +23,12 @@ public class TicketsFrame extends JInternalFrame {
 		super("Comandes", true, true, true, true);
 		this.parent = parent;
 		initialize();
-		modify();
+		try {
+			modify();
+		} catch (NumberFormatException | XPathExpressionException | TransformerException | ParserConfigurationException
+				| SAXException | IOException e) {
+			e.printStackTrace();
+		}
 		add();
 	}
 	
@@ -22,8 +36,14 @@ public class TicketsFrame extends JInternalFrame {
 		tabPane = new JTabbedPane();
 	}
 	
-	public void modify() {
-		
+	public void modify() throws TransformerException, ParserConfigurationException, SAXException, IOException, NumberFormatException, XPathExpressionException {
+		int numTaules;
+		XMLFileManager xfm = new XMLFileManager();
+		numTaules = Integer.parseInt(xfm.getElementTextContent("//mesas/cantidad"));
+		for(int i = 0; i < numTaules; i++) {
+			PanelTickets panel = new PanelTickets(parent);
+			tabPane.addTab("Mesa " + String.valueOf(i + 1), panel);
+		}
 	}
 	
 	public void add() {
@@ -39,9 +59,7 @@ public class TicketsFrame extends JInternalFrame {
 			if(tabPane.getTitleAt(i).equals("Mesa " + String.valueOf(t.getTable()))) {
 				tabPane.setSelectedIndex(i);
 			}
-		}
-		
-		
+		}		
 	}
 	
 	public boolean searchTab(int numTaula) {
@@ -53,6 +71,13 @@ public class TicketsFrame extends JInternalFrame {
 			}
 		}
 		return false;
+	}
+	
+	public void setTicketOnTable(Ticket t) {
+		PanelTickets numTabbedTable = (PanelTickets)tabPane.getComponentAt(t.getTable() - 1);
+		for(Product p : t.getALProduct()) {
+			numTabbedTable.getProductsTable().addProduct(p);
+		}
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import bar.Main;
 import bar.Ticket;
 
 public class MainServer {
@@ -31,6 +32,7 @@ public class MainServer {
 		bais = new ByteArrayInputStream(buff);
 		inputClient = new ObjectInputStream(new BufferedInputStream(bais));
 		Ticket t = (Ticket) inputClient.readObject();
+		Main.getTickets().add(t);
 		
 	}
 	

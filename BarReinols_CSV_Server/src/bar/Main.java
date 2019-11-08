@@ -11,15 +11,27 @@ import org.xml.sax.SAXException;
 
 import serverConnection.MainServer;
 import ui.MainWindow;
+import ui.TicketsFrame;
 import ui.configTablesDialog;
 import xmlManager.XMLFileManager;
 
+/*
+ * Clase principal que llama a la interfaz grafica del proyecto
+ * Tiene una ArrayList con los tickets disponibles.
+ */
 public class Main {
 
 	private static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
-
+	
+	/*
+	 * Metodo que devuelve el arraylist de tickets
+	 */
 	public static ArrayList<Ticket> getTickets() {
 		return tickets;
+	}
+	
+	public static void sendTicket(Ticket t,TicketsFrame tm) {
+		tm.setTicketOnTable(t);
 	}
 
 	public static void main(String[] args) {
