@@ -16,6 +16,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import serverConnection.MainServer;
 import xmlManager.XMLFileManager;
 
 public class MainWindow extends JFrame {
@@ -23,7 +24,6 @@ public class MainWindow extends JFrame {
 	private JInternalFrame mainFrame;
 	private TablesFrame tablesFrame;
 	private MainMenuBar mainMenu;
-	
 
 	public final static String MAINFRAMECARD = "Pantalla principal";
 	public final static String TABLESFRAMECARD = "Pantalla de las mesas";
@@ -33,14 +33,14 @@ public class MainWindow extends JFrame {
 		initialize();
 		modify();
 		add();
-		//setListeners();
+		// setListeners();
 	}
 
 	public void initialize() {
 		mainFrame = new JInternalFrame();
 		tablesFrame = new TablesFrame();
 		mainMenu = new MainMenuBar(this);
-		
+
 	}
 
 	public void modify() {
@@ -58,11 +58,11 @@ public class MainWindow extends JFrame {
 		this.getContentPane().add(mainFrame, MAINFRAMECARD);
 		this.getContentPane().add(tablesFrame, TABLESFRAMECARD);
 	}
-	
+
 	public TablesFrame getTablesFrame() {
 		return tablesFrame;
 	}
-	
+
 	public void resetTables() {
 		tablesFrame.dispose();
 		tablesFrame = new TablesFrame();
@@ -71,24 +71,31 @@ public class MainWindow extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		XMLFileManager xml = null;
-		try {
-			xml = new XMLFileManager();
-		} catch (TransformerException e1) {
-			e1.printStackTrace();
-		} catch (ParserConfigurationException e1) {
-			e1.printStackTrace();
-		} catch (SAXException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		while (true) {
+			try {
+				MainServer mS = new MainServer();
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
 		}
-		MainWindow m = new MainWindow();
-		try {
-			while(xml.isElementEquals("//mesas/cantidad", ""))
-				new configTablesDialog(m).setVisible(true);
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		}
+//		XMLFileManager xml = null;
+//		try {
+//			xml = new XMLFileManager();
+//		} catch (TransformerException e1) {
+//			e1.printStackTrace();
+//		} catch (ParserConfigurationException e1) {
+//			e1.printStackTrace();
+//		} catch (SAXException e1) {
+//			e1.printStackTrace();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
+//		MainWindow m = new MainWindow();
+//		try {
+//			while(xml.isElementEquals("//mesas/cantidad", ""))
+//				new configTablesDialog(m).setVisible(true);
+//		} catch (XPathExpressionException e) {
+//			e.printStackTrace();
+//		}
 	}
 }
