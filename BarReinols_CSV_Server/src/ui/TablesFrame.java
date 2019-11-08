@@ -7,10 +7,14 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import bar.Ticket;
 import xmlManager.XMLFileManager;
 
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,8 +25,10 @@ public class TablesFrame extends JInternalFrame {
 	private ArrayList<JButton> aLTables;
 	private XMLFileManager xfm;
 	private JButton table;
+	private MainWindow parent;
 	
-	public TablesFrame() {
+	public TablesFrame(MainWindow parent) {
+		this.parent = parent;
 		aLTables = new ArrayList<JButton>();
 		
 		try {
@@ -30,7 +36,7 @@ public class TablesFrame extends JInternalFrame {
 		} catch (NumberFormatException | XPathExpressionException e) {
 			e.printStackTrace();
 		}
-		this.setLayout(new GridLayout(0, 10, 5, 5));
+		this.setLayout(new FlowLayout());
 		this.pack();
 	}
 	
@@ -48,11 +54,32 @@ public class TablesFrame extends JInternalFrame {
 		aLTables = new ArrayList<JButton>();
 		for(int i = 0; i < numTaules; i++) {
 			table = new JButton("Mesa " + String.valueOf(i + 1));
+			table.setPreferredSize(new Dimension(100, 100));
 			aLTables.add(table);
 			this.add(aLTables.get(i));
+			this.setListeners(table);
 		}
 		
 		this.repaint();
+	}
+	
+	public void setListeners(JButton button) {
+		button.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				int numTaula = Integer.parseInt(button.getText().split(" ")[1]);
+				ArrayList<bar.Ticket> tickets = bar.Main.getTickets(); 
+				TicketsFrame tf = parent.getTicketsFrame();
+				if(!tf.searchTab(numTaula)) {
+					Ticket t = new Ticket(numTaula);
+					tf.crearComanda(t);					
+					tickets.add(new Ticket(numTaula));
+				}
+				
+				CardLayout cLayout = (CardLayout) parent.getContentPane().getLayout();
+				cLayout.show(parent.getContentPane(), MainWindow.MAINFRAMECARD);
+			}
+		});
 	}
 	
 }

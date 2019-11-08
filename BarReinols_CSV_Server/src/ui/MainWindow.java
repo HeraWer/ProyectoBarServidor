@@ -1,27 +1,13 @@
 package ui;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-
-import java.io.IOException;
-
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.xml.sax.SAXException;
-
-import serverConnection.MainServer;
-import xmlManager.XMLFileManager;
 
 public class MainWindow extends JFrame {
 
-	private JInternalFrame mainFrame;
+	private TicketsFrame ticketsFrame;
 	private TablesFrame tablesFrame;
 	private MainMenuBar mainMenu;
 
@@ -37,8 +23,8 @@ public class MainWindow extends JFrame {
 	}
 
 	public void initialize() {
-		mainFrame = new JInternalFrame();
-		tablesFrame = new TablesFrame();
+		ticketsFrame = new TicketsFrame(this);
+		tablesFrame = new TablesFrame(this);
 		mainMenu = new MainMenuBar(this);
 
 	}
@@ -46,8 +32,6 @@ public class MainWindow extends JFrame {
 	public void modify() {
 		this.setJMenuBar(mainMenu);
 		this.getContentPane().setLayout(new CardLayout());
-		mainFrame.setBackground(Color.black);
-		tablesFrame.setBackground(Color.red);
 		this.setVisible(true);
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(new Dimension((int) (screen.width * 0.8), (int) (screen.height * 0.8)));
@@ -55,7 +39,7 @@ public class MainWindow extends JFrame {
 	}
 
 	public void add() {
-		this.getContentPane().add(mainFrame, MAINFRAMECARD);
+		this.getContentPane().add(ticketsFrame, MAINFRAMECARD);
 		this.getContentPane().add(tablesFrame, TABLESFRAMECARD);
 	}
 
@@ -63,39 +47,14 @@ public class MainWindow extends JFrame {
 		return tablesFrame;
 	}
 
-	public void resetTables() {
-		tablesFrame.dispose();
-		tablesFrame = new TablesFrame();
-		this.add(tablesFrame, TABLESFRAMECARD);
-		mainMenu.getSwitchTablesFrame().doClick();
+	public TicketsFrame getTicketsFrame() {
+		return ticketsFrame;
 	}
 
-	public static void main(String[] args) {
-		while (true) {
-			try {
-				MainServer mS = new MainServer();
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
-		}
-//		XMLFileManager xml = null;
-//		try {
-//			xml = new XMLFileManager();
-//		} catch (TransformerException e1) {
-//			e1.printStackTrace();
-//		} catch (ParserConfigurationException e1) {
-//			e1.printStackTrace();
-//		} catch (SAXException e1) {
-//			e1.printStackTrace();
-//		} catch (IOException e1) {
-//			e1.printStackTrace();
-//		}
-//		MainWindow m = new MainWindow();
-//		try {
-//			while(xml.isElementEquals("//mesas/cantidad", ""))
-//				new configTablesDialog(m).setVisible(true);
-//		} catch (XPathExpressionException e) {
-//			e.printStackTrace();
-//		}
+	public void resetTables() {
+		tablesFrame.dispose();
+		tablesFrame = new TablesFrame(this);
+		this.add(tablesFrame, TABLESFRAMECARD);
+		mainMenu.getSwitchTablesFrame().doClick();
 	}
 }
