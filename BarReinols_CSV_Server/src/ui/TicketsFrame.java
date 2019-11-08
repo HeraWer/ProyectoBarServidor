@@ -5,14 +5,10 @@ import javax.swing.JTabbedPane;
 
 import bar.Ticket;
 
-import java.util.ArrayList;
-import javax.swing.JPanel;
-
 public class TicketsFrame extends JInternalFrame {
 
 	private MainWindow parent;
 	private JTabbedPane tabPane;
-	private ArrayList<JPanel> ticketsPanels;
 	
 	public TicketsFrame(MainWindow parent) {
 		super("Comandes", true, true, true, true);
@@ -24,7 +20,6 @@ public class TicketsFrame extends JInternalFrame {
 	
 	public void initialize() {
 		tabPane = new JTabbedPane();
-		ticketsPanels = new ArrayList<JPanel>();
 	}
 	
 	public void modify() {
@@ -36,7 +31,7 @@ public class TicketsFrame extends JInternalFrame {
 	}
 	
 	public void crearComanda(Ticket t) {
-		JPanel panel = new JPanel();
+		PanelTickets panel = new PanelTickets(parent);
 		tabPane.addTab("Mesa " + String.valueOf(t.getTable()), panel);
 		
 		int tabs = tabPane.getTabCount();
@@ -45,6 +40,7 @@ public class TicketsFrame extends JInternalFrame {
 				tabPane.setSelectedIndex(i);
 			}
 		}
+		
 		
 	}
 	
