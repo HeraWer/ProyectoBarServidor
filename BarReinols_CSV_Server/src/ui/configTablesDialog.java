@@ -11,7 +11,6 @@ import tools.Validations;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,8 +23,13 @@ import org.xml.sax.SAXException;
 
 import xmlManager.XMLFileManager;
 
+/*
+ * Clase que crea el dialogo de configuración de mesas.
+ * Extiende de JDialog, para crear un dialogo personalizado.
+ */
 public class configTablesDialog extends JDialog {
 	
+	// Atributos de la clase.
 	private JPanel mainPanel;
 	private JLabel info;
 	private JTextField setTables;
@@ -33,6 +37,9 @@ public class configTablesDialog extends JDialog {
 	private JButton cancelButton;
 	private MainWindow mainWindow;
 	
+	/*
+	 * Constructor del componente
+	 */
 	public configTablesDialog(MainWindow mainWindow) {
 		super(mainWindow, true);
 		this.mainWindow = mainWindow;
@@ -43,6 +50,9 @@ public class configTablesDialog extends JDialog {
 		setListeners();
 	}
 	
+	/*
+	 * Metodo que inicializa los diferentes componentes que tiene el dialogo.
+	 */
 	private void initialize() {
 		mainPanel = new JPanel();
 		info = new JLabel("Introduce el número de mesas:");
@@ -51,12 +61,21 @@ public class configTablesDialog extends JDialog {
 		cancelButton = new JButton("Cancelar");
 	}
 	
+	/*
+	 * Metodo que modifica los componentes, cosas como
+	 * poder cambiarle el tamaño, darle posicion, o añadirle
+	 * el layout.
+	 */
 	private void modify() {
 		mainPanel.setLayout(new GridBagLayout());
 		this.setResizable(false);
 		this.setLocationRelativeTo(mainWindow);
 	}
 	
+	/*
+	 * Metodo que prepara el GridBagLayout para mostrar
+	 * los diferentes componentes con las grid bag constraints
+	 */
 	private void prepareLayout() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		
@@ -81,7 +100,16 @@ public class configTablesDialog extends JDialog {
 		this.getContentPane().add(mainPanel);
 	}
 	
+	/*
+	 * Metodo que añade los listeners a los botones del dialogo.
+	 */
 	private void setListeners() {
+		
+		/*
+		 * Le añadimos un boton al listener, para que escriba el valor dentro del XML de mesas
+		 * y vuelva a resetear la UI para mostrar las mesas en su Frame.
+		 * Ademas comprueba si el valor introducido es numerico.
+		 */
 		okButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -111,6 +139,9 @@ public class configTablesDialog extends JDialog {
 			}
 		});
 		
+		/*
+		 * Si le damos al boton de cancelar, se cierra el dialogo.
+		 */
 		cancelButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {

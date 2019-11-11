@@ -30,10 +30,16 @@ public class Main {
 		return tickets;
 	}
 	
+	/*
+	 * Metodo que llama al metodo que guarda comandas (Tickets) en la JTable.
+	 */
 	public static void sendTicket(Ticket t,TicketsFrame tm) {
 		tm.setTicketOnTable(t);
 	}
 
+	/*
+	 * Metodo main de la aplicacion.
+	 */
 	public static void main(String[] args) {
 		XMLFileManager xml = null;
 		try {

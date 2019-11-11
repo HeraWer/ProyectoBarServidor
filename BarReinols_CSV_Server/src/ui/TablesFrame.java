@@ -7,10 +7,8 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
-import bar.Ticket;
 import xmlManager.XMLFileManager;
 
-import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -20,13 +18,26 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 
+/*
+ * Clase que extiende de un JInternalFrame, permitiendo
+ * crear un JInternalFrame personalizado.
+ * 
+ * En este caso, el Frame creado es el de barra.
+ */
 public class TablesFrame extends JInternalFrame {
 
+	// Atributos de la clase
 	private ArrayList<JButton> aLTables;
 	private XMLFileManager xfm;
 	private JButton table;
 	private MainWindow parent;
 
+	/*
+	 * Constructor en el que se crean botones, se inicializa el ArrayList 
+	 * de JButtons de las mesas y se le añade el layout al Frame.
+	 * 
+	 * Se le pasa como parametro el JFrame de la ventana principal.
+	 */
 	public TablesFrame(MainWindow parent) {
 		this.parent = parent;
 		aLTables = new ArrayList<JButton>();
@@ -37,10 +48,17 @@ public class TablesFrame extends JInternalFrame {
 		this.pack();
 	}
 
+	/*
+	 * TESTING!
+	 */
 	public void eliminaButton() {
 
 	}
 
+	/*
+	 * Metodo que crea los botones dependiendo del número de mesas que haya
+	 * en el fichero config.xml.
+	 */
 	public void createButtons() {
 		try {
 			xfm = new XMLFileManager();
@@ -65,6 +83,9 @@ public class TablesFrame extends JInternalFrame {
 		this.repaint();
 	}
 
+	/*
+	 * Metodo que añade los listeners a los botones de las mesas.
+	 */
 	public void setListeners(JButton button) {
 		button.addActionListener(new ActionListener() {
 

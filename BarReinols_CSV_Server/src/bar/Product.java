@@ -1,17 +1,28 @@
 package bar;
 
+/*
+ * Esta es la clase que define al producto en si mismo.
+ */
 public class Product {
 
+	// Atributos de un producto.
 	String id;
 	String name;
 	String price;
 	String rutaImagen;
 	int quantity;
 	
+	/*
+	 * Constructor vacio en el que se inicializa
+	 * la cantidad en 0.
+	 */
 	public Product() {
 		quantity = 0;
 	}
 
+	/*
+	 * Getters y setters
+	 */
 	public String getId() {
 		return id;
 	}

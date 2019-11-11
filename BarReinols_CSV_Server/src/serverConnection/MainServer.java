@@ -11,8 +11,15 @@ import java.net.InetAddress;
 import bar.Main;
 import bar.Ticket;
 
+/*
+ * Clase que enciende el servidor de la aplicacion.
+ * Se mantiene activo hasta que la aplicacion
+ * o interfaz grafica se cierra completamente.
+ */
 public class MainServer {
 	
+	// Atributos de la clase, como el puero, el host,
+	// o los diferentes Sockets.
 	private final int PORT = 1234;
 	private final String HOST = "localhost";
 	private DatagramSocket dSocket;
@@ -22,6 +29,10 @@ public class MainServer {
 	private ByteArrayInputStream bais;
 	private Ticket received;
 	
+	/*
+	 * Constructor de la clase en la que se enciende el
+	 * servidor.
+	 */
 	public MainServer() throws IOException, ClassNotFoundException {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
 		dSocket = new DatagramSocket(PORT);
