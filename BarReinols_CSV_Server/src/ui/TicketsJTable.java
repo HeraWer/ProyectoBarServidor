@@ -82,6 +82,7 @@ public class TicketsJTable extends JTable {
 	 */
 	public void addProduct(Product p) {
 		tableModel.addRow(new Object[] { false, p.getId(), p.getName(), p.getPrice(), p.getQuantity() });
+		
 	}
 
 }

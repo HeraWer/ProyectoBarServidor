@@ -21,6 +21,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import bar.Main;
 import xmlManager.XMLFileManager;
 
 /*
@@ -118,8 +119,9 @@ public class configTablesDialog extends JDialog {
 				}else {
 					
 					try {
-						XMLFileManager xfm = new XMLFileManager();
+						XMLFileManager xfm = new XMLFileManager("xml/config.xml");
 						xfm.writeInElement("//mesas/cantidad", setTables.getText());
+						Main.numTaules = Integer.parseInt(setTables.getText());
 					} catch (TransformerException e1) {
 						e1.printStackTrace();
 					} catch (ParserConfigurationException e1) {

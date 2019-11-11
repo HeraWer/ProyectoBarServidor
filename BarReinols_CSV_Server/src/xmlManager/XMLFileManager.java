@@ -27,19 +27,19 @@ import org.xml.sax.SAXException;
 public class XMLFileManager {
 	
 	// Atributos de la clase
-	private File configFile;
+	protected File xmlFile;
 	private DocumentBuilderFactory dbf;
-	private Document doc;
+	protected Document doc;
 	private DocumentBuilder builder;
 
 	/*
 	 * Constructor que crea el documento y lo parsea, 
 	 * o lo parsea directamente si existe.
 	 */
-	public XMLFileManager() throws TransformerException, ParserConfigurationException, SAXException, IOException {
+	public XMLFileManager(String ruta) throws TransformerException, ParserConfigurationException, SAXException, IOException {
 		
 		// Seleccionamos el fichero de config.xml
-		configFile = new File("xml/config.xml");
+		xmlFile = new File(ruta);
 		
 		// Objetos para modelar y parsear el XML
 		dbf = DocumentBuilderFactory.newInstance();
@@ -47,11 +47,15 @@ public class XMLFileManager {
 		doc = builder.newDocument();
 		
 		// Si el archivo config no existe, llamamos al metodo que lo crea
-		if(!configFile.exists())
-			createConfig();
+		if(!xmlFile.exists()) {
+			writeFile();
+			if(ruta.equals("xml/config.xml"))
+				createConfig();
+		}
+		
 		
 		// Como siempre estará creado en este punto, lo parseamos
-		doc = builder.parse(configFile);
+		doc = builder.parse(xmlFile);
 	}
 	
 	/*
@@ -140,11 +144,18 @@ public class XMLFileManager {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transf = tf.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult sr = new StreamResult(new FileWriter(configFile));
+		StreamResult sr = new StreamResult(new FileWriter(xmlFile));
 		transf.transform(source, sr);
 		
 		// Volvemos a parsear el fichero una vez hechos los cambios.
-		doc = builder.parse(configFile);
+		doc = builder.parse(xmlFile);
 	}	
+	
+	public void createChild(String xPathExpression, String tagName, String textContent) throws XPathExpressionException {
+		Element find = getElement(xPathExpression);
+		if(textContent != null) {
+			
+		}
+	}
 	
 }

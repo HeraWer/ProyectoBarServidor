@@ -8,8 +8,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.xml.sax.SAXException;
+
 import bar.Main;
+import bar.Product;
 import bar.Ticket;
+import ui.MainWindow;
 
 /*
  * Clase que enciende el servidor de la aplicacion.
@@ -33,8 +40,22 @@ public class MainServer {
 	 * Constructor de la clase en la que se enciende el
 	 * servidor.
 	 */
-	public MainServer() throws IOException, ClassNotFoundException {
+	public MainServer(MainWindow m) throws IOException, ClassNotFoundException, TransformerException, ParserConfigurationException, SAXException {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
+		
+		
+		Ticket t = new Ticket(5);
+		Product p;
+		Main.getTickets().add(t);
+		Main.sendTicket(t, m.getTicketsFrame());
+		m.resetUIForUpdates();
+		for(int i = 0; i < 10; i++) {
+			p = new Product(String.valueOf((int)(Math.random()*57836)), String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),0);
+			t.getALProduct().add(p);
+			
+		}
+		
+		
 		dSocket = new DatagramSocket(PORT);
 		buff = new byte[5000];
 		dp = new DatagramPacket(buff, buff.length);
@@ -42,8 +63,13 @@ public class MainServer {
 		int byteCount = dp.getLength();
 		bais = new ByteArrayInputStream(buff);
 		inputClient = new ObjectInputStream(new BufferedInputStream(bais));
-		Ticket t = (Ticket) inputClient.readObject();
+		
 		Main.getTickets().add(t);
+		Main.sendTicket(t, m.getTicketsFrame());
+		m.resetUIForUpdates();
+		/*
+		Ticket t = (Ticket) inputClient.readObject();
+		Main.getTickets().add(t);*/
 		
 	}
 	

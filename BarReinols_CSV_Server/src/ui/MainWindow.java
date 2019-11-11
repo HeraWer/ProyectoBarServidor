@@ -96,6 +96,10 @@ public class MainWindow extends JFrame {
 		tablesFrame = new TablesFrame(this);
 		this.add(tablesFrame, TABLESFRAMECARD);
 		mainMenu.getSwitchTablesFrame().doClick();
+		
+		ticketsFrame.dispose();
+		ticketsFrame = new TicketsFrame(this);
+		this.add(ticketsFrame, MAINFRAMECARD);
 	}
 	
 }

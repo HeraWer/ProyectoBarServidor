@@ -7,6 +7,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import bar.Main;
 import xmlManager.XMLFileManager;
 
 import java.awt.Dimension;
@@ -60,19 +61,9 @@ public class TablesFrame extends JInternalFrame {
 	 * en el fichero config.xml.
 	 */
 	public void createButtons() {
-		try {
-			xfm = new XMLFileManager();
-		} catch (TransformerException | ParserConfigurationException | SAXException | IOException e) {
-			e.printStackTrace();
-		}
-		int numTaules = 0;
-		try {
-			numTaules = Integer.parseInt(xfm.getElementTextContent("//mesas/cantidad"));
-		} catch (NumberFormatException | XPathExpressionException e) {
-			e.printStackTrace();
-		}
+		
 		aLTables = new ArrayList<JButton>();
-		for (int i = 0; i < numTaules; i++) {
+		for (int i = 0; i < Main.numTaules; i++) {
 			table = new JButton("Mesa " + String.valueOf(i + 1));
 			table.setPreferredSize(new Dimension(100, 100));
 			aLTables.add(table);

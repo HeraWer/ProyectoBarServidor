@@ -19,6 +19,20 @@ public class Product {
 	public Product() {
 		quantity = 0;
 	}
+	
+	/*
+	 * Constructor que rellena todos los datos de producto
+	 */
+	public Product(String id, String name, String price, String rutaImagen, int quantity) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.rutaImagen = rutaImagen;
+		this.quantity = quantity;
+	}
+
+
 
 	/*
 	 * Getters y setters

@@ -10,9 +10,11 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
+import bar.Main;
 import bar.Product;
 import bar.Ticket;
 import xmlManager.XMLFileManager;
+import xmlManager.XMLTicketManager;
 
 /*
  * Clase que extiende de un JInternalFrame, permitiendo
@@ -57,10 +59,7 @@ public class TicketsFrame extends JInternalFrame {
 	public void modify() throws TransformerException, ParserConfigurationException, SAXException, IOException, NumberFormatException, XPathExpressionException {
 		
 		// Creamos las pestañas con todas las mesas disponibles que haya.
-		int numTaules;
-		XMLFileManager xfm = new XMLFileManager();
-		numTaules = Integer.parseInt(xfm.getElementTextContent("//mesas/cantidad"));
-		for(int i = 0; i < numTaules; i++) {
+		for(int i = 0; i < Main.numTaules; i++) {
 			PanelTickets panel = new PanelTickets(parent);
 			tabPane.addTab("Mesa " + String.valueOf(i + 1), panel);
 		}
@@ -112,10 +111,12 @@ public class TicketsFrame extends JInternalFrame {
 	 * Metodo que añade una comanda en una mesa determinada.
 	 * Recorre cada producto de la comanda y lo añade al JTable.
 	 */
-	public void setTicketOnTable(Ticket t) {
+	public void setTicketOnTable(Ticket t) throws TransformerException, ParserConfigurationException, SAXException, IOException {
 		PanelTickets numTabbedTable = (PanelTickets)tabPane.getComponentAt(t.getTable() - 1);
+		XMLTicketManager xmlTM = new XMLTicketManager("xml/pedidoMesa" + String.valueOf(t.getTable()) + ".xml", t);
 		for(Product p : t.getALProduct()) {
 			numTabbedTable.getProductsTable().addProduct(p);
+			
 		}
 	}
 	

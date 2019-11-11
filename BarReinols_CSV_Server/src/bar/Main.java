@@ -23,6 +23,8 @@ public class Main {
 
 	private static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 	
+	public static int numTaules;
+	
 	/*
 	 * Metodo que devuelve el arraylist de tickets
 	 */
@@ -33,7 +35,7 @@ public class Main {
 	/*
 	 * Metodo que llama al metodo que guarda comandas (Tickets) en la JTable.
 	 */
-	public static void sendTicket(Ticket t,TicketsFrame tm) {
+	public static void sendTicket(Ticket t,TicketsFrame tm) throws TransformerException, ParserConfigurationException, SAXException, IOException {
 		tm.setTicketOnTable(t);
 	}
 
@@ -41,9 +43,12 @@ public class Main {
 	 * Metodo main de la aplicacion.
 	 */
 	public static void main(String[] args) {
+		
+		
 		XMLFileManager xml = null;
 		try {
-			xml = new XMLFileManager();
+			xml = new XMLFileManager("xml/config.xml");
+			numTaules = Integer.parseInt(xml.getElementTextContent("//mesas/cantidad"));
 		} catch (TransformerException e1) {
 			e1.printStackTrace();
 		} catch (ParserConfigurationException e1) {
@@ -52,7 +57,12 @@ public class Main {
 			e1.printStackTrace();
 		} catch (IOException e1) {
 			e1.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
 		}
+		
 		MainWindow m = new MainWindow();
 		try {
 			while (xml.isElementEquals("//mesas/cantidad", ""))
@@ -61,8 +71,8 @@ public class Main {
 			e.printStackTrace();
 		}
 		try {
-			MainServer mS = new MainServer();
-		} catch (ClassNotFoundException | IOException e) {
+			MainServer mS = new MainServer(m);
+		} catch (ClassNotFoundException | IOException | TransformerException | ParserConfigurationException | SAXException e) {
 			e.printStackTrace();
 		}
 
