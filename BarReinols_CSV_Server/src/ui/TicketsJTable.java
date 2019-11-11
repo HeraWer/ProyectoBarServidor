@@ -6,10 +6,11 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import bar.Main;
 import bar.Product;
-import bar.Ticket;
 
+/*
+ * 
+ */
 public class TicketsJTable extends JTable {
 	
 	private MainWindow parent;
