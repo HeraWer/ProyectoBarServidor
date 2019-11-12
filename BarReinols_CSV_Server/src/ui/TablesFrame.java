@@ -2,14 +2,9 @@ package ui;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
 
-import org.xml.sax.SAXException;
 
 import bar.Main;
-import xmlManager.XMLFileManager;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,7 +14,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;

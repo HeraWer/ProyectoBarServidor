@@ -17,14 +17,14 @@ public class XMLTicketManager extends XMLFileManager{
 	
 	private Ticket t;
 	
-	public XMLTicketManager(String ruta, Ticket t) throws TransformerException, ParserConfigurationException, SAXException, IOException {
+	public XMLTicketManager(String ruta, Ticket t) throws TransformerException, ParserConfigurationException, SAXException, IOException, XPathExpressionException {
 		super(ruta);
 		
 		this.t = t;
 		
 		// Si el archivo de la mesa no existe, llamamos al metodo que lo crea
 		if(!xmlFile.exists())
-			createTicketsFile(t);
+			createTicketsFile();
 		
 		// Como siempre estará creado en este punto, lo parseamos
 		doc = builder.parse(xmlFile);
@@ -51,7 +51,7 @@ public class XMLTicketManager extends XMLFileManager{
 		writeFile();
 	}
 	
-	public void createTicketsFile(Ticket t) throws TransformerException, SAXException, IOException {
+	public void createTicketsFile() throws TransformerException, SAXException, IOException, XPathExpressionException {
 		Element root = doc.createElement("Bar");
 		doc.appendChild(root);
 		
@@ -65,7 +65,7 @@ public class XMLTicketManager extends XMLFileManager{
 		table.appendChild(pedido);
 		
 		for(Product p : t.getALProduct()) {
-			
+			createProduct(p);
 		}
 
 		writeFile();

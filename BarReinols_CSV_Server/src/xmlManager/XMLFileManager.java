@@ -63,8 +63,13 @@ public abstract class XMLFileManager {
 	 * Retorna un booleano dependiendo de si es igual o no.
 	 */
 	public boolean isElementEquals(String xPath, String text) throws XPathExpressionException {
-		Element quantity = getElement(xPath);
-		if(quantity.getTextContent().equals(text))
+		Element find = getElement(xPath);
+		if(text == null)
+			if(find.getTextContent() == null)
+				return true;
+			
+			
+		if(find.getTextContent().equals(text))
 			return true;
 		return false;
 	}

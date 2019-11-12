@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class Category {
 	
-	// Atributos d ecategoria
+	// Atributos de categoria
 	private String id;
 	private String nombre;
 	private ArrayList<Product> aLProducts;

@@ -15,6 +15,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import bar.Main;
+import bar.Product;
 import bar.Ticket;
 import ui.MainWindow;
 
@@ -28,13 +29,11 @@ public class MainServer {
 	// Atributos de la clase, como el puero, el host,
 	// o los diferentes Sockets.
 	private final int PORT = 1234;
-	private final String HOST = "localhost";
 	private DatagramSocket dSocket;
 	private byte[] buff;
 	private DatagramPacket dp;
 	private ObjectInputStream inputClient;
 	private ByteArrayInputStream bais;
-	private Ticket received;
 	
 	/*
 	 * Constructor de la clase en la que se enciende el
@@ -44,7 +43,7 @@ public class MainServer {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
 		
 		
-		/*Ticket t = new Ticket(5);
+		Ticket t = new Ticket(5);
 		Product p;
 		for(int i = 0; i < 10; i++) {
 			p = new Product(String.valueOf((int)(Math.random()*57836)), String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),5);
@@ -53,7 +52,7 @@ public class MainServer {
 		}
 		Main.getTickets().add(t);
 		Main.sendTicket(t, m.getTicketsFrame());
-		m.resetUIForUpdates();*/
+		m.resetUIForUpdates();
 		
 		
 		
@@ -65,7 +64,7 @@ public class MainServer {
 		bais = new ByteArrayInputStream(buff);
 		inputClient = new ObjectInputStream(new BufferedInputStream(bais));
 		
-		Ticket t = (Ticket) inputClient.readObject();		
+		// Ticket t = (Ticket) inputClient.readObject();		
 		Main.getTickets().add(t);
 		Main.sendTicket(t, m.getTicketsFrame());
 		

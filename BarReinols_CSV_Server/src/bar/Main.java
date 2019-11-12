@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -16,7 +15,6 @@ import ui.MainWindow;
 import ui.TicketsFrame;
 import ui.configTablesDialog;
 import xmlManager.XMLConfigManager;
-import xmlManager.XMLFileManager;
 
 /*
  * Clase principal que llama a la interfaz grafica del proyecto
@@ -26,6 +24,7 @@ public class Main {
 
 	private static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
+	public static boolean emptyTables;
 	public static int numTaules;
 
 	/*
@@ -48,10 +47,14 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
+		// Comprobamos las mesas disponibles del fichero config.xml
 		XMLConfigManager xml = null;
 		try {
 			xml = new XMLConfigManager("xml/config.xml");
-			numTaules = Integer.parseInt(xml.getElementTextContent("//mesas/cantidad"));
+			if (!xml.isElementEquals("//mesas/cantidad", "")) {
+				numTaules = Integer.parseInt(xml.getElementTextContent("//mesas/cantidad"));
+				emptyTables = true;
+			}
 		} catch (TransformerException e1) {
 			e1.printStackTrace();
 		} catch (ParserConfigurationException e1) {
@@ -66,15 +69,14 @@ public class Main {
 			e.printStackTrace();
 		}
 
+		// Abrimos la ventana principal
 		MainWindow m = new MainWindow();
 
-		try {
-			while (xml.isElementEquals("//mesas/cantidad", ""))
-				new configTablesDialog(m).setVisible(true);
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		}
+		// Si las mesas estan vacias llamamos al dialogo de configuracion
+		if(numTaules <= 0)
+			new configTablesDialog(m).setVisible(true);
 
+		// Abrimos el server
 		try {
 			MainServer mS = new MainServer(m);
 		} catch (ClassNotFoundException | IOException | TransformerException | ParserConfigurationException

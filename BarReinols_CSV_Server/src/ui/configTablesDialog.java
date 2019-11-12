@@ -1,10 +1,14 @@
 package ui;
 
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import tools.Validations;
@@ -23,7 +27,6 @@ import org.xml.sax.SAXException;
 
 import bar.Main;
 import xmlManager.XMLConfigManager;
-import xmlManager.XMLFileManager;
 
 /*
  * Clase que crea el dialogo de configuración de mesas.
@@ -44,6 +47,7 @@ public class configTablesDialog extends JDialog {
 	 */
 	public configTablesDialog(MainWindow mainWindow) {
 		super(mainWindow, true);
+		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		this.mainWindow = mainWindow;
 		this.setSize(300, 150);
 		initialize();
@@ -71,7 +75,7 @@ public class configTablesDialog extends JDialog {
 	private void modify() {
 		mainPanel.setLayout(new GridBagLayout());
 		this.setResizable(false);
-		this.setLocationRelativeTo(mainWindow);
+		this.setLocationRelativeTo(mainWindow);	
 	}
 	
 	/*
@@ -117,6 +121,7 @@ public class configTablesDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				if(!Validations.checkParseInt(setTables.getText())) {
 					JOptionPane.showMessageDialog(configTablesDialog.this, "ERROR: El texto introducido tiene que ser un entero!", "Error en el valor", JOptionPane.ERROR_MESSAGE);
+					return;
 				}else {
 					
 					try {
@@ -137,8 +142,9 @@ public class configTablesDialog extends JDialog {
 						
 						mainWindow.resetUIForUpdates();
 						mainWindow.getTablesFrame().createButtons();
-					
-					configTablesDialog.this.dispose();
+						if(Main.numTaules > 0)
+							configTablesDialog.this.dispose();
+																		
 				}
 			}
 		});
@@ -149,7 +155,8 @@ public class configTablesDialog extends JDialog {
 		cancelButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				configTablesDialog.this.dispose();
+				if(Main.numTaules > 0)
+					configTablesDialog.this.dispose();
 			}
 		});
 	}
