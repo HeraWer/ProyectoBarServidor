@@ -1,6 +1,7 @@
 package ui;
 
 import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -12,6 +13,10 @@ import xmlManager.XMLFileManager;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -29,7 +34,8 @@ public class TablesFrame extends JInternalFrame {
 
 	// Atributos de la clase
 	private ArrayList<JButton> aLTables;
-	private XMLFileManager xfm;
+	private JPanel tablesPanel;
+	private JPanel ticketBarPanel;
 	private JButton table;
 	private MainWindow parent;
 
@@ -40,20 +46,22 @@ public class TablesFrame extends JInternalFrame {
 	 * Se le pasa como parametro el JFrame de la ventana principal.
 	 */
 	public TablesFrame(MainWindow parent) {
+		this.setLayout(new GridBagLayout());
 		this.parent = parent;
 		aLTables = new ArrayList<JButton>();
-
+		initialize();
 		createButtons();
+		setConstraints();
 
-		this.setLayout(new FlowLayout());
 		this.pack();
 	}
 
 	/*
 	 * TESTING!
 	 */
-	public void eliminaButton() {
-
+	public void initialize() {
+		tablesPanel = new JPanel(new GridLayout(0, 4, 2, 2));
+		ticketBarPanel = new JPanel(new FlowLayout());
 	}
 
 	/*
@@ -61,17 +69,35 @@ public class TablesFrame extends JInternalFrame {
 	 * en el fichero config.xml.
 	 */
 	public void createButtons() {
-		
+		tablesPanel.removeAll();
+		tablesPanel.revalidate();
 		aLTables = new ArrayList<JButton>();
 		for (int i = 0; i < Main.numTaules; i++) {
 			table = new JButton("Mesa " + String.valueOf(i + 1));
 			table.setPreferredSize(new Dimension(100, 100));
 			aLTables.add(table);
-			this.add(aLTables.get(i));
+			tablesPanel.add(aLTables.get(i));
 			this.setListeners(table);
 		}
+		tablesPanel.revalidate();
 
-		this.repaint();
+	}
+	
+	public void setConstraints() {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
+		
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		this.add(ticketBarPanel, gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		
+		this.add(tablesPanel, gbc);
 	}
 
 	/*

@@ -22,6 +22,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.xml.sax.SAXException;
 
 import bar.Main;
+import xmlManager.XMLConfigManager;
 import xmlManager.XMLFileManager;
 
 /*
@@ -119,8 +120,8 @@ public class configTablesDialog extends JDialog {
 				}else {
 					
 					try {
-						XMLFileManager xfm = new XMLFileManager("xml/config.xml");
-						xfm.writeInElement("//mesas/cantidad", setTables.getText());
+						XMLConfigManager xcm = new XMLConfigManager("xml/config.xml");
+						xcm.writeInElement("//mesas/cantidad", setTables.getText());
 						Main.numTaules = Integer.parseInt(setTables.getText());
 					} catch (TransformerException e1) {
 						e1.printStackTrace();
@@ -133,8 +134,9 @@ public class configTablesDialog extends JDialog {
 					} catch (XPathExpressionException e1) {
 						e1.printStackTrace();
 					}
-					
+						
 						mainWindow.resetUIForUpdates();
+						mainWindow.getTablesFrame().createButtons();
 					
 					configTablesDialog.this.dispose();
 				}

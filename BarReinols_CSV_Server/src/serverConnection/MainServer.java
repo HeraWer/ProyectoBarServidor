@@ -10,11 +10,11 @@ import java.net.InetAddress;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
 import bar.Main;
-import bar.Product;
 import bar.Ticket;
 import ui.MainWindow;
 
@@ -40,20 +40,21 @@ public class MainServer {
 	 * Constructor de la clase en la que se enciende el
 	 * servidor.
 	 */
-	public MainServer(MainWindow m) throws IOException, ClassNotFoundException, TransformerException, ParserConfigurationException, SAXException {
+	public MainServer(MainWindow m) throws IOException, ClassNotFoundException, TransformerException, ParserConfigurationException, SAXException, XPathExpressionException {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
 		
 		
-		Ticket t = new Ticket(5);
+		/*Ticket t = new Ticket(5);
 		Product p;
-		Main.getTickets().add(t);
-		Main.sendTicket(t, m.getTicketsFrame());
-		m.resetUIForUpdates();
 		for(int i = 0; i < 10; i++) {
-			p = new Product(String.valueOf((int)(Math.random()*57836)), String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),0);
+			p = new Product(String.valueOf((int)(Math.random()*57836)), String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),String.valueOf((int)(Math.random()*57836)),5);
 			t.getALProduct().add(p);
 			
 		}
+		Main.getTickets().add(t);
+		Main.sendTicket(t, m.getTicketsFrame());
+		m.resetUIForUpdates();*/
+		
 		
 		
 		dSocket = new DatagramSocket(PORT);
@@ -64,12 +65,13 @@ public class MainServer {
 		bais = new ByteArrayInputStream(buff);
 		inputClient = new ObjectInputStream(new BufferedInputStream(bais));
 		
+		Ticket t = (Ticket) inputClient.readObject();		
 		Main.getTickets().add(t);
 		Main.sendTicket(t, m.getTicketsFrame());
+		
 		m.resetUIForUpdates();
-		/*
-		Ticket t = (Ticket) inputClient.readObject();
-		Main.getTickets().add(t);*/
+		
+		
 		
 	}
 	

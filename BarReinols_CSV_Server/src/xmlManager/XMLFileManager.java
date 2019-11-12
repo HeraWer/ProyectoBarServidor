@@ -15,26 +15,25 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
 
 /*
  * Esta clase gestiona los ficheros XML de configuracion, como
  * el de config.xml y el de productos.xml
  */
-public class XMLFileManager {
+public abstract class XMLFileManager {
 	
 	// Atributos de la clase
 	protected File xmlFile;
 	private DocumentBuilderFactory dbf;
 	protected Document doc;
-	private DocumentBuilder builder;
+	protected DocumentBuilder builder;
 
 	/*
-	 * Constructor que crea el documento y lo parsea, 
-	 * o lo parsea directamente si existe.
+	 * Constructor para la gestion del documento config.
 	 */
 	public XMLFileManager(String ruta) throws TransformerException, ParserConfigurationException, SAXException, IOException {
 		
@@ -45,51 +44,6 @@ public class XMLFileManager {
 		dbf = DocumentBuilderFactory.newInstance();
 		builder = dbf.newDocumentBuilder();
 		doc = builder.newDocument();
-		
-		// Si el archivo config no existe, llamamos al metodo que lo crea
-		if(!xmlFile.exists()) {
-			writeFile();
-			if(ruta.equals("xml/config.xml"))
-				createConfig();
-		}
-		
-		
-		// Como siempre estará creado en este punto, lo parseamos
-		doc = builder.parse(xmlFile);
-	}
-	
-	/*
-	 * Metodo que crea el fichero config.xml en el caso que no exista
-	 */
-	public void createConfig() throws TransformerException, SAXException, IOException {
-		
-		// Creamos el elemento raiz
-		Element root = doc.createElement("config");;
-		doc.appendChild(root);
-		
-		// Elementos de la parte de server, donde guardamos la IP del server
-		Element server = doc.createElement("server");
-		root.appendChild(server);
-		
-		Element ip = doc.createElement("ip");
-		server.appendChild(ip);
-		
-		// ¡¡¡COMPROBAR!!!
-		Element pda = doc.createElement("pda");
-		root.appendChild(pda);
-		
-		Element pdaName = doc.createElement("nom");
-		pda.appendChild(pdaName);
-		
-		// Elementos de la parte de mesas, que asigna el numero de mesas disponibles
-		Element tables = doc.createElement("mesas");
-		root.appendChild(tables);
-		
-		Element tablesQuant = doc.createElement("cantidad");
-		tables.appendChild(tablesQuant);
-		
-		// Llamamos al metodo que escribe el fichero
-		writeFile();
 	}
 	
 	/*
@@ -149,7 +103,7 @@ public class XMLFileManager {
 		
 		// Volvemos a parsear el fichero una vez hechos los cambios.
 		doc = builder.parse(xmlFile);
-	}	
+	}
 	
 	public void createChild(String xPathExpression, String tagName, String textContent) throws XPathExpressionException {
 		Element find = getElement(xPathExpression);
