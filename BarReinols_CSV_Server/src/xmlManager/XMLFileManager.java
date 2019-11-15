@@ -18,6 +18,8 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.xpath.XPathExpression;
 import org.xml.sax.SAXException;
 
 /*
@@ -46,6 +48,12 @@ public abstract class XMLFileManager {
 		doc = builder.newDocument();
 	}
 	
+	public XMLFileManager() throws ParserConfigurationException {
+		dbf = DocumentBuilderFactory.newInstance();
+		builder = dbf.newDocumentBuilder();
+		doc = builder.newDocument();
+	}
+	
 	/*
 	 * Metodo que nos devuelve un elemento pasandole como parametro
 	 * una expresion de XPath.
@@ -53,6 +61,11 @@ public abstract class XMLFileManager {
 	public Element getElement(String xpathExpression) throws XPathExpressionException {
 		XPath xpath = XPathFactory.newInstance().newXPath();
 		return (Element) xpath.evaluate(xpathExpression, doc, XPathConstants.NODE);
+	}
+	
+	public NodeList getElementsList(String xpathExpression) throws XPathExpressionException {
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		return ((NodeList) (xpath.evaluate(xpathExpression, doc, XPathConstants.NODESET)));
 	}
 	
 	/*
@@ -115,6 +128,10 @@ public abstract class XMLFileManager {
 		if(textContent != null) {
 			
 		}
+	}
+	
+	public boolean elementExists(String xPath) throws XPathExpressionException {
+		return getElementsList(xPath).getLength() > 0;
 	}
 	
 }

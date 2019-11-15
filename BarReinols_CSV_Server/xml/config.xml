@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><config>
   <server>
-      <ip>192.168.40.22</ip>
+      <ip>192.168.56.1</ip>
   </server>
   <pda>
     <nom/>
   </pda>
   <mesas>
-      <cantidad>10</cantidad>
+      <cantidad>6</cantidad>
   </mesas>
 </config>

@@ -1,9 +1,11 @@
 package bar;
 
+import java.io.Serializable;
+
 /*
  * Esta es la clase que define al producto en si mismo.
  */
-public class Product {
+public class Product implements Serializable {
 
 	// Atributos de un producto.
 	String id;

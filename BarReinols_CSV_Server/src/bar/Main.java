@@ -1,6 +1,5 @@
 package bar;
 
-import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,6 +14,7 @@ import ui.MainWindow;
 import ui.TicketsFrame;
 import ui.configTablesDialog;
 import xmlManager.XMLConfigManager;
+import xmlManager.XMLTicketManager;
 
 /*
  * Clase principal que llama a la interfaz grafica del proyecto
@@ -39,7 +39,8 @@ public class Main {
 	 */
 	public static void sendTicket(Ticket t, TicketsFrame tm) throws TransformerException, ParserConfigurationException,
 			SAXException, IOException, XPathExpressionException {
-		tm.setTicketOnTable(t);
+		tickets.add(t);
+		tm.setTicketOnTable(t);	
 	}
 
 	/*
@@ -48,13 +49,18 @@ public class Main {
 	public static void main(String[] args) {
 
 		// Comprobamos las mesas disponibles del fichero config.xml
-		XMLConfigManager xml = null;
+		XMLConfigManager xmlConfigManager = null;
+		
+		XMLTicketManager xmlTicketManager = null; 
 		try {
-			xml = new XMLConfigManager("xml/config.xml");
-			if (!xml.isElementEquals("//mesas/cantidad", "")) {
-				numTaules = Integer.parseInt(xml.getElementTextContent("//mesas/cantidad"));
+			xmlConfigManager = new XMLConfigManager("xml/config.xml");
+			if (!xmlConfigManager.isElementEquals("//mesas/cantidad", "")) {
+				numTaules = Integer.parseInt(xmlConfigManager.getElementTextContent("//mesas/cantidad"));
 				emptyTables = true;
 			}
+			
+			
+			
 		} catch (TransformerException e1) {
 			e1.printStackTrace();
 		} catch (ParserConfigurationException e1) {
@@ -71,6 +77,16 @@ public class Main {
 
 		// Abrimos la ventana principal
 		MainWindow m = new MainWindow();
+		
+		try {
+			xmlTicketManager = new XMLTicketManager();
+			xmlTicketManager.lookForTickets(m);
+		} catch (XPathExpressionException | SAXException | IOException | TransformerException
+				| ParserConfigurationException e1) {
+			e1.printStackTrace();
+		}
+		
+		
 
 		// Si las mesas estan vacias llamamos al dialogo de configuracion
 		if(numTaules <= 0)

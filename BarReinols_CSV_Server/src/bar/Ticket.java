@@ -10,10 +10,10 @@ import java.util.ArrayList;
  * Implementa la clase Serializable
  * para poder pasarsela al cliente
  */
-public class Ticket implements Serializable{
+public class Ticket implements Serializable {
 	
-	private ArrayList<Product> aLProduct;
-	private int table;
+	private ArrayList<Product> productosComanda;
+	private int mesa;
 	
 	public Ticket() {
 		
@@ -23,23 +23,32 @@ public class Ticket implements Serializable{
 	 * Constructor en el que se le pasa 
 	 * el numero de mesa del ticket
 	 */
-	public Ticket(int table) {
-		aLProduct = new ArrayList<Product>();
-		this.table = table;
+	public Ticket(int mesa) {
+		productosComanda = new ArrayList<Product>();
+		this.mesa = mesa;
+	}
+	
+	public Ticket(ArrayList<Product> productosComanda, int mesa) {
+		this.productosComanda = productosComanda;
+		this.mesa = mesa;
 	}
 	
 	/*
 	 * metodo que devuelve el numero de mesa de la comanda
 	 */
 	public int getTable() {
-		return this.table;
+		return this.mesa;
 	}
 	
 	/*
 	 * Metodo que devuelve el ArrayList de productos
 	 */
 	public ArrayList<Product> getALProduct() {
-		return this.aLProduct;
+		return this.productosComanda;
+	}
+	
+	public void setALProduct(ArrayList<Product> productosComanda) {
+		this.productosComanda = productosComanda;
 	}
 	
 	

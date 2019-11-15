@@ -89,11 +89,11 @@ public class TicketsJTable extends JTable {
 			}
 		});
 
-		this.invalidate();
+		/*this.invalidate();
 		this.revalidate();
 		this.repaint();
 		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
-		tableModel.fireTableRowsInserted(0, tableModel.getRowCount());
+		tableModel.fireTableRowsInserted(0, tableModel.getRowCount());*/
 
 	}
 
