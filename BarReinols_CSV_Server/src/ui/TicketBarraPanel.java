@@ -153,7 +153,7 @@ public class TicketBarraPanel extends JPanel {
 
 			public void actionPerformed(ActionEvent e) {
 				Ticket t = tools.Search.searchForTicket(numMesa);
-				
+
 				try {
 					bbddManager.FacturaDBManager.insertFactura(t, getTotalTicket(t));
 					bbddManager.TicketDBManager.deleteComanda(numMesa);
@@ -161,23 +161,10 @@ public class TicketBarraPanel extends JPanel {
 					e2.printStackTrace();
 				}
 
-				try {
+				parent.getTicketsFrame().clearTicketCocina(t.getMesa());
+				Main.getTickets().remove(t);
 
-					if (t != null) {
-						String dateToFile = new SimpleDateFormat("ddMMyyyy_HHmmss").format(t.getDatetime());
-						XMLTicketManager xmlTM = new XMLTicketManager(
-								"facturas/" + "factura_" + dateToFile + "_mesa" + numMesa + ".xml", t);
-						File deleteComanda = new File("xml/pedidoMesa" + numMesa + ".xml");
-						deleteComanda.delete();
-					}
-					parent.getTicketsFrame().clearTicketCocina(t.getMesa());
-					Main.getTickets().remove(t);
-					
-					clearTicket();
-				} catch (XPathExpressionException | TransformerException | ParserConfigurationException | SAXException
-						| IOException e1) {
-					e1.printStackTrace();
-				}
+				clearTicket();
 
 			}
 		});
@@ -228,7 +215,6 @@ public class TicketBarraPanel extends JPanel {
 				((DefaultTableModel) ticketTable.getModel()).removeRow(i);
 			}
 
-
 		}
 	}
 
@@ -263,9 +249,11 @@ public class TicketBarraPanel extends JPanel {
 		for (Product p : t.getProductosComanda()) {
 			total = total + (Float.parseFloat(p.getPrice()) * p.getCantidad());
 		}
-		/*for (int i = 0; i < ticketTable.getRowCount(); i++) {
-			total = total + Float.parseFloat((String) (ticketTable.getValueAt(i, 4)));
-		}*/
+		/*
+		 * for (int i = 0; i < ticketTable.getRowCount(); i++) {
+		 * total = total + Float.parseFloat((String) (ticketTable.getValueAt(i, 4)));
+		 * }
+		 */
 		return tools.NumberFormat.round(total);
 
 	}
