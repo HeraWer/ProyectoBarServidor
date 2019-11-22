@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><config>
+  <server>
+      <ip>10.151.104.151</ip>
+  </server>
+  <pda>
+    <nom/>
+  </pda>
+  <mesas>
+      <cantidad>10</cantidad>
+  </mesas>
+</config>
