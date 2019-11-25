@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -68,6 +69,22 @@ public class TicketBarraPanel extends JPanel {
 		modify();
 		prepareGridBagLayout();
 		setListeners();
+
+		this.setBackground(new Color(68, 72, 82));
+
+		infoPanel.setBackground(new Color(68, 72, 82));
+
+		jScroll.getViewport().setBackground(new Color(36, 35, 32));
+
+		ticketTable.getTableHeader().setBackground(new Color(47, 64, 88));
+		ticketTable.getTableHeader().setForeground(new Color(255, 255, 255));
+
+		infoNumMesa.setForeground(new Color(255, 255, 255));
+		totalSinIva.setForeground(new Color(255, 255, 255));
+		totalConIva.setForeground(new Color(255, 255, 255));
+
+		cobrarButton.setBackground(new Color(47, 64, 88));
+		cobrarButton.setForeground(new Color(255, 255, 255));
 	}
 
 	public void initialize() {
@@ -153,18 +170,19 @@ public class TicketBarraPanel extends JPanel {
 
 			public void actionPerformed(ActionEvent e) {
 				Ticket t = tools.Search.searchForTicket(numMesa);
+				if (t != null) {
+					try {
+						bbddManager.FacturaDBManager.insertFactura(t, getTotalTicket(t));
+						bbddManager.TicketDBManager.deleteComanda(numMesa);
+					} catch (SQLException e2) {
+						e2.printStackTrace();
+					}
 
-				try {
-					bbddManager.FacturaDBManager.insertFactura(t, getTotalTicket(t));
-					bbddManager.TicketDBManager.deleteComanda(numMesa);
-				} catch (SQLException e2) {
-					e2.printStackTrace();
+					parent.getTicketsFrame().clearTicketCocina(t.getMesa());
+					Main.getTickets().remove(t);
+
+					clearTicket();
 				}
-
-				parent.getTicketsFrame().clearTicketCocina(t.getMesa());
-				Main.getTickets().remove(t);
-
-				clearTicket();
 
 			}
 		});
@@ -191,7 +209,7 @@ public class TicketBarraPanel extends JPanel {
 
 					EventQueue.invokeLater(new Runnable() {
 						public void run() {
-							((DefaultTableModel) ticketTable.getModel()).addRow(v);
+							tableModel.addRow(v);
 						}
 					});
 				}
@@ -212,7 +230,7 @@ public class TicketBarraPanel extends JPanel {
 				}
 			}
 			if (!existe) {
-				((DefaultTableModel) ticketTable.getModel()).removeRow(i);
+				tableModel.removeRow(i);
 			}
 
 		}
@@ -223,14 +241,15 @@ public class TicketBarraPanel extends JPanel {
 		ticketTable.setCellSelectionEnabled(false);
 		ticketTable.setRowSelectionAllowed(true);
 		ticketTable.setFillsViewportHeight(true);
+		ticketTable.setOpaque(false);
 	}
 
 	public void clearTicket() {
 
 		for (int i = ticketTable.getRowCount() - 1; i >= 0; i--) {
-			((DefaultTableModel) ticketTable.getModel()).removeRow(i);
+			tableModel.removeRow(i);
 		}
-		((DefaultTableModel) ticketTable.getModel()).fireTableDataChanged();
+		tableModel.fireTableDataChanged();
 
 		this.updateLabels();
 
@@ -238,16 +257,17 @@ public class TicketBarraPanel extends JPanel {
 
 	public void removeRows() {
 		for (int i = ticketTable.getRowCount() - 1; i >= 0; i--) {
-			((DefaultTableModel) ticketTable.getModel()).removeRow(i);
+			tableModel.removeRow(i);
 		}
 		ticketTable.repaint();
 	}
 
 	public float getTotalTicket(Ticket t) {
 		float total = 0;
-
-		for (Product p : t.getProductosComanda()) {
-			total = total + (Float.parseFloat(p.getPrice()) * p.getCantidad());
+		if (t != null) {
+			for (Product p : t.getProductosComanda()) {
+				total = total + (Float.parseFloat(p.getPrice()) * p.getCantidad());
+			}
 		}
 		/*
 		 * for (int i = 0; i < ticketTable.getRowCount(); i++) {

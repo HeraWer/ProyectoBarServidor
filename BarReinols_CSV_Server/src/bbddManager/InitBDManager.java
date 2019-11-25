@@ -90,6 +90,7 @@ public class InitBDManager extends ConnectionManager {
 			p.setCantidad(rs.getInt("cantidad_producto"));
 			p.setPrice(String.valueOf(rs.getFloat("precio_producto")));
 			p.setImage_Desktop(tools.Search.getProductImageById(p.getId()));
+			p.setImage_movil(tools.Search.getProductAppImageById(p.getId()));
 			products.add(p);
 		}
 		return products;
@@ -185,5 +186,6 @@ public class InitBDManager extends ConnectionManager {
 		ResultSet rs = getConnection().createStatement().executeQuery(select);
 		return !rs.next();
 	}
+	
 
 }

@@ -1,9 +1,11 @@
 package ui;
 
+import java.awt.Color;
 import java.io.IOException;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JTabbedPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -47,6 +49,9 @@ public class CocinaFrame extends JInternalFrame {
 			e.printStackTrace();
 		}
 		add();
+		
+		this.setBorder(null);
+		//((BasicInternalFrameUI)this.getUI()).setNorthPane(null);
 	}
 
 	/*
@@ -62,7 +67,8 @@ public class CocinaFrame extends JInternalFrame {
 	 */
 	public void modify() throws TransformerException, ParserConfigurationException, SAXException, IOException,
 			NumberFormatException, XPathExpressionException {
-
+		tabPane.setBackground(new Color(47, 64, 88));
+		tabPane.setForeground(new Color(255,255,255));
 		// Creamos las pestañas con todas las mesas disponibles que haya.
 		for (int i = tabPane.getTabCount(); i < Main.numTaules; i++) {
 			int numMesa = i + 1;
@@ -117,18 +123,14 @@ public class CocinaFrame extends JInternalFrame {
 	 * Metodo que añade una comanda en una mesa determinada. Recorre cada producto
 	 * de la comanda y lo añade al JTable.
 	 */
-	public void setTicketOnTable(Ticket t) throws TransformerException, ParserConfigurationException, SAXException,
-			IOException, XPathExpressionException {
+	public void setTicketOnTable(Ticket t)  {
 		if(tabPane.getTabCount() == 0)
 			return;
 		PanelTickets numTabbedTable = (PanelTickets) tabPane.getComponentAt(t.getMesa() - 1);
 		numTabbedTable.updateLabels();
 		numTabbedTable.getProductsTable().clearDeleted(t);
-		XMLTicketManager xmlTM = new XMLTicketManager("xml/pedidoMesa" + String.valueOf(t.getMesa()) + ".xml", t);
 		for (Product p : t.getProductosComanda()) {
-			xmlTM.createProduct(p);
 			numTabbedTable.getProductsTable().addProduct(p);
-
 		}
 	}
 

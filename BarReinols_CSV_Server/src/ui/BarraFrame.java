@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import com.example.barreinolds.Main;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -54,6 +55,11 @@ public class BarraFrame extends JInternalFrame {
 		createButtons();
 		createTicketPanels();
 		setConstraints();
+		
+		ticketsCardPanel.setBackground(new Color(68, 72, 82));
+		tablesPanel.setBackground(new Color(68, 72, 82));
+		
+		this.setBorder(null);
 
 	}
 
@@ -78,6 +84,8 @@ public class BarraFrame extends JInternalFrame {
 			aLTables.add(table);
 			tablesPanel.add(aLTables.get(i - 1));
 			this.setListeners(table);
+			table.setBackground(new Color(47, 64, 88));
+			table.setForeground(new Color(255,255,255));	
 		}
 
 	}
@@ -90,6 +98,8 @@ public class BarraFrame extends JInternalFrame {
 				aLTables.add(table);
 				tablesPanel.add(aLTables.get(i - 1));
 				this.setListeners(table);
+				table.setBackground(new Color(47, 64, 88));
+				table.setForeground(new Color(255,255,255));	
 			}
 		}else {
 			for(int i = aLTables.size() - 1; i >= Main.numTaules; i--) {

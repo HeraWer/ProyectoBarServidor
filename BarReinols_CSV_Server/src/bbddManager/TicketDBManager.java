@@ -3,7 +3,7 @@ package bbddManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 
 import com.example.barreinolds.Product;
 import com.example.barreinolds.Ticket;
@@ -20,7 +20,7 @@ public class TicketDBManager extends ConnectionManager {
 			pstmnt.executeUpdate();
 			
 			
-			String insertIntoDetailsComanda = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto) VALUES (?, ?, ?, round(?, 2))";
+			String insertIntoDetailsComanda = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto, servido) VALUES (?, ?, ?, round(?, 2), false)";
 			for (Product p : t.getProductosComanda()) {
 				pstmnt = getConnection().prepareStatement(insertIntoDetailsComanda);
 				pstmnt.setInt(1, t.getMesa());
@@ -77,6 +77,18 @@ public class TicketDBManager extends ConnectionManager {
 		
 		getConnection().createStatement().executeUpdate(deleteDetailsComanda);
 		getConnection().createStatement().executeUpdate(deleteComanda);
+	}
+	
+	public static void serveProduct(int idProduct, int numMesa) throws SQLException {
+		String update = "UPDATE details_comandas SET servido = true WHERE mesa = " + numMesa + " and id_producto = " + idProduct;
+		Statement stmnt = getConnection().createStatement();
+		stmnt.executeUpdate(update);
+	}
+	
+	public static void returnProduct(int idProduct, int numMesa) throws SQLException {
+		String update = "UPDATE details_comandas SET servido = false WHERE mesa = " + numMesa + " and id_producto = " + idProduct;
+		Statement stmnt = getConnection().createStatement();
+		stmnt.executeUpdate(update);
 	}
 	
 

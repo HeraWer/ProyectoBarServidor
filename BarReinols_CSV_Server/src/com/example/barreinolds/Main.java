@@ -96,16 +96,18 @@ public class Main {
 		m.setVisible(true);
 		// Abrimos la ventana principal
 
-		latch = new CountDownLatch(1);
-		m.loadTickets();
-		m.resetUIForUpdates();
-		m.getTablesFrame().onTableNumChangeCreateButtons();
+		
 
 		latch = new CountDownLatch(1);
 		if (Main.numTaules == 0)
 			new ConfigTablesDialog(latch).setVisible(true);
 		else
 			latch.countDown();
+		
+		latch = new CountDownLatch(1);
+		m.loadTickets();
+		m.resetUIForUpdates();
+		m.getTablesFrame().onTableNumChangeCreateButtons();
 		
 		try {
 			latch.await();

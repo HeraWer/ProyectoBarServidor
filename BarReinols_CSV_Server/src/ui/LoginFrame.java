@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -46,6 +47,8 @@ public class LoginFrame extends JInternalFrame {
 		prepareGridBagLayout();
 		setListeners();
 		
+		this.setBorder(null);
+		
 	}
 
 	public void initialize() {
@@ -71,17 +74,23 @@ public class LoginFrame extends JInternalFrame {
 			aLButtonsLetras.add(charButton);
 			setListenerForCharButton(charButton);
 			charButton.setPreferredSize(new Dimension(75,75));
+			charButton.setBackground(new Color(47, 64, 88));
+			charButton.setForeground(new Color(255,255,255));
 			
 			if (i == 83) {
 				charButton = new JButton("ç");
 				lettersPanel.add(charButton);
 				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
+				charButton.setBackground(new Color(47, 64, 88));
+				charButton.setForeground(new Color(255,255,255));
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
 				charButton.setPreferredSize(new Dimension(75,75));
 				charButton = new JButton("ñ");
 				lettersPanel.add(charButton);
 				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
+				charButton.setBackground(new Color(47, 64, 88));
+				charButton.setForeground(new Color(255,255,255));
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
 				charButton.setPreferredSize(new Dimension(75,75));
@@ -90,6 +99,8 @@ public class LoginFrame extends JInternalFrame {
 
 		deleteButton.setPreferredSize(new Dimension(75, 75));
 		deleteButton.setFont(new Font("Verdana", Font.BOLD, 16));
+		deleteButton.setBackground(new Color(47, 64, 88));
+		deleteButton.setForeground(new Color(255,255,255));
 		lettersPanel.add(deleteButton);
 
 	}
@@ -99,9 +110,19 @@ public class LoginFrame extends JInternalFrame {
 		infoLabel.setFont(new Font("Verdana", Font.BOLD, 12));
 		infoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		whiteSpaceButton.setPreferredSize(new Dimension(0, 50));
-		
+		whiteSpaceButton.setBackground(new Color(47, 64, 88));
+		whiteSpaceButton.setForeground(new Color(255,255,255));
+		inputCamarero.setPreferredSize(new Dimension(0, 50));
+		inputCamarero.setFont(new Font("Verdana", Font.BOLD, 20));
 		enter.setPreferredSize(new Dimension(100, 100));
 		enter.setMaximumSize(new Dimension(100, 100));
+		enter.setBackground(new Color(47, 64, 88));
+		enter.setForeground(new Color(255,255,255));
+		mainPanel.setBackground(new Color(47, 49, 56));
+		lettersPanel.setBackground(new Color(47, 49, 56));
+		
+		titleLabel.setForeground(new Color(255,255,255));
+		infoLabel.setForeground(new Color(255,255,255));
 	}
 
 	public void prepareGridBagLayout() {

@@ -44,6 +44,7 @@ public interface ScriptsInterface {
 			"    id_producto INT NOT NULL," + 
 			"    cantidad_producto INT NOT NULL," + 
 			"    precio_producto FLOAT(4,2) NOT NULL," + 
+			"	 servido BOOLEAN," +
 			"    CONSTRAINT mesa_fk FOREIGN KEY (mesa) REFERENCES comandas (mesa)," + 
 			"    CONSTRAINT id_producto_fk FOREIGN KEY (id_producto) REFERENCES productos (id_producto)" +  
 			")";

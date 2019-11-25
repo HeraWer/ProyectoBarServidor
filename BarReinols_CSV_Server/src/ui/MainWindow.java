@@ -1,10 +1,16 @@
-package ui;
+	package ui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
@@ -55,7 +61,10 @@ public class MainWindow extends JFrame {
 		add();
 		Main.latch.countDown();
 		
-		
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		MediaTracker tracker = new MediaTracker(this);
+		Image image = toolkit.getImage("res/init_loading_logo.png");
+		this.setIconImage(image);
 		// setListeners();
 	}
 
@@ -94,6 +103,10 @@ public class MainWindow extends JFrame {
 
 		// En el momento que se cierre la ventana, se cierra la aplicacion
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setBackground(new Color(36, 35, 32));
+		cocinaFrame.setBackground(new Color(68, 72, 82));
+		loginFrame.setBackground(new Color(68, 72, 82));
+		barraFrame.setBackground(new Color(68, 72, 82));
 	}
 
 	/*

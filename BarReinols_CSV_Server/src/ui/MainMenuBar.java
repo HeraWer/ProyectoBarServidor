@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,6 +59,10 @@ public class MainMenuBar extends JMenuBar {
 		ventanaMenu.setEnabled(false);
 		add();
 		setListeners();
+		
+		this.setBackground(new Color(47, 64, 88));
+		configMenu.setForeground(new Color(255,255,255));
+		ventanaMenu.setForeground(new Color(255,255,255));
 	}
 
 	/*

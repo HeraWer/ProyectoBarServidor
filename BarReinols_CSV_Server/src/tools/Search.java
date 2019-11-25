@@ -84,6 +84,16 @@ public class Search {
 		return null;
 	}
 	
+	public static String getProductAppImageById(int id) {
+		for(Category c : Main.getCategoriasBar()) {
+			for(Product p : c.getaLProducts()) {
+				if(p.getId() == id) 
+					return p.getImage_movil();
+			}
+		}
+		return null;
+	}
+	
 	public static float getTotalFromTicket(Ticket t) {
 		return 0;
 	}

@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -134,12 +135,10 @@ public class MainServer {
 					MainWindow.statusLabel.setText("Enviando categorias...");
 					outputServer.writeObject(Main.getCategoriasBar());
 					outputServer.flush();
-				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().contains("RECUPERARTICKET")) {
-					int numMesa = Integer.parseInt(((Message) received).getRequest().split(" ")[1]);
-					
-					System.out.println("Enviando ticket mesa " + numMesa + "...");
-					MainWindow.statusLabel.setText("Enviando ticket mesa " + numMesa + "...");
-					outputServer.writeObject(tools.Search.searchForTicket(numMesa));
+				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().equals("RECUPERARTICKET")) {					
+					System.out.println("Enviando tickets...");
+					MainWindow.statusLabel.setText("Enviando tickets...");
+					outputServer.writeObject(Main.getTickets());
 					outputServer.flush();
 				} else {
 				
