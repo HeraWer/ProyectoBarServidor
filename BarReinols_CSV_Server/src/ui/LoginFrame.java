@@ -11,12 +11,15 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.example.barreinolds.Camarero;
@@ -30,6 +33,7 @@ public class LoginFrame extends JInternalFrame {
 	private JLabel infoLabel;
 	private JLabel titleLabel;
 	private JTextField inputCamarero;
+	private JPasswordField passCamarero;
 	private ArrayList<JButton> aLButtonsLetras;
 	private JButton deleteButton;
 	private JButton whiteSpaceButton;
@@ -46,13 +50,15 @@ public class LoginFrame extends JInternalFrame {
 		this.getContentPane().setLayout(new FlowLayout());
 		prepareGridBagLayout();
 		setListeners();
-		
+
 		this.setBorder(null);
-		
+
 	}
 
 	public void initialize() {
 		inputCamarero = new JTextField();
+		passCamarero = new JPasswordField();
+		passCamarero.setEchoChar('●');
 		aLButtonsLetras = new ArrayList<JButton>();
 		titleLabel = new JLabel("Introduce el nombre de usuario del camarero:");
 		enter = new JButton("Entrar");
@@ -61,46 +67,47 @@ public class LoginFrame extends JInternalFrame {
 		infoLabel = new JLabel();
 		lettersPanel = new JPanel(new GridLayout(3, 10, 10, 10));
 		mainPanel = new JPanel(new GridBagLayout());
+
 	}
 
 	public void createButtonsForLettersPanel() {
 		JButton charButton;
 		for (int i = 65; i <= 90; i++) {
 			char c = (char) i;
-			
+
 			charButton = new JButton(String.valueOf(c));
 			charButton.setFont(new Font("Verdana", Font.BOLD, 16));
 			lettersPanel.add(charButton);
 			aLButtonsLetras.add(charButton);
 			setListenerForCharButton(charButton);
-			charButton.setPreferredSize(new Dimension(75,75));
+			charButton.setPreferredSize(new Dimension(75, 75));
 			charButton.setBackground(new Color(47, 64, 88));
-			charButton.setForeground(new Color(255,255,255));
-			
+			charButton.setForeground(new Color(255, 255, 255));
+
 			if (i == 83) {
 				charButton = new JButton("ç");
 				lettersPanel.add(charButton);
 				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
 				charButton.setBackground(new Color(47, 64, 88));
-				charButton.setForeground(new Color(255,255,255));
+				charButton.setForeground(new Color(255, 255, 255));
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
-				charButton.setPreferredSize(new Dimension(75,75));
+				charButton.setPreferredSize(new Dimension(75, 75));
 				charButton = new JButton("ñ");
 				lettersPanel.add(charButton);
 				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
 				charButton.setBackground(new Color(47, 64, 88));
-				charButton.setForeground(new Color(255,255,255));
+				charButton.setForeground(new Color(255, 255, 255));
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
-				charButton.setPreferredSize(new Dimension(75,75));
+				charButton.setPreferredSize(new Dimension(75, 75));
 			}
 		}
 
 		deleteButton.setPreferredSize(new Dimension(75, 75));
 		deleteButton.setFont(new Font("Verdana", Font.BOLD, 16));
 		deleteButton.setBackground(new Color(47, 64, 88));
-		deleteButton.setForeground(new Color(255,255,255));
+		deleteButton.setForeground(new Color(255, 255, 255));
 		lettersPanel.add(deleteButton);
 
 	}
@@ -111,18 +118,23 @@ public class LoginFrame extends JInternalFrame {
 		infoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		whiteSpaceButton.setPreferredSize(new Dimension(0, 50));
 		whiteSpaceButton.setBackground(new Color(47, 64, 88));
-		whiteSpaceButton.setForeground(new Color(255,255,255));
+		whiteSpaceButton.setForeground(new Color(255, 255, 255));
+
 		inputCamarero.setPreferredSize(new Dimension(0, 50));
 		inputCamarero.setFont(new Font("Verdana", Font.BOLD, 20));
+
+		passCamarero.setPreferredSize(new Dimension(0, 50));
+		passCamarero.setFont(new Font("Verdana", Font.BOLD, 20));
+
 		enter.setPreferredSize(new Dimension(100, 100));
 		enter.setMaximumSize(new Dimension(100, 100));
 		enter.setBackground(new Color(47, 64, 88));
-		enter.setForeground(new Color(255,255,255));
+		enter.setForeground(new Color(255, 255, 255));
 		mainPanel.setBackground(new Color(47, 49, 56));
 		lettersPanel.setBackground(new Color(47, 49, 56));
-		
-		titleLabel.setForeground(new Color(255,255,255));
-		infoLabel.setForeground(new Color(255,255,255));
+
+		titleLabel.setForeground(new Color(255, 255, 255));
+		infoLabel.setForeground(new Color(255, 255, 255));
 	}
 
 	public void prepareGridBagLayout() {
@@ -138,24 +150,29 @@ public class LoginFrame extends JInternalFrame {
 		mainPanel.add(inputCamarero, gbc);
 
 		gbc.gridy = 2;
+		mainPanel.add(passCamarero, gbc);
+
+		gbc.gridy = 3;
 		gbc.weighty = 1;
 		mainPanel.add(lettersPanel, gbc);
 
 		gbc.gridwidth = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 4;
 		mainPanel.add(whiteSpaceButton, gbc);
-		
+
 		gbc.weightx = 0;
 		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.EAST;
+		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.gridx = 1;
-		gbc.gridy = 3;
-		mainPanel.add(enter, gbc);
-		
 		gbc.gridy = 4;
+		mainPanel.add(enter, gbc);
+
+		gbc.gridy = 5;
+		gbc.gridx = 0;
+		gbc.gridwidth = 2;
 		gbc.weighty = 0;
 		mainPanel.add(infoLabel, gbc);
-		
+
 		this.getContentPane().add(mainPanel);
 	}
 
@@ -167,7 +184,6 @@ public class LoginFrame extends JInternalFrame {
 			}
 		});
 
-		
 	}
 
 	public void setListeners() {
@@ -186,7 +202,7 @@ public class LoginFrame extends JInternalFrame {
 				inputCamarero.setText(text + String.valueOf(" "));
 			}
 		});
-		
+
 		enter.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -195,17 +211,47 @@ public class LoginFrame extends JInternalFrame {
 				if (c == null) {
 					infoLabel.setText("No se ha encontrado el camarero introducido!");
 				} else {
-					Main.camareroSeleccionado = c;
-					JOptionPane.showMessageDialog(LoginFrame.this, "Iniciada sesion como " + c.getNombre(),
-							"Login correcto", JOptionPane.INFORMATION_MESSAGE);
-					((MainMenuBar) Main.m.getJMenuBar()).getConfigMenu().setEnabled(true);
-					((MainMenuBar) Main.m.getJMenuBar()).getVentanaMenu().setEnabled(true);
-					((CardLayout) Main.m.getMainPanel().getLayout()).show(Main.m.getMainPanel(),
-							MainWindow.COCINAFRAMECARD);
-					;
+
+					if (c.getPassword().equals(getPassword())) {
+						Main.camareroSeleccionado = c;
+						JOptionPane.showMessageDialog(LoginFrame.this, "Iniciada sesion como " + c.getNombre(),
+								"Login correcto", JOptionPane.INFORMATION_MESSAGE);
+						((MainMenuBar) Main.m.getJMenuBar()).getConfigMenu().setEnabled(true);
+						((MainMenuBar) Main.m.getJMenuBar()).getVentanaMenu().setEnabled(true);
+						((CardLayout) Main.m.getMainPanel().getLayout()).show(Main.m.getMainPanel(),
+								MainWindow.COCINAFRAMECARD);
+
+					}else
+						infoLabel.setText("Contraseña incorrecta!");
 				}
 
 			}
 		});
+
+		inputCamarero.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					enter.doClick();
+			}
+
+		});
+
+		passCamarero.addKeyListener(new KeyAdapter() {
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+					enter.doClick();
+			}
+
+		});
+	}
+
+	public String getPassword() {
+		String password = "";
+		for (int i = 0; i < passCamarero.getPassword().length; i++) {
+			password = password + passCamarero.getPassword()[i];
+		}
+		return password;
 	}
 }

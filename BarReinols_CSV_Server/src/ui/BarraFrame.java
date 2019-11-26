@@ -2,7 +2,8 @@ package ui;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 
 import com.example.barreinolds.Main;
 import com.example.barreinolds.Ticket;
@@ -36,6 +37,7 @@ public class BarraFrame extends JInternalFrame {
 	private ArrayList<JButton> aLTables;
 	private JPanel ticketsCardPanel;
 	private JPanel tablesPanel;
+	private JScrollPane jScrollTables;
 	private TicketBarraPanel ticketBarPanel;
 	private JButton table;
 	private MainWindow parent;
@@ -71,6 +73,9 @@ public class BarraFrame extends JInternalFrame {
 		tablesPanel = new JPanel(new GridLayout(0, 5, 5, 5));
 		ticketsBarra = new TreeMap<Integer, TicketBarraPanel>();
 		ticketsCardPanel = new JPanel(new CardLayout());
+		jScrollTables = new JScrollPane(tablesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jScrollTables.setMinimumSize(new Dimension(550,150));
 	}
 
 	/*
@@ -82,6 +87,8 @@ public class BarraFrame extends JInternalFrame {
 		for (int i = 1; i <= Main.numTaules; i++) {
 			table = new JButton("Mesa " + i);
 			table.setPreferredSize(new Dimension(100, 100));
+			table.setMinimumSize(new Dimension(100, 100));
+			table.setMaximumSize(new Dimension(100, 100));
 			aLTables.add(table);
 			tablesPanel.add(aLTables.get(i - 1));
 			this.setListeners(table);
@@ -95,7 +102,9 @@ public class BarraFrame extends JInternalFrame {
 		if(aLTables.size() < Main.numTaules) {
 			for(int i = aLTables.size() + 1; i <= Main.numTaules; i++) {
 				table = new JButton("Mesa " + i);
-				//table.setPreferredSize(new Dimension(100, 100));
+				table.setPreferredSize(new Dimension(100, 100));
+				table.setMinimumSize(new Dimension(100, 100));
+				table.setMaximumSize(new Dimension(100, 100));
 				aLTables.add(table);
 				tablesPanel.add(aLTables.get(i - 1));
 				this.setListeners(table);
@@ -131,7 +140,7 @@ public class BarraFrame extends JInternalFrame {
 		gbc.gridy = 1;
 		gbc.weightx = 0;
 		gbc.weighty = 0;
-		this.add(tablesPanel, gbc);
+		this.add(jScrollTables, gbc);
 	}
 
 	/*
@@ -163,7 +172,7 @@ public class BarraFrame extends JInternalFrame {
 	}
 	
 	public void onNumTablesChange() {
-		if (Main.numTaules < ticketsBarra.size()) {
+		if (Main.numTaules <= ticketsBarra.size()) {
 			for (int i = Main.numTaules + 1; i <= ticketsBarra.size(); i++) {
 
 				ticketsCardPanel.getLayout().removeLayoutComponent(ticketsBarra.get(i));

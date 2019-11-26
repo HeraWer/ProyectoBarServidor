@@ -63,10 +63,9 @@ public class MainWindow extends JFrame {
 		add();
 		Main.latch.countDown();
 		
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		MediaTracker tracker = new MediaTracker(this);
-		Image image = toolkit.getImage("res/init_loading_logo.png");
-		this.setIconImage(image);
+		Toolkit kit = Toolkit.getDefaultToolkit();
+		Image img = kit.createImage("res/img/init_loading_logo.png");
+		this.setIconImage(img);
 		// setListeners();
 	}
 

@@ -15,7 +15,8 @@ public interface ScriptsInterface {
 	String createCamareros = "CREATE TABLE camareros (" + 
 			"	id_camarero INT NOT NULL AUTO_INCREMENT," + 
 			"    nombre VARCHAR(50)," + 
-			"    username VARCHAR(50)," + 
+			"    username VARCHAR(50)," +
+			"    password VARCHAR(50)," + 
 			"    PRIMARY KEY (id_camarero)" + 
 			")";
 	
@@ -75,9 +76,9 @@ public interface ScriptsInterface {
 			")";
 	
 	String[] insertIntoCamareros = {
-			"INSERT INTO camareros (nombre, username) VALUES ('Jonatan Valle', 'jvalle')",
-			"INSERT INTO camareros (nombre, username) VALUES ('David Salas', 'dsalas')",
-			"INSERT INTO camareros (nombre, username) VALUES ('Erik Cabezuelo', 'ecabezue')"
+			"INSERT INTO camareros (nombre, username, password) VALUES ('Jonatan Valle', 'jvalle', 'P@ssw0rd')",
+			"INSERT INTO camareros (nombre, username, password) VALUES ('David Salas', 'dsalas', 'P@ssw0rd')",
+			"INSERT INTO camareros (nombre, username, password) VALUES ('Erik Cabezuelo', 'ecabezue', 'P@ssw0rd')"
 			};
 	
 	String[] insertIntoCategorias = {

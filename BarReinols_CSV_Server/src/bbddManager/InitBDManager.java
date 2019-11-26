@@ -33,6 +33,7 @@ public class InitBDManager extends ConnectionManager {
 			c.setId(rs.getInt("id_camarero"));
 			c.setNombre(rs.getString("nombre"));
 			c.setUsername(rs.getString("username"));
+			c.setPassword(rs.getString("password"));
 			camareros.add(c);
 		}
 		return camareros;

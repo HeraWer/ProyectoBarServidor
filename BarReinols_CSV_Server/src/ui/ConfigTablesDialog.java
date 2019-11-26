@@ -5,7 +5,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.concurrent.CountDownLatch;
 
@@ -155,6 +156,14 @@ public class ConfigTablesDialog extends JDialog {
 				else
 					JOptionPane.showMessageDialog(ConfigTablesDialog.this, "¡ERROR: Las mesas no se pueden dejar a 0!",
 							"Formato invalido!", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		setTables.addKeyListener(new KeyAdapter() {
+			
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER)
+					okButton.doClick();
 			}
 		});
 	}
