@@ -3,12 +3,12 @@ package serverConnection;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-
-
+import java.util.Arrays;
 
 import com.example.barreinolds.Main;
 import com.example.barreinolds.Message;
@@ -37,7 +37,7 @@ public class MainServer {
 	 * Constructor de la clase en la que se enciende el servidor.
 	 */
 	public MainServer(MainWindow m) throws SQLException, IOException, ClassNotFoundException {
-		System.out.println("IP: " + InetAddress.getLocalHost().toString());
+		System.out.println("IP: " + Arrays.toString(Inet4Address.getAllByName("DESKTOP-FU2UO0R")));
 		/*
 		 * Datos de prueba para rellenar la tabla, si ya existe el fichero de comanda no
 		 * los añadira, puesto que ya deben estar creados a partir del fichero
