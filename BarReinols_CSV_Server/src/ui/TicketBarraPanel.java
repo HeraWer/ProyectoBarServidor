@@ -182,6 +182,7 @@ public class TicketBarraPanel extends JPanel {
 					Main.getTickets().remove(t);
 
 					clearTicket();
+					Main.m.getTablesFrame().checkBusyTables();
 				}
 
 			}

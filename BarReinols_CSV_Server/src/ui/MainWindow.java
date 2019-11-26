@@ -126,8 +126,7 @@ public class MainWindow extends JFrame {
 			if(t.getMesa() < Main.numTaules)
 				try {
 					Main.sendTicket(t);
-				} catch (XPathExpressionException | TransformerException | ParserConfigurationException | SAXException
-						| IOException | SQLException e) {
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 		}
@@ -154,6 +153,8 @@ public class MainWindow extends JFrame {
 	 */
 	public void resetUIForUpdates() {
 		cocinaFrame.repaintFrame();
+		barraFrame.checkBusyTables();
+		
 	}
 	
 	public JPanel getMainPanel() {

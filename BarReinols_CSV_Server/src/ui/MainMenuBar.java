@@ -150,8 +150,7 @@ public class MainMenuBar extends JMenuBar {
 						t.getProductosComanda().add(p);
 						try {
 							Main.sendTicket(t);
-						} catch (XPathExpressionException | TransformerException | ParserConfigurationException
-								| SAXException | IOException | SQLException e) {
+						} catch (SQLException e) {
 							e.printStackTrace();
 						}
 						parent.resetUIForUpdates();

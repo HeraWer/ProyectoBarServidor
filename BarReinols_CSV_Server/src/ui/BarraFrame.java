@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 
 import com.example.barreinolds.Main;
+import com.example.barreinolds.Ticket;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -183,6 +184,17 @@ public class BarraFrame extends JInternalFrame {
 		if(ticketsBarra.get(numMesa) != null)
 		ticketsBarra.get(numMesa).addTicketToTable();
 	}
+	
+	public void checkBusyTables() {
+		Ticket t;
+		for(JButton b : aLTables) {
+			t = tools.Search.searchForTicket(Integer.parseInt(b.getText().split(" ")[1]));
+			if(t != null)
+				b.setBackground(new Color(128,0,0));
+			else
+				b.setBackground(new Color(47,64,88));
+		}
+	}
 
 	public TicketBarraPanel getTicketBarPanel() {
 		return ticketBarPanel;
@@ -190,6 +202,10 @@ public class BarraFrame extends JInternalFrame {
 
 	public void setTicketBarPanel(TicketBarraPanel ticketBarPanel) {
 		this.ticketBarPanel = ticketBarPanel;
+	}
+	
+	public JPanel getTablesPanel() {
+		return tablesPanel;
 	}
 
 	

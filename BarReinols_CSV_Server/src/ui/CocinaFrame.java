@@ -42,12 +42,9 @@ public class CocinaFrame extends JInternalFrame {
 		super("Cocina", false, false, false, false);
 		this.parent = parent;
 		initialize();
-		try {
+		
 			modify();
-		} catch (NumberFormatException | XPathExpressionException | TransformerException | ParserConfigurationException
-				| SAXException | IOException e) {
-			e.printStackTrace();
-		}
+		
 		add();
 		
 		this.setBorder(null);
@@ -65,8 +62,7 @@ public class CocinaFrame extends JInternalFrame {
 	 * Metodo que configura y modifica los diferentes componentes de dentro del
 	 * JInternalFrame.
 	 */
-	public void modify() throws TransformerException, ParserConfigurationException, SAXException, IOException,
-			NumberFormatException, XPathExpressionException {
+	public void modify() {
 		tabPane.setBackground(new Color(47, 64, 88));
 		tabPane.setForeground(new Color(255,255,255));
 		// Creamos las pestañas con todas las mesas disponibles que haya.
@@ -93,12 +89,9 @@ public class CocinaFrame extends JInternalFrame {
 				tabPane.remove(i);
 			}
 		} else {
-			try {
+			
 				modify();
-			} catch (NumberFormatException | XPathExpressionException | TransformerException
-					| ParserConfigurationException | SAXException | IOException e) {
-				e.printStackTrace();
-			}
+			
 		}
 
 	}

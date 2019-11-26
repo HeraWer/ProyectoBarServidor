@@ -60,8 +60,7 @@ public class Main {
 	/*
 	 * Metodo que llama al metodo que guarda comandas (Tickets) en la JTable.
 	 */
-	public static void sendTicket(Ticket t) throws TransformerException, ParserConfigurationException,
-			SAXException, IOException, XPathExpressionException, SQLException {
+	public static void sendTicket(Ticket t) throws SQLException {
 		if(!ticketsBar.contains(t))
 			ticketsBar.add(t);
 		tools.Search.checkDuplicateProducts(t);
@@ -118,10 +117,7 @@ public class Main {
 		// Abrimos el server
 		try {
 			MainServer mS = new MainServer(m);
-		} catch (ClassNotFoundException | IOException | TransformerException | ParserConfigurationException
-				| SAXException | XPathExpressionException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+		} catch (ClassNotFoundException | IOException | SQLException e) {
 			e.printStackTrace();
 		}
 

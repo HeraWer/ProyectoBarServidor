@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -43,8 +44,7 @@ public class MainServer {
 	/*
 	 * Constructor de la clase en la que se enciende el servidor.
 	 */
-	public MainServer(MainWindow m) throws IOException, ClassNotFoundException, TransformerException,
-			ParserConfigurationException, SAXException, XPathExpressionException, SQLException {
+	public MainServer(MainWindow m) throws SQLException, IOException, ClassNotFoundException {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
 		/*
 		 * Datos de prueba para rellenar la tabla, si ya existe el fichero de comanda no
