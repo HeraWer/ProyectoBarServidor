@@ -6,35 +6,16 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
-import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPathExpressionException;
 
-import org.xml.sax.SAXException;
 
-import com.example.barreinolds.Camarero;
 import com.example.barreinolds.Main;
 import com.example.barreinolds.Message;
-import com.example.barreinolds.Product;
-import com.example.barreinolds.Ticket;
-
-import ui.MainWindow;xample.barreinolds.Main;
-import com.example.barreinolds.Message;
-import com.example.barreinolds.Product;
 import com.example.barreinolds.Ticket;
 
 import ui.MainWindow;
 
-import com.example.barreinolds.Message;
-import com.example.barreinolds.Product;
-import com.example.barreinolds.Ticket;
-
-import ui.MainWindow;
 
 /*
  * Clase que enciende el servidor de la aplicacion.
