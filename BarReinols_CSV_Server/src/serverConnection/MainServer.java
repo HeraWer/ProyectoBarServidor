@@ -1,24 +1,39 @@
 package serverConnection;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.xml.sax.SAXException;
 
-import bar.Main;
-import bar.Product;
-import bar.Ticket;
+import com.example.barreinolds.Camarero;
+import com.example.barreinolds.Main;
+import com.example.barreinolds.Message;
+import com.example.barreinolds.Product;
+import com.example.barreinolds.Ticket;
+
+import ui.MainWindow;xample.barreinolds.Main;
+import com.example.barreinolds.Message;
+import com.example.barreinolds.Product;
+import com.example.barreinolds.Ticket;
+
+import ui.MainWindow;
+
+import com.example.barreinolds.Message;
+import com.example.barreinolds.Product;
+import com.example.barreinolds.Ticket;
+
 import ui.MainWindow;
 
 /*
@@ -32,68 +47,133 @@ public class MainServer {
 	// o los diferentes Sockets.
 	private final int PORT = 1234;
 	private Socket socket;
-	private byte[] buff;
 	private ServerSocket ss;
-	private DatagramPacket dPacket;
 	private ObjectInputStream inputClient;
-	private ByteArrayInputStream bais;
+	private ObjectOutputStream outputServer;
+	private Ticket t;
 
 	/*
 	 * Constructor de la clase en la que se enciende el servidor.
 	 */
-	public MainServer(MainWindow m) throws IOException, ClassNotFoundException, TransformerException,
-			ParserConfigurationException, SAXException, XPathExpressionException {
+	public MainServer(MainWindow m) throws SQLException, IOException, ClassNotFoundException {
 		System.out.println("IP: " + InetAddress.getLocalHost().toString());
-
 		/*
-		 * Datos de prueba para rellenar la tabla, si ya existe el fichero de comanda no los añadira,
-		 * puesto que ya deben estar creados a partir del fichero
+		 * Datos de prueba para rellenar la tabla, si ya existe el fichero de comanda no
+		 * los añadira, puesto que ya deben estar creados a partir del fichero
 		 */
-		Ticket t = new Ticket(5);
+
+		/*t = new Ticket(2);
+		t.setCamarero(new Camarero(3, "Erik Cabezuelo", "ecabezue"));
+		t.setDatetime(new Timestamp(System.currentTimeMillis()));
 		Product p;
-		for (int i = 0; i < 10; i++) {
-			p = new Product(String.valueOf(i), String.valueOf((int) (Math.random() * 57836)),
-					String.valueOf((int) (Math.random() * 57836)), String.valueOf((int) (Math.random() * 57836)), (int)(Math.random() * 10));
-			t.getALProduct().add(p);
+		p = new Product(1, "Coca Cola", "a",
+				"1.60", 5, null, null);
+		t.getProductosComanda().add(p);
+		p = new Product(2, "Fanta naranja", "a",
+				"1.60", 3, null, null);
+		t.getProductosComanda().add(p);
+		p = new Product(4, "Cerveza", "a",
+				"1.70", 8, null,null);
+		t.getProductosComanda().add(p);
+		Main.sendTicket(t, m);
+		m.resetUIForUpdates();*/
+
+		// Abrimos el socket del server
+		ss = new ServerSocket(PORT);
+		
+		while (true) {
+			
+			// Aceptamos las solicitudes que nos envian
+			MainWindow.statusLabel.setText("Aplicación lista. Esperando conexión de móvil.");
+			System.out.println("Aplicación lista. Esperando conexión de móvil.");
+			socket = ss.accept();
+			System.out.println("Nueva conexión de móvil realizada.");
+			MainWindow.statusLabel.setText("Nueva conexión de móvil realizada.");
+
+			
+			// Cogemos el outputStream del socket
+			outputServer = new ObjectOutputStream(socket.getOutputStream());
+
+			// Cogemos el inputStream del socket
+			inputClient = new ObjectInputStream(socket.getInputStream());
+
+			
+
+			/*if (enviado) {
+				System.out.println("Enviando número de mesas y lista de camareros a móvil...");
+				MainWindow.statusLabel.setText("Enviando número de mesas y lista de camareros a móvil...");
+				outputServer.writeObject(Main.getCamareros());
+				outputServer.writeObject((Integer) Main.numTaules);
+				enviado = false;
+				System.out.println("Mesas y camareros enviados a móvil.");
+				MainWindow.statusLabel.setText("Mesas y camareros enviados a móvil.");
+				continue;
+			}*/
+			// Esperamos objeto
+			System.out.println("Esperando comanda del móvil...");
+			MainWindow.statusLabel.setText("Esperando comanda del móvil...");
+
+			// Recibimos el objeto enviado por el camarero (PDA)
+			Object received = inputClient.readObject();
+			
+			if (received != null) {
+				// Si el objeto recibido es un String == CAMAREROS
+				if (received.getClass().equals(Message.class) && ((Message) received).getRequest().equals("CAMAREROS")) {
+
+					System.out.println("Enviando camareros...");
+					MainWindow.statusLabel.setText("Enviando camareros...");
+					// Le enviamos el array de camareros al camarero
+					outputServer.writeObject(Main.getCamareros());
+					outputServer.flush();
+
+					// Si el objeto recibido es un String == NUMMESAS
+				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().equals("NUMMESAS")) {
+
+					System.out.println("Enviando numeros de mesas...");
+					MainWindow.statusLabel.setText("Enviando numero de mesas...");
+					// Le enviamos el numero de mesas al camarero
+					outputServer.writeObject((Integer) Main.numTaules);
+					outputServer.flush();
+
+					// Si el objeto recibido es un String == COBRARMESA
+				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().contains("COBRARMESA")) {
+					String stringMesa = ((Message) received).getRequest().substring(10);
+					int numMesa = Integer.parseInt(stringMesa);
+
+					// Si el objeto recibido es un String == CATEGORIAS
+				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().equals("CATEGORIAS")) {
+					System.out.println("Enviando categorias...");
+					MainWindow.statusLabel.setText("Enviando categorias...");
+					outputServer.writeObject(Main.getCategoriasBar());
+					outputServer.flush();
+				} else if (received.getClass().equals(Message.class) && ((Message) received).getRequest().equals("RECUPERARTICKET")) {					
+					System.out.println("Enviando tickets...");
+					MainWindow.statusLabel.setText("Enviando tickets...");
+					outputServer.writeObject(Main.getTickets());
+					outputServer.flush();
+				} else {
+				
+					System.out.println("Comanda recibida.");
+					MainWindow.statusLabel.setText("Comanda recibida.");
+					
+					// Instanciamos el objeto como Ticket
+					t = ((Ticket) received);
+					
+					
+					// Enviamos el ticket recibido a la aplicacion
+					Main.sendTicket(t);
+					MainWindow.statusLabel.setText("Comanda insertada!");
+					System.out.println("Comanda insertada!");
+
+					// Actualizamos la interfaz
+					m.resetUIForUpdates();
+				}
+			} else {
+				System.out.println("Se ha recibido una comanda nula!");
+				MainWindow.statusLabel.setText("Se ha recibido una comanda nula!");
+			}
 
 		}
-		Main.sendTicket(t, m.getTicketsFrame());
-		m.resetUIForUpdates();
-
-//		ss = new ServerSocket(PORT);
-//		//while (true) {
-//			socket = ss.accept();
-//			buff = new byte[5000];
-//			dPacket = new DatagramPacket(buff, buff.length);
-//			System.out.println("Hola1");
-//			socket.receive(dPacket);
-//			System.out.println("Hola2");
-//			int byteCount = dPacket.getLength();
-//			bais = new ByteArrayInputStream(buff);
-//			inputClient = new ObjectInputStream(new BufferedInputStream(bais));
-//
-//			Ticket t = (Ticket) inputClient.readObject();
-//			System.out.println("Hola3");
-//			Main.sendTicket(t, m.getTicketsFrame());
-//
-//			m.resetUIForUpdates();
-//		//}
-
-		/*
-		 * ss = new ServerSocket(PORT); // while (true) { socket = ss.accept(); //
-		 * b//uff = new byte[5000]; // dPacket = new DatagramPacket(buff, buff.length);
-		 * // System.out.println("Hola1"); // System.out.println("Hola2"); // int
-		 * byteCount = dPacket.getLength(); // bais = new ByteArrayInputStream(buff);
-		 * inputClient = new ObjectInputStream(socket.getInputStream());
-		 * System.out.println("Esperando objeto");// +
-		 * inputClient.readObject().getClass().toString()); while (true) { Ticket t =
-		 * (Ticket) inputClient.readObject(); System.out.println("Leido objeto"); //
-		 * System.out.println("Hola3"); Main.sendTicket(t, m.getTicketsFrame());
-		 * 
-		 * m.resetUIForUpdates(); }
-		 */
-		// }
-
 	}
 
 }

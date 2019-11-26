@@ -2,7 +2,13 @@ package xmlManager;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -14,9 +20,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import bar.Main;
-import bar.Product;
-import bar.Ticket;
+
+import com.example.barreinolds.Main;
+import com.example.barreinolds.Product;
+import com.example.barreinolds.Ticket;
+
 import ui.MainWindow;
 
 public class XMLTicketManager extends XMLFileManager {
@@ -34,7 +42,8 @@ public class XMLTicketManager extends XMLFileManager {
 
 		// Si el archivo de la mesa no existe, llamamos al metodo que lo crea
 		if (!xmlFile.exists())
-			createTicketsFile();
+
+			createTicketFile();
 
 		// Como siempre estará creado en este punto, lo parseamos
 		doc = builder.parse(xmlFile);
@@ -51,15 +60,15 @@ public class XMLTicketManager extends XMLFileManager {
 	 * Metodo que comprueba si existen ficheros de comandas para poder generarlos en la tabla
 	 */
 	public void lookForTickets(MainWindow m) throws SAXException, IOException, XPathExpressionException,
-			TransformerException, ParserConfigurationException {
+			TransformerException, ParserConfigurationException, SQLException {
 		File f;
 		Ticket recovery = new Ticket();
-		ArrayList<Ticket> aLTicket = new ArrayList<Ticket>();
 		for (int i = 1; i <= Main.numTaules; i++) {
 			f = new File("xml/pedidoMesa" + i + ".xml");
 			if (f.exists()) {
 				recovery = recoveryFromFile(f, i);
-				Main.sendTicket(recovery, m.getTicketsFrame());
+
+				Main.sendTicket(recovery);
 			}
 		}
 
@@ -72,6 +81,21 @@ public class XMLTicketManager extends XMLFileManager {
 		doc = builder.parse(f);
 		// El ticket que retornaremos si hace falta rellenarlo
 		Ticket recovered = new Ticket(numMesa);
+
+		recovered.setCamarero(tools.Search.searchForCamareroByName(this.getElementTextContent("//Camarero")));
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		String tss = this.getElementTextContent("//Fecha");
+		
+		Date parsedDate = null;
+		try {
+			parsedDate = dateFormat.parse(tss);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		recovered.setDatetime(new Timestamp(parsedDate.getTime()));
+		
 		// Cogemos los productos del xml
 		NodeList products = doc.getElementsByTagName("Producto");
 		// Hacemos un arrayList de los productos para añadirla a la comanda
@@ -82,13 +106,15 @@ public class XMLTicketManager extends XMLFileManager {
 		for (int i = 0; i < products.getLength(); i++) {
 			p = new Product();
 			Node product = products.item(i);
-			p.setId(product.getAttributes().item(0).getNodeValue());
+
+			p.setId(Integer.parseInt(product.getAttributes().item(0).getNodeValue()));
 			p.setName(this.getElement("//Producto[@id='" + p.getId() + "']/Nombre").getTextContent());
-			p.setQuantity(Integer.parseInt(this.getElement("//Producto[@id='" + p.getId() + "']/Cantidad").getTextContent()));
-			p.setPrice(this.getElement("//Producto[@id='" + p.getId() + "']/Precio").getTextContent());
+			p.setCantidad(Integer.parseInt(this.getElement("//Producto[@id='" + p.getId() + "']/Cantidad").getTextContent()));
+			Float price = tools.NumberFormat.round(Float.parseFloat(this.getElement("//Producto[@id='" + p.getId() + "']/Precio").getTextContent().replace(',', '.')));
+			p.setPrice(String.valueOf(price));
 			productsTicket.add(p);
 		}
-		recovered.setALProduct(productsTicket);
+		recovered.setProductosComanda(productsTicket);
 
 		return recovered;
 
@@ -102,12 +128,14 @@ public class XMLTicketManager extends XMLFileManager {
 		Element pedido = this.getElement("//Pedido");
 		// Si el elemento ya existe, no lo vuelve a crear, solo deberia haber cambiado la cantidad
 		if (elementExists("//Producto[@id='" + p.getId() + "']")) {
-			this.writeInElement("//Producto[@id='" + p.getId() + "']/Cantidad", String.valueOf(p.getQuantity()));
+
+			this.writeInElement("//Producto[@id='" + p.getId() + "']/Cantidad", String.valueOf(p.getCantidad()));
 		} else {
 			// Si no existe, creamos el elemento
 			Element product = doc.createElement("Producto");
 			Attr idProduct = doc.createAttribute("id");
-			idProduct.setValue(p.getId());
+
+			idProduct.setValue(String.valueOf(p.getId()));
 			product.setAttributeNode(idProduct);
 			pedido.appendChild(product);
 
@@ -116,7 +144,8 @@ public class XMLTicketManager extends XMLFileManager {
 			product.appendChild(pName);
 
 			Element pQuantity = doc.createElement("Cantidad");
-			pQuantity.setTextContent(String.valueOf(p.getQuantity()));
+
+			pQuantity.setTextContent(String.valueOf(p.getCantidad()));
 			product.appendChild(pQuantity);
 
 			Element pPrice = doc.createElement("Precio");
@@ -131,20 +160,30 @@ public class XMLTicketManager extends XMLFileManager {
 	/*
 	 * Metodo que crea el archivo de tickets si no existe, en el momento que se recibe una comanda
 	 */
-	public void createTicketsFile() throws TransformerException, SAXException, IOException, XPathExpressionException {
+
+	public void createTicketFile() throws TransformerException, SAXException, IOException, XPathExpressionException {
 		Element root = doc.createElement("Bar");
 		doc.appendChild(root);
 
 		Element table = doc.createElement("Mesa");
 		Attr idTable = doc.createAttribute("id");
-		idTable.setValue(String.valueOf(t.getTable()));
+
+		idTable.setValue(String.valueOf(t.getMesa()));
 		table.setAttributeNode(idTable);
 		root.appendChild(table);
+		
+		Element camarero = doc.createElement("Camarero");
+		camarero.setTextContent(t.getCamarero().getUsername());
+		table.appendChild(camarero);
 
+		Element datetime = doc.createElement("Fecha");
+		datetime.setTextContent(t.getDatetime().toString());
+		table.appendChild(datetime);
+		
 		Element pedido = doc.createElement("Pedido");
 		table.appendChild(pedido);
 
-		for (Product p : t.getALProduct()) {
+		for (Product p : t.getProductosComanda()) {
 			createProduct(p);
 		}
 

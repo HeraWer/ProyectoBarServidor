@@ -47,7 +47,11 @@ org.eclipse.jdt.core.compiler.problem.missingEnumCaseDespiteDefault=disabled
 org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod=ignore
 org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotation=ignore
 org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotationForInterfaceMethodImplementation=enabled
+<<<<<<< HEAD
 org.eclipse.jdt.core.compiler.problem.missingSerialVersion=ignore
+=======
+org.eclipse.jdt.core.compiler.problem.missingSerialVersion=warning
+>>>>>>> 2e5a5959ec2047c581119bf8a1041d89563c3aee
 org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod=ignore
 org.eclipse.jdt.core.compiler.problem.noEffectAssignment=warning
 org.eclipse.jdt.core.compiler.problem.noImplicitStringConversion=warning

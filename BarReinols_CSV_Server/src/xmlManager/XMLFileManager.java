@@ -19,7 +19,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.xpath.XPathExpression;
+
 import org.xml.sax.SAXException;
 
 /*
@@ -116,18 +116,13 @@ public abstract class XMLFileManager {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transf = tf.newTransformer();
 		DOMSource source = new DOMSource(doc);
-		StreamResult sr = new StreamResult(new FileWriter(xmlFile));
+
+		FileWriter fw = new FileWriter(xmlFile);
+		StreamResult sr = new StreamResult(fw);
 		transf.transform(source, sr);
-		
+		fw.close();
 		// Volvemos a parsear el fichero una vez hechos los cambios.
 		doc = builder.parse(xmlFile);
-	}
-	
-	public void createChild(String xPathExpression, String tagName, String textContent) throws XPathExpressionException {
-		Element find = getElement(xPathExpression);
-		if(textContent != null) {
-			
-		}
 	}
 	
 	public boolean elementExists(String xPath) throws XPathExpressionException {
