@@ -92,6 +92,7 @@ public class InitBDManager extends ConnectionManager {
 			p.setPrice(String.valueOf(rs.getFloat("precio_producto")));
 			p.setImage_Desktop(tools.Search.getProductImageById(p.getId()));
 			p.setImage_movil(tools.Search.getProductAppImageById(p.getId()));
+			p.setServed(rs.getBoolean("servido"));
 			products.add(p);
 		}
 		return products;

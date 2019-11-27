@@ -37,7 +37,7 @@ public class MainServer {
 	 * Constructor de la clase en la que se enciende el servidor.
 	 */
 	public MainServer(MainWindow m) throws SQLException, IOException, ClassNotFoundException {
-		System.out.println("IP: " + Arrays.toString(Inet4Address.getAllByName("DESKTOP-FU2UO0R")));
+		System.out.println("IP: " + InetAddress.getLocalHost().toString());
 		/*
 		 * Datos de prueba para rellenar la tabla, si ya existe el fichero de comanda no
 		 * los añadira, puesto que ya deben estar creados a partir del fichero

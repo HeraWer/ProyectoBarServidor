@@ -84,21 +84,25 @@ public class CocinaJTable extends JTable {
 	 * Metodo que añade un producto a la comanda
 	 */
 	public void addProduct(Product p) {
-		int posProduct = tools.Search.checkProductOnTable(p, this);
+		
+		
+		Vector<Object> v = new Vector<Object>();
+		v.add(p.getId());
+		v.add(p.getName());
+		v.add(p.getPrice());
+		v.add(String.valueOf(p.getCantidad()));
+		v.add(p.isServed());
+		v.add(p.isServed());
+
+		tableModel.addRow(v);
+		
+		/*int posProduct = tools.Search.checkProductOnTable(p, this);
 		if (posProduct != -1) {
 			this.setValueAt(p.getCantidad(), posProduct, 3);
 		} else {
-			Vector<Object> v = new Vector<Object>();
-			v.add(p.getId());
-			v.add(p.getName());
-			v.add(p.getPrice());
-			v.add(String.valueOf(p.getCantidad()));
-			v.add(false);
-			v.add(false);
+			
 
-			tableModel.addRow(v);
-
-		}
+		}*/
 
 	}
 

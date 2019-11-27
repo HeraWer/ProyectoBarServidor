@@ -19,6 +19,24 @@ public class Search {
 		return null;
 	}
 	
+	public static Product searchForProductOnTicket(Ticket t, int idProduct) {
+		for(Product p : t.getProductosComanda()) {
+			if(p.getId() == idProduct) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	public static void deleteTicket(int numMesa) {
+		for(Ticket t : Main.getTickets()) {
+			if(t.getMesa() == numMesa) {
+				Main.getTickets().remove(t);
+				return;
+			}
+		}
+	}
+	
 	public static int checkProductOnTable(Product p, JTable table) {
 		for(int i = 0; i < table.getRowCount(); i++) {
 			if(Integer.parseInt(table.getValueAt(i, 0).toString()) == p.getId())

@@ -61,9 +61,10 @@ public class Main {
 	 * Metodo que llama al metodo que guarda comandas (Tickets) en la JTable.
 	 */
 	public static void sendTicket(Ticket t) throws SQLException {
-		if(!ticketsBar.contains(t))
-			ticketsBar.add(t);
-		tools.Search.checkDuplicateProducts(t);
+		tools.Search.deleteTicket(t.getMesa());
+		ticketsBar.add(t);
+		
+
 		m.getTicketsFrame().setTicketOnTable(t);
 		m.getTablesFrame().setTicketOnTable(t.getMesa());
 		bbddManager.TicketDBManager.insertComanda(t);

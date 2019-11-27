@@ -10,6 +10,8 @@ import com.example.barreinolds.Ticket;
 
 public class TicketDBManager extends ConnectionManager {
 
+	
+	
 	public static void insertComanda(Ticket t) throws SQLException {
 		if (!checkIfTicketExists(t)) {
 			String insertIntoComanda = "INSERT INTO comandas(mesa, id_camarero, datetime) VALUES(?, ?, ?)";
@@ -20,17 +22,19 @@ public class TicketDBManager extends ConnectionManager {
 			pstmnt.executeUpdate();
 			
 			
-			String insertIntoDetailsComanda = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto, servido) VALUES (?, ?, ?, round(?, 2), false)";
+			String insertIntoDetailsComanda = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto, servido) VALUES (?, ?, ?, round(?, 2), ?)";
 			for (Product p : t.getProductosComanda()) {
 				pstmnt = getConnection().prepareStatement(insertIntoDetailsComanda);
 				pstmnt.setInt(1, t.getMesa());
 				pstmnt.setInt(2, p.getId());
 				pstmnt.setInt(3, p.getCantidad());
 				pstmnt.setFloat(4, Float.parseFloat(p.getPrice()));
+				pstmnt.setBoolean(5, p.isServed());
 				pstmnt.executeUpdate();
 			}
 		}else {
-			updateComanda(t);
+			deleteComanda(t.getMesa());
+			insertComanda(t);
 		}
 	}
 
@@ -52,7 +56,7 @@ public class TicketDBManager extends ConnectionManager {
 	
 	public static void updateComanda(Ticket t) throws SQLException {
 		String update = "UPDATE details_comandas SET cantidad_producto = ?  WHERE mesa = " + t.getMesa();
-		String insert = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto) VALUES (?, ?, ?, ?)";
+		String insert = "INSERT INTO details_comandas(mesa, id_producto, cantidad_producto, precio_producto, servido) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pstmntUpdate;
 		PreparedStatement pstmntInsert;
 		for(Product p : t.getProductosComanda()) {
@@ -66,6 +70,7 @@ public class TicketDBManager extends ConnectionManager {
 				pstmntInsert.setInt(2, p.getId());
 				pstmntInsert.setInt(3, p.getCantidad());
 				pstmntInsert.setFloat(4, Float.parseFloat(p.getPrice()));
+				pstmntInsert.setBoolean(5, p.isServed());
 				pstmntInsert.executeUpdate();
 			}
 		}

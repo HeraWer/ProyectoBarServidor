@@ -20,6 +20,7 @@ public class Product implements Serializable {
 	private int cantidad;
 	private String image_desktop;
 	private String image_movil;
+	private boolean served;
 	
 	/*
 	 * Constructor vacio en el que se inicializa
@@ -27,6 +28,7 @@ public class Product implements Serializable {
 	 */
 	public Product() {
 		cantidad = 0;
+		served = false;
 	}
 
 	public Product(int id, String name, String description, String price, int cantidad, String image_desktop, String image_movil) {
@@ -100,6 +102,10 @@ public class Product implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+    public boolean isServed() { return served; }
+    
+    public void setServed(boolean served) { this.served = served; }
 	
 	
 

@@ -191,8 +191,23 @@ public class TicketBarraPanel extends JPanel {
 
 	public void addTicketToTable() {
 		Ticket t = tools.Search.searchForTicket(numMesa);
+		tools.UIManager.clearTable(ticketTable);
 		if (t != null) {
-			clearDeleted(t);
+			for (Product p : t.getProductosComanda()) {
+				String total = String.valueOf(Float.parseFloat(p.getPrice().replace(',', '.')) * p.getCantidad());
+				total = String.valueOf(tools.NumberFormat.round(Float.parseFloat(total)));
+				Vector<Object> v = new Vector<Object>();
+			v.add(p.getId());
+			v.add(p.getName());
+			v.add(p.getPrice());
+			v.add(String.valueOf(p.getCantidad()));
+			v.add(total);
+
+			
+					tableModel.addRow(v);
+			
+			
+			/*clearDeleted(t);
 			for (Product p : t.getProductosComanda()) {
 				String total = String.valueOf(Float.parseFloat(p.getPrice().replace(',', '.')) * p.getCantidad());
 				total = String.valueOf(tools.NumberFormat.round(Float.parseFloat(total)));
@@ -214,6 +229,7 @@ public class TicketBarraPanel extends JPanel {
 						}
 					});
 				}
+			}*/
 			}
 			this.updateLabels();
 		}

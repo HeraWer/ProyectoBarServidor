@@ -121,15 +121,20 @@ public class CocinaFrame extends JInternalFrame {
 			return;
 		PanelTickets numTabbedTable = (PanelTickets) tabPane.getComponentAt(t.getMesa() - 1);
 		numTabbedTable.updateLabels();
-		numTabbedTable.getProductsTable().clearDeleted(t);
+		//numTabbedTable.getNotServedProductsTable().clearDeleted(t);
+		tools.UIManager.clearTable(numTabbedTable.getServedProductsTable());
+		tools.UIManager.clearTable(numTabbedTable.getNotServedProductsTable());
 		for (Product p : t.getProductosComanda()) {
-			numTabbedTable.getProductsTable().addProduct(p);
+			if(!p.isServed())
+				numTabbedTable.getNotServedProductsTable().addProduct(p);
+			else
+				numTabbedTable.getServedProductsTable().addProduct(p);
 		}
 	}
 
 	public void clearTicketCocina(int numMesa) {
 		PanelTickets numTabbedTable = (PanelTickets) tabPane.getComponentAt(numMesa - 1);
-		numTabbedTable.getProductsTable().clearTable();
+		numTabbedTable.getNotServedProductsTable().clearTable();
 		numTabbedTable.clearLabels();
 	}
 

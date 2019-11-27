@@ -212,6 +212,7 @@ public class PanelTickets extends JPanel {
 			if ((Boolean)notServedProductsTable.getValueAt(i, 5)) {
 				v = new Vector<Object>();
 				int idProduct = (Integer) notServedProductsTable.getValueAt(i, 0);
+				tools.Search.searchForProductOnTicket(tools.Search.searchForTicket(numMesa), idProduct).setServed(true);
 				v.add(idProduct);
 				v.add(notServedProductsTable.getValueAt(i, 1));
 				v.add(notServedProductsTable.getValueAt(i, 2));
@@ -233,6 +234,7 @@ public class PanelTickets extends JPanel {
 			if (!(Boolean)servedProductsTable.getValueAt(i, 5)) {
 				v = new Vector<Object>();
 				int idProduct = (Integer) servedProductsTable.getValueAt(i, 0);
+				tools.Search.searchForProductOnTicket(tools.Search.searchForTicket(numMesa), idProduct).setServed(false);
 				v.add(idProduct);
 				v.add(servedProductsTable.getValueAt(i, 1));
 				v.add(servedProductsTable.getValueAt(i, 2));
@@ -250,8 +252,12 @@ public class PanelTickets extends JPanel {
 	/*
 	 * Metodo que devuelve el JTable de esta clase.
 	 */
-	public CocinaJTable getProductsTable() {
+	public CocinaJTable getNotServedProductsTable() {
 		return this.notServedProductsTable;
+	}
+	
+	public CocinaJTable getServedProductsTable() {
+		return this.servedProductsTable;
 	}
 
 }
