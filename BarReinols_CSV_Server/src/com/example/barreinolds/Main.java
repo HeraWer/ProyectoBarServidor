@@ -62,6 +62,12 @@ public class Main {
 	 */
 	public static void sendTicket(Ticket t) throws SQLException {
 		tools.Search.deleteTicket(t.getMesa());
+		if(t.getProductosComanda().size() == 0) {
+			m.getTicketsFrame().setTicketOnTable(t);
+			m.getTablesFrame().setTicketOnTable(t.getMesa());
+			bbddManager.TicketDBManager.deleteComanda(t.getMesa());
+			return;
+		}
 		ticketsBar.add(t);
 		
 

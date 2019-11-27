@@ -198,10 +198,16 @@ public class BarraFrame extends JInternalFrame {
 		Ticket t;
 		for(JButton b : aLTables) {
 			t = tools.Search.searchForTicket(Integer.parseInt(b.getText().split(" ")[1]));
-			if(t != null)
-				b.setBackground(new Color(128,0,0));
-			else
+			if(t != null) {
+				if(t.getProductosComanda().size() != 0) {
+					b.setBackground(new Color(128,0,0));
+				} else {
+					tools.Search.deleteTicket(t.getMesa());
+					b.setBackground(new Color(47,64,88));
+				}
+			} else {
 				b.setBackground(new Color(47,64,88));
+			}
 		}
 	}
 

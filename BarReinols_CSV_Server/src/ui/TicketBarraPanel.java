@@ -130,7 +130,7 @@ public class TicketBarraPanel extends JPanel {
 	public void updateLabels() {
 
 		Ticket t = tools.Search.searchForTicket(numMesa);
-		if (t != null) {
+		if (t != null && t.getProductosComanda().size() != 0) {
 			float totalTicket = 0;
 			totalTicket = getTotalTicket(t);
 			totalSinIva.setText(TOTALSINIVA + String.valueOf(totalTicket) + " €");
@@ -197,42 +197,15 @@ public class TicketBarraPanel extends JPanel {
 				String total = String.valueOf(Float.parseFloat(p.getPrice().replace(',', '.')) * p.getCantidad());
 				total = String.valueOf(tools.NumberFormat.round(Float.parseFloat(total)));
 				Vector<Object> v = new Vector<Object>();
-			v.add(p.getId());
-			v.add(p.getName());
-			v.add(p.getPrice());
-			v.add(String.valueOf(p.getCantidad()));
-			v.add(total);
-
-			
-					tableModel.addRow(v);
-			
-			
-			/*clearDeleted(t);
-			for (Product p : t.getProductosComanda()) {
-				String total = String.valueOf(Float.parseFloat(p.getPrice().replace(',', '.')) * p.getCantidad());
-				total = String.valueOf(tools.NumberFormat.round(Float.parseFloat(total)));
-				int posProduct = tools.Search.checkProductOnTable(p, ticketTable);
-				if (posProduct != -1) {
-					ticketTable.setValueAt(p.getCantidad(), posProduct, 3);
-					ticketTable.setValueAt(total, posProduct, 4);
-				} else {
-					Vector<Object> v = new Vector<Object>();
-					v.add(p.getId());
-					v.add(p.getName());
-					v.add(p.getPrice());
-					v.add(String.valueOf(p.getCantidad()));
-					v.add(total);
-
-					EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							tableModel.addRow(v);
-						}
-					});
-				}
-			}*/
+				v.add(p.getId());
+				v.add(p.getName());
+				v.add(p.getPrice());
+				v.add(String.valueOf(p.getCantidad()));
+				v.add(total);
+				tableModel.addRow(v);
 			}
-			this.updateLabels();
 		}
+		this.updateLabels();
 	}
 
 	public void clearDeleted(Ticket t) {

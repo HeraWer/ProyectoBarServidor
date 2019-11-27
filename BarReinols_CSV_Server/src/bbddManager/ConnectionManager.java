@@ -17,4 +17,21 @@ public class ConnectionManager implements ConnectionInterface{
 		return conn;
 	}
 	
+	public static void checkConnection() {
+		String select = "SELECT 1";
+		try {
+			getConnection().createStatement().execute(select);
+		}catch(SQLException e) {
+			try {
+				reconnect();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+	
+	public static void reconnect() throws SQLException {
+		conn = DriverManager.getConnection(CONNSTRING, USER, PASSWORD);
+	}
+	
 }
