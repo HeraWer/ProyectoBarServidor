@@ -14,13 +14,14 @@ public class ConnectionManager implements ConnectionInterface{
 	}
 	
 	public static Connection getConnection() {
+		checkConnection();
 		return conn;
 	}
 	
 	public static void checkConnection() {
 		String select = "SELECT 1";
 		try {
-			getConnection().createStatement().execute(select);
+			conn.createStatement().execute(select);
 		}catch(SQLException e) {
 			try {
 				reconnect();
