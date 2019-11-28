@@ -11,6 +11,7 @@ import com.example.barreinolds.Ticket;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -41,7 +42,10 @@ public class BarraFrame extends JInternalFrame {
 	private TicketBarraPanel ticketBarPanel;
 	private JButton table;
 	private MainWindow parent;
-	private TreeMap<Integer, TicketBarraPanel> ticketsBarra; 
+	private TreeMap<Integer, TicketBarraPanel> ticketsBarra;
+	private int actualTable = 1;
+	
+	private PanelSelectProductsBarra productsBarra;
 
 	/*
 	 * Constructor en el que se crean botones, se inicializa el ArrayList 
@@ -75,9 +79,13 @@ public class BarraFrame extends JInternalFrame {
 		ticketsCardPanel = new JPanel(new CardLayout());
 		jScrollTables = new JScrollPane(tablesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		jScrollTables.setMinimumSize(new Dimension(550,150));
+		tablesPanel.setMinimumSize(new Dimension(300,100));
+		jScrollTables.setMinimumSize(new Dimension(10,10));
+		
+		productsBarra = new PanelSelectProductsBarra();
+		
 	}
-
+	
 	/*
 	 * Metodo que crea los botones dependiendo del número de mesas que haya
 	 * en el fichero config.xml.
@@ -86,14 +94,10 @@ public class BarraFrame extends JInternalFrame {
 		aLTables = new ArrayList<JButton>();
 		for (int i = 1; i <= Main.numTaules; i++) {
 			table = new JButton("Mesa " + i);
-			table.setPreferredSize(new Dimension(100, 100));
-			table.setMinimumSize(new Dimension(100, 100));
-			table.setMaximumSize(new Dimension(100, 100));
+			setButtonConfig(table);
 			aLTables.add(table);
 			tablesPanel.add(aLTables.get(i - 1));
 			this.setListeners(table);
-			table.setBackground(new Color(47, 64, 88));
-			table.setForeground(new Color(255,255,255));	
 		}
 
 	}
@@ -102,14 +106,10 @@ public class BarraFrame extends JInternalFrame {
 		if(aLTables.size() < Main.numTaules) {
 			for(int i = aLTables.size() + 1; i <= Main.numTaules; i++) {
 				table = new JButton("Mesa " + i);
-				table.setPreferredSize(new Dimension(100, 100));
-				table.setMinimumSize(new Dimension(100, 100));
-				table.setMaximumSize(new Dimension(100, 100));
+				setButtonConfig(table);
 				aLTables.add(table);
 				tablesPanel.add(aLTables.get(i - 1));
 				this.setListeners(table);
-				table.setBackground(new Color(47, 64, 88));
-				table.setForeground(new Color(255,255,255));	
 			}
 		}else {
 			for(int i = aLTables.size() - 1; i >= Main.numTaules; i--) {
@@ -119,6 +119,14 @@ public class BarraFrame extends JInternalFrame {
 		}
 		onNumTablesChange();
 		revalidate();
+	}
+	
+	public void setButtonConfig(JButton button) {
+		button.setPreferredSize(new Dimension(100, 100));
+		button.setMinimumSize(new Dimension(100, 100));
+		button.setMaximumSize(new Dimension(100, 100));
+		table.setBackground(ColorsClass.DARKBLUE);
+		table.setForeground(ColorsClass.WHITE);	
 	}
 	
 	public void setConstraints() {
@@ -133,12 +141,16 @@ public class BarraFrame extends JInternalFrame {
 		gbc.gridy = 0;
 		gbc.gridwidth = 2;
 		this.add(ticketsCardPanel, gbc);
-
-		gbc.fill = GridBagConstraints.NONE;
+		
+		gbc.weightx = 0.6;
 		gbc.gridwidth = 1;
-		gbc.gridx = 2;
 		gbc.gridy = 1;
-		gbc.weightx = 0;
+		this.add(productsBarra, gbc);
+
+		gbc.weightx = 0.4;
+		//gbc.fill = GridBagConstraints.NONE;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
 		gbc.weighty = 0;
 		this.add(jScrollTables, gbc);
 	}
@@ -150,9 +162,7 @@ public class BarraFrame extends JInternalFrame {
 		button.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
 				BarraFrame.this.showCard(Integer.parseInt(button.getText().split(" ")[1]));
-
 			}
 		});
 	}
@@ -168,7 +178,7 @@ public class BarraFrame extends JInternalFrame {
 	public void showCard(int numMesa) {
 		CardLayout cLayout = (CardLayout) ticketsCardPanel.getLayout();
 		cLayout.show(ticketsCardPanel, "Mesa" + numMesa);
-		//actualTable = numMesa;
+		actualTable = numMesa;
 	}
 	
 	public void onNumTablesChange() {

@@ -72,7 +72,7 @@ public class PanelTickets extends JPanel {
 	 * Metodo que inicializa cada componente.
 	 */
 	public void initialize() {
-		// mesaInfoLabel.setForeground(new Color(255,255,255));
+		// mesaInfoLabel.setForeground(ColorsClass.WHITE);
 		notServedProductsTable = new CocinaJTable(parent);
 		servedProductsTable = new CocinaJTable(parent);
 		// jTablePanel = new JPanel(new BorderLayout());
@@ -126,19 +126,19 @@ public class PanelTickets extends JPanel {
 	}
 	
 	public void modify() {
-		mesaInfoLabel.setForeground(new Color(255,255,255));
-		camareroLabel.setForeground(new Color(255,255,255));
-		fechaLabel.setForeground(new Color(255,255,255));
-		horaLabel.setForeground(new Color(255,255,255));
+		mesaInfoLabel.setForeground(ColorsClass.WHITE);
+		camareroLabel.setForeground(ColorsClass.WHITE);
+		fechaLabel.setForeground(ColorsClass.WHITE);
+		horaLabel.setForeground(ColorsClass.WHITE);
 		
 		servedJScroll.getViewport().setBackground(new Color(36, 35, 32));
 		notServedJScroll.getViewport().setBackground(new Color(36, 35, 32));
 		
-		serveButton.setBackground(new Color(47, 64, 88));
-		serveButton.setForeground(new Color(255,255,255));
+		serveButton.setBackground(ColorsClass.DARKBLUE);
+		serveButton.setForeground(ColorsClass.WHITE);
 		
-		returnButton.setBackground(new Color(47, 64, 88));
-		returnButton.setForeground(new Color(255,255,255));
+		returnButton.setBackground(ColorsClass.DARKBLUE);
+		returnButton.setForeground(ColorsClass.WHITE);
 	}
 	
 
@@ -247,6 +247,11 @@ public class PanelTickets extends JPanel {
 			}
 
 		}
+	}
+	
+	public void clearTables() {
+		tools.UIMethods.clearTable(notServedProductsTable);
+		tools.UIMethods.clearTable(servedProductsTable);
 	}
 
 	/*

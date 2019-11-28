@@ -80,10 +80,10 @@ public class InitApp extends JWindow {
 
 		mainInitPanel.setBackground(new Color(68, 72, 82));
 
-		title.setForeground(new Color(255, 255, 255));
-		infoLabel.setForeground(new Color(255, 255, 255));
+		title.setForeground(ColorsClass.WHITE);
+		infoLabel.setForeground(ColorsClass.WHITE);
 
-		loadingBar.setBackground(new Color(47, 64, 88));
+		loadingBar.setBackground(ColorsClass.DARKBLUE);
 
 	}
 

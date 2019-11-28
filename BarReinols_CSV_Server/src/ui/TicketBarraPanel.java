@@ -76,15 +76,15 @@ public class TicketBarraPanel extends JPanel {
 
 		jScroll.getViewport().setBackground(new Color(36, 35, 32));
 
-		ticketTable.getTableHeader().setBackground(new Color(47, 64, 88));
-		ticketTable.getTableHeader().setForeground(new Color(255, 255, 255));
+		ticketTable.getTableHeader().setBackground(ColorsClass.DARKBLUE);
+		ticketTable.getTableHeader().setForeground(ColorsClass.WHITE);
 
-		infoNumMesa.setForeground(new Color(255, 255, 255));
-		totalSinIva.setForeground(new Color(255, 255, 255));
-		totalConIva.setForeground(new Color(255, 255, 255));
+		infoNumMesa.setForeground(ColorsClass.WHITE);
+		totalSinIva.setForeground(ColorsClass.WHITE);
+		totalConIva.setForeground(ColorsClass.WHITE);
 
-		cobrarButton.setBackground(new Color(47, 64, 88));
-		cobrarButton.setForeground(new Color(255, 255, 255));
+		cobrarButton.setBackground(ColorsClass.DARKBLUE);
+		cobrarButton.setForeground(ColorsClass.WHITE);
 	}
 
 	public void initialize() {
@@ -146,22 +146,25 @@ public class TicketBarraPanel extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		gbc.weighty = 1;
-		gbc.weightx = 0.8;
+		gbc.weightx = 0.6;
 		gbc.gridheight = 2;
-		gbc.insets = new Insets(5, 0, 5, 0);
+		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.fill = GridBagConstraints.BOTH;
 		this.add(jScroll, gbc);
 
 		gbc.weightx = 0.2;
 		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.NORTH;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.weighty = 0;
 		gbc.gridy = 0;
 		gbc.gridx = 1;
 		this.add(infoPanel, gbc);
 
 		gbc.gridy = 2;
+		gbc.ipadx = 10;
+		gbc.ipady = 10;
 		gbc.gridx = 0;
+		gbc.anchor = GridBagConstraints.CENTER;
 		this.add(cobrarButton, gbc);
 	}
 
@@ -181,7 +184,7 @@ public class TicketBarraPanel extends JPanel {
 					parent.getTicketsFrame().clearTicketCocina(t.getMesa());
 					Main.getTickets().remove(t);
 
-					clearTicket();
+					tools.UIMethods.clearTable(ticketTable);
 					Main.m.getTablesFrame().checkBusyTables();
 				}
 

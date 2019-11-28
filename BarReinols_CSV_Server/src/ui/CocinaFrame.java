@@ -25,6 +25,7 @@ import xmlManager.XMLTicketManager;
  * En este caso, el Frame creado es el de los tickets de cocina.
  */
 public class CocinaFrame extends JInternalFrame {
+	
 
 	/**
 	 * 
@@ -63,8 +64,8 @@ public class CocinaFrame extends JInternalFrame {
 	 * JInternalFrame.
 	 */
 	public void modify() {
-		tabPane.setBackground(new Color(47, 64, 88));
-		tabPane.setForeground(new Color(255,255,255));
+		tabPane.setBackground(ColorsClass.DARKBLUE);
+		tabPane.setForeground(ColorsClass.WHITE);
 		// Creamos las pestañas con todas las mesas disponibles que haya.
 		for (int i = tabPane.getTabCount(); i < Main.numTaules; i++) {
 			int numMesa = i + 1;
@@ -134,7 +135,7 @@ public class CocinaFrame extends JInternalFrame {
 
 	public void clearTicketCocina(int numMesa) {
 		PanelTickets numTabbedTable = (PanelTickets) tabPane.getComponentAt(numMesa - 1);
-		numTabbedTable.getNotServedProductsTable().clearTable();
+		numTabbedTable.clearTables();
 		numTabbedTable.clearLabels();
 	}
 

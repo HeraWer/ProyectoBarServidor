@@ -57,9 +57,9 @@ public class MainMenuBar extends JMenuBar {
 		add();
 		setListeners();
 		
-		this.setBackground(new Color(47, 64, 88));
-		configMenu.setForeground(new Color(255,255,255));
-		ventanaMenu.setForeground(new Color(255,255,255));
+		this.setBackground(ColorsClass.DARKBLUE);
+		configMenu.setForeground(ColorsClass.WHITE);
+		ventanaMenu.setForeground(ColorsClass.WHITE);
 	}
 
 	/*

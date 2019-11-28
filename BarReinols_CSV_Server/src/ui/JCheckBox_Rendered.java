@@ -30,7 +30,7 @@ public class JCheckBox_Rendered extends JCheckBox implements TableCellRenderer{
 
 		DefaultTableModel dtm = ((DefaultTableModel)table.getModel());
 		((DefaultTableCellRenderer)table.getCellRenderer(row, 1)).setBackground(new Color(86, 119, 166));
-		((DefaultTableCellRenderer)table.getCellRenderer(row, 1)).setForeground(new Color(255,255,255));
+		((DefaultTableCellRenderer)table.getCellRenderer(row, 1)).setForeground(ColorsClass.WHITE);
 		setBackground(new Color(86, 119, 166));
 		setSelected(value != null && ((Boolean) value).booleanValue());
 		return this;

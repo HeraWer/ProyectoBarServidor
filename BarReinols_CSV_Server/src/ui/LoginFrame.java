@@ -127,8 +127,8 @@ public class LoginFrame extends JInternalFrame {
 
 		deleteButton.setPreferredSize(new Dimension(75, 75));
 		deleteButton.setFont(new Font("Verdana", Font.BOLD, 16));
-		deleteButton.setBackground(new Color(47, 64, 88));
-		deleteButton.setForeground(new Color(255, 255, 255));
+		deleteButton.setBackground(ColorsClass.DARKBLUE);
+		deleteButton.setForeground(ColorsClass.WHITE);
 		lettersPanel.add(deleteButton);
 
 	}
@@ -137,7 +137,7 @@ public class LoginFrame extends JInternalFrame {
 		button.setPreferredSize(new Dimension(75, 75));
 		button.setFont(new Font("Verdana", Font.BOLD, 16));
 		button.setBackground(ColorsClass.DARKBLUE);
-		button.setForeground(new Color(255, 255, 255));
+		button.setForeground(ColorsClass.WHITE);
 	}
 
 	public void modify() {
@@ -145,8 +145,8 @@ public class LoginFrame extends JInternalFrame {
 		infoLabel.setFont(new Font("Verdana", Font.BOLD, 12));
 		infoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		whiteSpaceButton.setPreferredSize(new Dimension(0, 50));
-		whiteSpaceButton.setBackground(new Color(47, 64, 88));
-		whiteSpaceButton.setForeground(new Color(255, 255, 255));
+		whiteSpaceButton.setBackground(ColorsClass.DARKBLUE);
+		whiteSpaceButton.setForeground(ColorsClass.WHITE);
 
 		inputCamarero.setPreferredSize(new Dimension(0, 50));
 		inputCamarero.setFont(new Font("Verdana", Font.BOLD, 20));
@@ -156,13 +156,13 @@ public class LoginFrame extends JInternalFrame {
 
 		enter.setPreferredSize(new Dimension(100, 100));
 		enter.setMaximumSize(new Dimension(100, 100));
-		enter.setBackground(new Color(47, 64, 88));
-		enter.setForeground(new Color(255, 255, 255));
+		enter.setBackground(ColorsClass.DARKBLUE);
+		enter.setForeground(ColorsClass.WHITE);
 		mainPanel.setBackground(new Color(47, 49, 56));
 		lettersPanel.setBackground(new Color(47, 49, 56));
 
-		titleLabel.setForeground(new Color(255, 255, 255));
-		infoLabel.setForeground(new Color(255, 255, 255));
+		titleLabel.setForeground(ColorsClass.WHITE);
+		infoLabel.setForeground(ColorsClass.WHITE);
 	}
 
 	public void prepareGridBagLayout() {
@@ -200,6 +200,10 @@ public class LoginFrame extends JInternalFrame {
 		gbc.gridwidth = 2;
 		gbc.weighty = 0;
 		mainPanel.add(infoLabel, gbc);
+		
+		gbc.gridy = 6;
+		gbc.gridwidth = 1;
+		mainPanel.add(new CategoryButton(60, "Ensaladas"), gbc);
 
 		this.getContentPane().add(mainPanel);
 	}

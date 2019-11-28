@@ -59,8 +59,8 @@ public class CocinaJTable extends JTable {
 		this.setOpaque(false);
 		
 		this.setGridColor(new Color(255,255,255));
-		this.getTableHeader().setBackground(new Color(47, 64, 88));
-		this.getTableHeader().setForeground(new Color(255,255,255));
+		this.getTableHeader().setBackground(ColorsClass.DARKBLUE);
+		this.getTableHeader().setForeground(ColorsClass.WHITE);
 
 		// Seteamos el modo de selección de la tabla
 		listModel.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
