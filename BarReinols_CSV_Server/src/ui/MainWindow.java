@@ -19,6 +19,8 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.xpath.XPathExpressionException;
@@ -27,6 +29,8 @@ import org.xml.sax.SAXException;
 
 import com.example.barreinolds.Main;
 import com.example.barreinolds.Ticket;
+
+import tools.UIMethods;
 
 /*
  * Metodo que extiende de JFrame.
@@ -167,5 +171,7 @@ public class MainWindow extends JFrame {
 	public JPanel getMainPanel() {
 		return mainPanel;
 	}
+	
+
 
 }

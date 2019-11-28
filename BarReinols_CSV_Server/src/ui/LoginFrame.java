@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
@@ -38,12 +40,18 @@ public class LoginFrame extends JInternalFrame {
 	private JButton deleteButton;
 	private JButton whiteSpaceButton;
 	private JButton enter;
+	
+	private JButton mayus;
+	
+	private int inputFocus = 0;
+	private boolean upperActivated;
 
 	private JPanel mainPanel;
 	private JPanel lettersPanel;
 
 	public LoginFrame() {
 		super("Login de camarero");
+		upperActivated = false;
 		initialize();
 		createButtonsForLettersPanel();
 		modify();
@@ -65,44 +73,57 @@ public class LoginFrame extends JInternalFrame {
 		deleteButton = new JButton("<--");
 		whiteSpaceButton = new JButton("Espacio");
 		infoLabel = new JLabel();
-		lettersPanel = new JPanel(new GridLayout(3, 10, 10, 10));
+		lettersPanel = new JPanel(new GridLayout(4, 10, 10, 10));
 		mainPanel = new JPanel(new GridBagLayout());
+		mayus = new JButton("\u25B2");
 
+	}
+	
+	public void setUppercase() {
+		for(JButton b : aLButtonsLetras)
+			b.setText(b.getText().toUpperCase());
+	}
+	
+	public void setLowercase() {
+		for(JButton b : aLButtonsLetras)
+			b.setText(b.getText().toLowerCase());
 	}
 
 	public void createButtonsForLettersPanel() {
 		JButton charButton;
-		for (int i = 65; i <= 90; i++) {
+		for(int i = 0; i <= 9; i++) {
+			charButton = new JButton(String.valueOf(i));
+			configButton(charButton);
+			setListenerForCharButton(charButton);
+			lettersPanel.add(charButton);
+		}
+		for (int i = 97; i <= 122; i++) {
 			char c = (char) i;
 
 			charButton = new JButton(String.valueOf(c));
-			charButton.setFont(new Font("Verdana", Font.BOLD, 16));
+			configButton(charButton);
 			lettersPanel.add(charButton);
 			aLButtonsLetras.add(charButton);
 			setListenerForCharButton(charButton);
-			charButton.setPreferredSize(new Dimension(75, 75));
-			charButton.setBackground(new Color(47, 64, 88));
-			charButton.setForeground(new Color(255, 255, 255));
 
-			if (i == 83) {
+			if (i == 115) {
 				charButton = new JButton("ç");
 				lettersPanel.add(charButton);
-				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
-				charButton.setBackground(new Color(47, 64, 88));
-				charButton.setForeground(new Color(255, 255, 255));
+				configButton(charButton);
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
-				charButton.setPreferredSize(new Dimension(75, 75));
+				
 				charButton = new JButton("ñ");
 				lettersPanel.add(charButton);
-				charButton.setFont(new Font("Verdana", Font.BOLD, 16));
-				charButton.setBackground(new Color(47, 64, 88));
-				charButton.setForeground(new Color(255, 255, 255));
+				configButton(charButton);
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
-				charButton.setPreferredSize(new Dimension(75, 75));
 			}
 		}
+		
+		configButton(mayus);
+		mayus.setFont(new Font("Arial", Font.BOLD, 10));
+		lettersPanel.add(mayus);
 
 		deleteButton.setPreferredSize(new Dimension(75, 75));
 		deleteButton.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -110,6 +131,13 @@ public class LoginFrame extends JInternalFrame {
 		deleteButton.setForeground(new Color(255, 255, 255));
 		lettersPanel.add(deleteButton);
 
+	}
+	
+	public void configButton(JButton button) {
+		button.setPreferredSize(new Dimension(75, 75));
+		button.setFont(new Font("Verdana", Font.BOLD, 16));
+		button.setBackground(ColorsClass.DARKBLUE);
+		button.setForeground(new Color(255, 255, 255));
 	}
 
 	public void modify() {
@@ -180,7 +208,10 @@ public class LoginFrame extends JInternalFrame {
 		charButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				inputCamarero.setText(inputCamarero.getText() + charButton.getText().toLowerCase());
+				if(inputFocus == 0)
+					inputCamarero.setText(inputCamarero.getText() + charButton.getText());
+				else
+					passCamarero.setText(getPassword() + charButton.getText());
 			}
 		});
 
@@ -236,6 +267,12 @@ public class LoginFrame extends JInternalFrame {
 			}
 
 		});
+		
+		inputCamarero.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				inputFocus = 0;
+			}
+		});
 
 		passCamarero.addKeyListener(new KeyAdapter() {
 
@@ -245,6 +282,30 @@ public class LoginFrame extends JInternalFrame {
 			}
 
 		});
+		
+		passCamarero.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				inputFocus = 1;
+			}
+		});
+		
+		mayus.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(upperActivated) {
+					upperActivated = false;
+					setLowercase();
+					mayus.setBackground(ColorsClass.DARKBLUE);
+				}else {
+					upperActivated = true;
+					setUppercase();
+					mayus.setBackground(ColorsClass.ACTIVATED);
+				}
+					
+			}
+		});
+			
+			
 	}
 
 	public String getPassword() {

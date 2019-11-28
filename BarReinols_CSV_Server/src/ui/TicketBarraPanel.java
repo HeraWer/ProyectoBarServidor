@@ -191,7 +191,7 @@ public class TicketBarraPanel extends JPanel {
 
 	public void addTicketToTable() {
 		Ticket t = tools.Search.searchForTicket(numMesa);
-		tools.UIManager.clearTable(ticketTable);
+		tools.UIMethods.clearTable(ticketTable);
 		if (t != null) {
 			for (Product p : t.getProductosComanda()) {
 				String total = String.valueOf(Float.parseFloat(p.getPrice().replace(',', '.')) * p.getCantidad());
