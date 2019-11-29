@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.swing.JButton;
@@ -39,13 +40,16 @@ public class BarraFrame extends JInternalFrame {
 	private JPanel ticketsCardPanel;
 	private JPanel tablesPanel;
 	private JScrollPane jScrollTables;
+	private JScrollPane jScrollCats;
+	private JScrollPane jScrollProducts;
 	private TicketBarraPanel ticketBarPanel;
 	private JButton table;
 	private MainWindow parent;
 	private TreeMap<Integer, TicketBarraPanel> ticketsBarra;
 	private int actualTable = 1;
 	
-	private PanelSelectProductsBarra productsBarra;
+	public static PanelSelectCategoryBarra catsBarra;
+	public static PanelSelectProductBarra productsBarra;
 
 	/*
 	 * Constructor en el que se crean botones, se inicializa el ArrayList 
@@ -59,9 +63,10 @@ public class BarraFrame extends JInternalFrame {
 		this.parent = parent;
 		aLTables = new ArrayList<JButton>();
 		initialize();
-		createButtons();
+		
 		createTicketPanels();
 		setConstraints();
+		createButtons();
 		
 		ticketsCardPanel.setBackground(new Color(68, 72, 82));
 		tablesPanel.setBackground(new Color(68, 72, 82));
@@ -74,15 +79,33 @@ public class BarraFrame extends JInternalFrame {
 	 * TESTING!
 	 */
 	public void initialize() {
-		tablesPanel = new JPanel(new GridLayout(0, 5, 5, 5));
+		tablesPanel = new JPanel(new GridLayout(0, 3, 5, 5));
 		ticketsBarra = new TreeMap<Integer, TicketBarraPanel>();
 		ticketsCardPanel = new JPanel(new CardLayout());
 		jScrollTables = new JScrollPane(tablesPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		tablesPanel.setMinimumSize(new Dimension(300,100));
-		jScrollTables.setMinimumSize(new Dimension(10,10));
+		jScrollTables.setPreferredSize(new Dimension(330, 300));
+		jScrollTables.setMinimumSize(new Dimension(330,300));
 		
-		productsBarra = new PanelSelectProductsBarra();
+		
+		catsBarra = new PanelSelectCategoryBarra();
+		jScrollCats = new JScrollPane(catsBarra, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jScrollCats.setPreferredSize(new Dimension(233, 300));
+		jScrollCats.setMinimumSize(new Dimension(233,300));
+
+		productsBarra = new PanelSelectProductBarra();
+		productsBarra.setPreferredSize(new Dimension(590, 300));
+		jScrollProducts = new JScrollPane(productsBarra, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jScrollProducts.getViewport().setMinimumSize(new Dimension(600, 300));
+		jScrollProducts.getViewport().setPreferredSize(new Dimension(600, 300));
+		
+		jScrollProducts.getVerticalScrollBar().setUnitIncrement(16);
+		jScrollCats.getVerticalScrollBar().setUnitIncrement(16);
+		jScrollTables.getVerticalScrollBar().setUnitIncrement(16);
+		
+		
 		
 	}
 	
@@ -139,20 +162,28 @@ public class BarraFrame extends JInternalFrame {
 		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.gridwidth = 2;
+		gbc.gridwidth = 3;
 		this.add(ticketsCardPanel, gbc);
 		
-		gbc.weightx = 0.6;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.weightx = 0;
+		gbc.weighty = 0;
 		gbc.gridwidth = 1;
 		gbc.gridy = 1;
-		this.add(productsBarra, gbc);
-
-		gbc.weightx = 0.4;
-		//gbc.fill = GridBagConstraints.NONE;
-		gbc.gridx = 1;
+		this.add(jScrollCats, gbc);
+		
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.gridx = 2;
 		gbc.gridy = 1;
-		gbc.weighty = 0;
 		this.add(jScrollTables, gbc);
+		
+		gbc.gridx = 1;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.weightx = 1;
+		this.add(jScrollProducts, gbc);
 	}
 
 	/*

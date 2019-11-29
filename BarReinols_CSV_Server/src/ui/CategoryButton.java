@@ -13,17 +13,20 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.example.barreinolds.Category;
+
 public class CategoryButton extends JPanel {
 	
-	private int catId;
+	private Category c;
 	private JLabel catName;
 	
-	public CategoryButton(int catId, String catName) {
+	public CategoryButton(Category c) {
 		super(new GridBagLayout());
-		this.catId = catId;
-		this.catName = new JLabel(catName);
-		this.setSize(300, 75);
+		this.c = c;
+		this.catName = new JLabel(c.getNombre());
 		this.setPreferredSize(new Dimension(210, 75));
+		this.setMaximumSize(new Dimension(210, 75));
+		this.setMinimumSize(new Dimension(210, 75));
 		CategoryButton.this.setBackground(ColorsClass.DARKBLUE);
 		CategoryButton.this.setBorder(BorderFactory.createLineBorder(ColorsClass.ROWSBACKGROUND, 1, true));
 		this.catName.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -51,7 +54,7 @@ public class CategoryButton extends JPanel {
 			}
 			
 			public void mouseClicked(MouseEvent e) {
-				// CardLayout a productos
+				BarraFrame.productsBarra.showCard(c);
 			}
 		});
 	}

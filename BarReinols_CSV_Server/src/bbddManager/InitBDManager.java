@@ -144,6 +144,28 @@ public class InitBDManager extends ConnectionManager {
 		}
 		return products;
 	}
+	
+	/*
+	 * Este metodo nos retorna todos los productos disponibles en la base de datos
+	 */
+	public static ArrayList<Product> getAllProducts() throws SQLException{
+		ArrayList<Product> aLP = new ArrayList<Product>();
+		String select = "SELECT * FROM productos";
+		Statement stmnt = getConnection().createStatement();
+		ResultSet rs = stmnt.executeQuery(select);
+		Product p;
+		while(rs.next()) {
+			p = new Product();
+			p.setId(rs.getInt("id_producto"));
+			p.setName(rs.getString("nombre"));
+			p.setPrice(String.valueOf(rs.getFloat("precio_producto")));
+			p.setDescription(rs.getString("descripcion"));
+			p.setImage_Desktop(rs.getString("imagen"));
+			p.setImage_movil(rs.getString("image_movil"));
+			aLP.add(p);
+		}
+		return aLP;
+	}
 
 	/*
 	 * Este metodo retorna el numero de mesas disponibles que se encuentra en la

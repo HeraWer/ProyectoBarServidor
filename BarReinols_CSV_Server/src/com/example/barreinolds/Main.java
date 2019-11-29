@@ -26,6 +26,7 @@ public class Main {
 	private static ArrayList<Ticket> ticketsBar = new ArrayList<Ticket>();
 	private static ArrayList<Camarero> camarerosBar = new ArrayList<Camarero>();
 	private static ArrayList<Category> categoriasBar = new ArrayList<Category>();
+	private static ArrayList<Product> productosBar = new ArrayList<Product>();
 	public static boolean emptyTables;
 	public static int numTaules;
 	public static MainWindow m;
@@ -55,6 +56,14 @@ public class Main {
 
 	public static void setCategoriasBar(ArrayList<Category> categorias) {
 		categoriasBar = categorias;
+	}
+
+	public static ArrayList<Product> getProductosBar() {
+		return productosBar;
+	}
+
+	public static void setProductosBar(ArrayList<Product> productosBar) {
+		Main.productosBar = productosBar;
 	}
 
 	/*
@@ -112,14 +121,17 @@ public class Main {
 		
 		latch = new CountDownLatch(1);
 		m.loadTickets();
-		m.resetUIForUpdates();
-		m.getTablesFrame().onTableNumChangeCreateButtons();
 		
 		try {
 			latch.await();
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
+		
+		m.resetUIForUpdates();
+		m.getTablesFrame().onTableNumChangeCreateButtons();
+		
+		
 		
 		// Abrimos el server
 		try {

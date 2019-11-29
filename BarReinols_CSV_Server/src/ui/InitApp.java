@@ -65,7 +65,7 @@ public class InitApp extends JWindow {
 	}
 
 	private void initialize() throws IOException {
-		loadingBar = new JProgressBar(0, 8);
+		loadingBar = new JProgressBar(0, 9);
 		title = new JLabel("Cargando TPV...");
 		BufferedImage logo = ImageIO.read(new File("res/img/init_loading_logo.png"));
 		init_loading_logo = new JLabel(new ImageIcon(logo));
@@ -75,13 +75,15 @@ public class InitApp extends JWindow {
 
 	private void modify() {
 		title.setFont(new Font("Verdana", Font.BOLD, 30));
-
+		title.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		
 		this.setBackground(new Color(68, 72, 82));
 
 		mainInitPanel.setBackground(new Color(68, 72, 82));
 
 		title.setForeground(ColorsClass.WHITE);
 		infoLabel.setForeground(ColorsClass.WHITE);
+		infoLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
 		loadingBar.setBackground(ColorsClass.DARKBLUE);
 
@@ -89,6 +91,8 @@ public class InitApp extends JWindow {
 
 	private void prepareGridBagLayout() {
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		gbc.insets = new Insets(20, 20, 20, 20);
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -134,6 +138,10 @@ public class InitApp extends JWindow {
 		loadingBar.setValue(progressBarValue);
 		infoLabel.setText("Recuperando categorias de la base de datos...");
 		Main.setCategoriasBar(bbddManager.InitBDManager.getCategories());
+		progressBarValue++;
+		loadingBar.setValue(progressBarValue);
+		infoLabel.setText("Recuperando productos de la base de datos...");
+		Main.setProductosBar(bbddManager.InitBDManager.getAllProducts());
 		progressBarValue++;
 		loadingBar.setValue(progressBarValue);
 		infoLabel.setText("Recuperando comandas de la base de datos...");

@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import com.example.barreinolds.Camarero;
 import com.example.barreinolds.Main;
 import com.example.barreinolds.Message;
 import com.example.barreinolds.Ticket;
@@ -132,7 +133,7 @@ public class MainServer {
 					MainWindow.statusLabel.setText("Enviando tickets...");
 					outputServer.writeObject(Main.getTickets());
 					outputServer.flush();
-				} else {
+				} else if(received.getClass().equals(Ticket.class)){
 				
 					System.out.println("Comanda recibida.");
 					MainWindow.statusLabel.setText("Comanda recibida.");
@@ -148,6 +149,9 @@ public class MainServer {
 
 					// Actualizamos la interfaz
 					m.resetUIForUpdates();
+				} else if(received.getClass().equals(Camarero.class)){
+					// Añadir camarero a la bbdd
+					System.out.println("Se ha recibido un camarero!");
 				}
 			} else {
 				System.out.println("Se ha recibido una comanda nula!");

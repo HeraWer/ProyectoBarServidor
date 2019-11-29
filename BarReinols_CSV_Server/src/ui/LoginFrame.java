@@ -200,10 +200,6 @@ public class LoginFrame extends JInternalFrame {
 		gbc.gridwidth = 2;
 		gbc.weighty = 0;
 		mainPanel.add(infoLabel, gbc);
-		
-		gbc.gridy = 6;
-		gbc.gridwidth = 1;
-		mainPanel.add(new CategoryButton(60, "Ensaladas"), gbc);
 
 		this.getContentPane().add(mainPanel);
 	}
