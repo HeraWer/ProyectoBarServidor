@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.SQLException;
@@ -91,13 +92,14 @@ public class InitApp extends JWindow {
 
 	private void prepareGridBagLayout() {
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.weightx = 1;
+		gbc.weightx = 0;
 		gbc.weighty = 1;
 		gbc.insets = new Insets(20, 20, 20, 20);
 		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 		mainInitPanel.add(title, gbc);
 
+		gbc.weightx = 1;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridy = 1;
 		mainInitPanel.add(init_loading_logo, gbc);
 
@@ -105,12 +107,14 @@ public class InitApp extends JWindow {
 		mainInitPanel.add(loadingBar, gbc);
 
 		gbc.gridy = 3;
+		gbc.weightx = 0;
+		gbc.fill = GridBagConstraints.NONE;
 		mainInitPanel.add(infoLabel, gbc);
 
 		this.getContentPane().add(mainInitPanel, BorderLayout.CENTER);
 	}
 
-	public void initAPP() throws SQLException, UnknownHostException, ClassNotFoundException, InterruptedException {
+	public void initAPP() throws SQLException, ClassNotFoundException, InterruptedException, IOException {
 		infoLabel.setText("Inicializando JDBC Connector...");
 		bbddManager.ConnectionManager.initializeJDBC();
 		progressBarValue++;

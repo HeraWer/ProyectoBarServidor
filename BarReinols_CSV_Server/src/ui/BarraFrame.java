@@ -18,7 +18,12 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import javax.swing.JButton;
@@ -46,7 +51,9 @@ public class BarraFrame extends JInternalFrame {
 	private JButton table;
 	private MainWindow parent;
 	private TreeMap<Integer, TicketBarraPanel> ticketsBarra;
-	private int actualTable = 1;
+	public static int actualTable = 1;
+	
+	private QuantityPanel quantityPanel;
 	
 	public static PanelSelectCategoryBarra catsBarra;
 	public static PanelSelectProductBarra productsBarra;
@@ -59,26 +66,30 @@ public class BarraFrame extends JInternalFrame {
 	 */
 	public BarraFrame(MainWindow parent) {
 		super("Barra", false, false, false, false);
-		this.setLayout(new GridBagLayout());
+		this.getContentPane().setLayout(new GridBagLayout());
 		this.parent = parent;
 		aLTables = new ArrayList<JButton>();
-		initialize();
+		
+		try {
+			initialize();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		createTicketPanels();
 		setConstraints();
 		createButtons();
-		
-		ticketsCardPanel.setBackground(new Color(68, 72, 82));
-		tablesPanel.setBackground(new Color(68, 72, 82));
+		//windowListeners();
+		ticketsCardPanel.setBackground(ColorsClass.LIGHTCOLOR);
+		tablesPanel.setBackground(ColorsClass.LIGHTCOLOR);
 		
 		this.setBorder(null);
-
 	}
 
 	/*
 	 * TESTING!
 	 */
-	public void initialize() {
+	public void initialize() throws IOException {
 		tablesPanel = new JPanel(new GridLayout(0, 3, 5, 5));
 		ticketsBarra = new TreeMap<Integer, TicketBarraPanel>();
 		ticketsCardPanel = new JPanel(new CardLayout());
@@ -87,6 +98,7 @@ public class BarraFrame extends JInternalFrame {
 		jScrollTables.setPreferredSize(new Dimension(330, 300));
 		jScrollTables.setMinimumSize(new Dimension(330,300));
 		
+		quantityPanel = new QuantityPanel();
 		
 		catsBarra = new PanelSelectCategoryBarra();
 		jScrollCats = new JScrollPane(catsBarra, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -95,11 +107,18 @@ public class BarraFrame extends JInternalFrame {
 		jScrollCats.setMinimumSize(new Dimension(233,300));
 
 		productsBarra = new PanelSelectProductBarra();
-		productsBarra.setPreferredSize(new Dimension(590, 300));
-		jScrollProducts = new JScrollPane(productsBarra, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		jScrollProducts.getViewport().setMinimumSize(new Dimension(600, 300));
-		jScrollProducts.getViewport().setPreferredSize(new Dimension(600, 300));
+		jScrollProducts = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		jScrollProducts.setPreferredSize(new Dimension(productsBarra.getWidth(), 300));
+		jScrollProducts.setMaximumSize(new Dimension(productsBarra.getWidth(), 300));
+		jScrollProducts.setMinimumSize(new Dimension(productsBarra.getWidth(), 300));
+		jScrollProducts.setViewportView(productsBarra);
+		
+		productsBarra.setPreferredSize(new Dimension(jScrollProducts.getWidth(), 2500));
+		productsBarra.setMinimumSize(new Dimension(jScrollProducts.getWidth(), 2500));
+		productsBarra.setMaximumSize(new Dimension(jScrollProducts.getWidth(), 2500));
+		jScrollProducts.setAutoscrolls(true);
+		
 		
 		jScrollProducts.getVerticalScrollBar().setUnitIncrement(16);
 		jScrollCats.getVerticalScrollBar().setUnitIncrement(16);
@@ -154,36 +173,44 @@ public class BarraFrame extends JInternalFrame {
 	
 	public void setConstraints() {
 		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(20,20,20,20);
+		gbc.insets = new Insets(10,10,10,10);
 		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weighty = 0.6;
 		gbc.weightx = 1;
-		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 3;
-		this.add(ticketsCardPanel, gbc);
+		this.getContentPane().add(ticketsCardPanel, gbc);
 		
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.VERTICAL;
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.gridx = 3;
 		gbc.weightx = 0;
-		gbc.weighty = 0;
 		gbc.gridwidth = 1;
+		this.getContentPane().add(quantityPanel, gbc);
+		
+		gbc.gridx = 0;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.weighty = 0;
 		gbc.gridy = 1;
-		this.add(jScrollCats, gbc);
+		this.getContentPane().add(jScrollCats, gbc);
 		
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.anchor = GridBagConstraints.EAST;
-		gbc.gridx = 2;
+		gbc.gridx = 3;
 		gbc.gridy = 1;
-		this.add(jScrollTables, gbc);
+		this.getContentPane().add(jScrollTables, gbc);
 		
 		gbc.gridx = 1;
 		gbc.anchor = GridBagConstraints.CENTER;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
-		this.add(jScrollProducts, gbc);
+		gbc.gridwidth = 2;
+		this.getContentPane().add(jScrollProducts, gbc);
+		
+
 	}
 
 	/*
@@ -262,6 +289,27 @@ public class BarraFrame extends JInternalFrame {
 	
 	public JPanel getTablesPanel() {
 		return tablesPanel;
+	}
+	
+	public void windowListeners() {
+		jScrollProducts.addComponentListener(new ComponentAdapter() {
+			
+			public void componentResized(ComponentEvent e) {
+				jScrollProducts.getViewport().setPreferredSize(new Dimension(jScrollProducts.getWidth(), productsBarra.getHeight()));
+				jScrollProducts.getViewport().setMinimumSize(new Dimension(jScrollProducts.getWidth(), productsBarra.getHeight()));
+				jScrollProducts.getViewport().setMaximumSize(new Dimension(jScrollProducts.getWidth(), productsBarra.getHeight()));
+				
+				productsBarra.setPreferredSize(new Dimension(jScrollProducts.getWidth(), 0));
+				productsBarra.setMinimumSize(new Dimension(jScrollProducts.getWidth(), 0));
+				productsBarra.setMaximumSize(new Dimension(jScrollProducts.getWidth(), 0));
+//				
+//				jScrollProducts.setPreferredSize(new Dimension(jScrollProducts.getWidth(), 300));
+//				jScrollProducts.setMaximumSize(new Dimension(productsBarra.getWidth(), 300));
+//				jScrollProducts.setMinimumSize(new Dimension(productsBarra.getWidth(), 300));
+			}
+
+		});
+			
 	}
 
 	

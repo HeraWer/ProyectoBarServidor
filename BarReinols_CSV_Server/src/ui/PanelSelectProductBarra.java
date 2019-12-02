@@ -6,10 +6,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -24,16 +23,19 @@ public class PanelSelectProductBarra extends JPanel {
 	private JButton backButton;
 	private JPanel mainPanel;
 	
-	public PanelSelectProductBarra() {
-		super();
+	public PanelSelectProductBarra() throws IOException {
+		super(new GridLayout(0,1));
 		mainPanel = new JPanel(new CardLayout());
 		createAllProds(Main.getProductosBar());
 		
 		addPanels();
 		this.setBackground(ColorsClass.DARKBACKGROUND);
+		this.add(mainPanel);
+		mainPanel.setPreferredSize(mainPanel.getSize());
+		
 	}
 	
-	private void createAllProds(ArrayList<Product> aLProduct) {
+	private void createAllProds(ArrayList<Product> aLProduct) throws IOException {
 		panelProds = new JPanel(new FlowLayout(FlowLayout.CENTER, 10,10));
 		panelProds.setBackground(ColorsClass.DARKBACKGROUND);
 		for(Product p : aLProduct) {
@@ -43,7 +45,7 @@ public class PanelSelectProductBarra extends JPanel {
 		mainPanel.add(panelProds, "ALLPRODS");
 	}
 	
-	private void addPanels() {
+	private void addPanels() throws IOException {
 		for(Category c : Main.getCategoriasBar()) {
 			panelProds = new JPanel(new FlowLayout(FlowLayout.LEFT, 10,10));
 			panelProds.setBackground(ColorsClass.DARKBACKGROUND);
@@ -53,7 +55,7 @@ public class PanelSelectProductBarra extends JPanel {
 		}
 	}
 	
-	private void addButtons(Category c) {
+	private void addButtons(Category c) throws IOException {
 		for(Product p : c.getaLProducts()) {
 			pb = new ProductButton(p);
 			panelProds.add(pb);
@@ -82,7 +84,18 @@ public class PanelSelectProductBarra extends JPanel {
 		CardLayout cl = (CardLayout)mainPanel.getLayout();
 		cl.show(mainPanel, c.getId() + c.getNombre());
 	}
+
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
+
+	public void setMainPanel(JPanel mainPanel) {
+		this.mainPanel = mainPanel;
+	}
 	
+	
+
+
 	
 
 }

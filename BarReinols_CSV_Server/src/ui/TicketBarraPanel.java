@@ -16,12 +16,15 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.ParserConfigurationException;
@@ -59,7 +62,12 @@ public class TicketBarraPanel extends JPanel {
 	private MainWindow parent;
 	private int numMesa;
 
+
+	public static float totalIVA;
+	
 	private String[] titlesTable = { "ID", "Nombre", "Precio", "Cantidad", "Total" };
+	
+	private CambioWindow cambioWindow;
 
 	public TicketBarraPanel(int numMesa, MainWindow parent) {
 		super(new GridBagLayout());
@@ -88,14 +96,18 @@ public class TicketBarraPanel extends JPanel {
 	}
 
 	public void initialize() {
-		infoPanel = new JPanel(new GridLayout(3, 1, 3, 0));
+		infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
 
 		infoNumMesa = new JLabel("Mesa " + numMesa);
+		infoNumMesa.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
 		totalSinIva = new JLabel("Total s/IVA: ");
-
+		totalSinIva.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		
 		totalConIva = new JLabel("Total c/IVA: ");
-
+		totalConIva.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		
 		cobrarButton = new JButton("Cobrar mesa");
 
 		tableModel = new DefaultTableModel();
@@ -105,6 +117,9 @@ public class TicketBarraPanel extends JPanel {
 		ticketTable = new JTable(tableModel);
 
 		jScroll = new JScrollPane(ticketTable);
+		
+		cambioWindow = new CambioWindow();
+		
 	}
 
 	public void modify() {
@@ -123,6 +138,9 @@ public class TicketBarraPanel extends JPanel {
 		infoPanel.add(infoNumMesa);
 		infoPanel.add(totalSinIva);
 		infoPanel.add(totalConIva);
+		
+		infoPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+		infoPanel.add(cambioWindow);
 
 		cobrarButton.setPreferredSize(new Dimension(200, 80));
 	}
@@ -134,8 +152,9 @@ public class TicketBarraPanel extends JPanel {
 			float totalTicket = 0;
 			totalTicket = getTotalTicket(t);
 			totalSinIva.setText(TOTALSINIVA + String.valueOf(totalTicket) + " €");
+			totalIVA = tools.NumberFormat.round(totalTicket + (totalTicket * 0.1f));
 			totalConIva.setText(
-					TOTALCONIVA + String.valueOf(tools.NumberFormat.round(totalTicket + (totalTicket * 0.1f))) + " €");
+					TOTALCONIVA + String.valueOf(totalIVA) + " €");
 		} else {
 			totalSinIva.setText(TOTALSINIVA);
 			totalConIva.setText(TOTALCONIVA);
@@ -145,15 +164,16 @@ public class TicketBarraPanel extends JPanel {
 	public void prepareGridBagLayout() {
 		GridBagConstraints gbc = new GridBagConstraints();
 
-		gbc.weighty = 1;
-		gbc.weightx = 0.6;
+		gbc.weighty = 0.7;
+		gbc.weightx = 0.8;
 		gbc.gridheight = 2;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.fill = GridBagConstraints.BOTH;
 		this.add(jScroll, gbc);
 
+		gbc.gridheight = 1;
 		gbc.weightx = 0.2;
-		gbc.fill = GridBagConstraints.NONE;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.weighty = 0;
 		gbc.gridy = 0;
@@ -161,6 +181,7 @@ public class TicketBarraPanel extends JPanel {
 		this.add(infoPanel, gbc);
 
 		gbc.gridy = 2;
+		gbc.weighty = 0.3;
 		gbc.ipadx = 10;
 		gbc.ipady = 10;
 		gbc.gridx = 0;
@@ -183,9 +204,17 @@ public class TicketBarraPanel extends JPanel {
 
 					parent.getTicketsFrame().clearTicketCocina(t.getMesa());
 					Main.getTickets().remove(t);
+					
+					cambioWindow.getEntregadoCliente().setText("0");
+					cambioWindow.getDevolverCliente().setText("0");
 
 					tools.UIMethods.clearTable(ticketTable);
 					Main.m.getTablesFrame().checkBusyTables();
+					
+					updateLabels();
+					
+					Main.m.resetUIForUpdates();
+
 				}
 
 			}
@@ -262,11 +291,6 @@ public class TicketBarraPanel extends JPanel {
 				total = total + (Float.parseFloat(p.getPrice()) * p.getCantidad());
 			}
 		}
-		/*
-		 * for (int i = 0; i < ticketTable.getRowCount(); i++) {
-		 * total = total + Float.parseFloat((String) (ticketTable.getValueAt(i, 4)));
-		 * }
-		 */
 		return tools.NumberFormat.round(total);
 
 	}

@@ -22,8 +22,8 @@ public class FacturaDBManager extends ConnectionManager {
 		pstmnt.setInt(1, t.getMesa());
 		pstmnt.setInt(2, t.getCamarero().getId());
 		pstmnt.setTimestamp(3, tools.DataFormat.addHours(t.getDatetime(), 1));
-		pstmnt.setFloat(4, totalPrice);
-		pstmnt.setFloat(5, (totalPrice + (totalPrice * 0.1f)));
+		pstmnt.setFloat(4, tools.NumberFormat.round(totalPrice));
+		pstmnt.setFloat(5, tools.NumberFormat.round((totalPrice + (totalPrice * 0.1f))));
 		pstmnt.executeUpdate();
 
 		/*

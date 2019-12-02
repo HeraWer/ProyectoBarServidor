@@ -1,6 +1,9 @@
 package bbddManager;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,7 +21,7 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 			"mesa_maestra_configuracion", 
  	};
 	
-	public static void initializeDatabase() throws SQLException {
+	public static void initializeDatabase() throws SQLException, FileNotFoundException {
 		for(int i = 0; i < tableNames.length; i++) {
 			if(!tableExists(tableNames[i])) {
 				ui.InitApp.infoLabel.setText("Creando tabla " + tableNames[i]);	
@@ -67,17 +70,25 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 		}
 	}
 	
-	public static void insertDataOnTable(String table) throws SQLException {
+	public static void insertDataOnTable(String table) throws SQLException, FileNotFoundException {
 		Statement stmnt = getConnection().createStatement();
+		PreparedStatement pstmnt;
+		FileInputStream fis;
 		switch(table) {
 		case "categorias":
 			for(int i = 0; i < insertIntoCategorias.length; i++) {
-				stmnt.executeUpdate(insertIntoCategorias[i]);
+				fis = new FileInputStream(categoryImages[i]);
+				pstmnt =  getConnection().prepareStatement(insertIntoCategorias[i]);
+				pstmnt.setBinaryStream(1, fis);
+				pstmnt.executeUpdate();
 			}
 			break;
 		case "productos":
 			for(int i = 0; i < insertIntoProductos.length; i++) {
-				stmnt.executeUpdate(insertIntoProductos[i]);
+				fis = new FileInputStream(productImages[i]);
+				pstmnt =  getConnection().prepareStatement(insertIntoProductos[i]);
+				pstmnt.setBinaryStream(1, fis);
+				pstmnt.executeUpdate();
 			}
 			break;
 		case "camareros":

@@ -1,5 +1,9 @@
 package bbddManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.PreparedStatement;
@@ -22,7 +26,7 @@ public class InitBDManager extends ConnectionManager {
 	/*
 	 * Metodo que devuelve la lista de camareros que hay en la base de datos
 	 */
-	public static ArrayList<Camarero> getCamareros() throws SQLException {
+	public static ArrayList<Camarero> getCamareros() throws SQLException, IOException {
 		ArrayList<Camarero> camareros = new ArrayList<Camarero>();
 		Camarero c;
 		String select = "SELECT * FROM camareros";
@@ -34,6 +38,9 @@ public class InitBDManager extends ConnectionManager {
 			c.setNombre(rs.getString("nombre"));
 			c.setUsername(rs.getString("username"));
 			c.setPassword(rs.getString("password"));
+			InputStream is = rs.getBinaryStream("image_blob");
+			if(is != null)
+				c.setImageEmployee(tools.StreamTools.getByteFromInput(is));
 			camareros.add(c);
 		}
 		return camareros;
@@ -45,7 +52,7 @@ public class InitBDManager extends ConnectionManager {
 	 * 
 	 * Retorna un Array con los tickets creados.
 	 */
-	public static ArrayList<Ticket> getTickets() throws SQLException {
+	public static ArrayList<Ticket> getTickets() throws SQLException, IOException {
 		ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 		Ticket t;
 		ResultSet rs;
@@ -77,7 +84,7 @@ public class InitBDManager extends ConnectionManager {
 	 * 
 	 * Retorna un array con todos los productos que haya devuelto la consulta.
 	 */
-	public static ArrayList<Product> getProductsFromTicket(int numMesa) throws SQLException {
+	public static ArrayList<Product> getProductsFromTicket(int numMesa) throws SQLException, IOException {
 		ArrayList<Product> products = new ArrayList<Product>();
 		Product p;
 		String select = "SELECT * FROM details_comandas WHERE mesa = " + numMesa;
@@ -92,6 +99,7 @@ public class InitBDManager extends ConnectionManager {
 			p.setPrice(String.valueOf(rs.getFloat("precio_producto")));
 			p.setImage_Desktop(tools.Search.getProductImageById(p.getId()));
 			p.setImage_movil(tools.Search.getProductAppImageById(p.getId()));
+			p.setImgBlob(tools.StreamTools.getByteFromInput(rs.getBinaryStream("image_blob")));
 			p.setServed(rs.getBoolean("servido"));
 			products.add(p);
 		}
@@ -105,7 +113,7 @@ public class InitBDManager extends ConnectionManager {
 	 * 
 	 * Retorna un array con las categorias disponibles.
 	 */
-	public static ArrayList<Category> getCategories() throws SQLException {
+	public static ArrayList<Category> getCategories() throws SQLException, IOException {
 		ArrayList<Category> categories = new ArrayList<Category>();
 		String select = "SELECT * FROM categorias";
 		Statement stmnt = getConnection().createStatement();
@@ -116,6 +124,7 @@ public class InitBDManager extends ConnectionManager {
 			c.setId(rs.getInt("id_categoria"));
 			c.setNombre(rs.getString("nombre"));
 			c.setaLProducts(getProductsFromCategory(c.getId()));
+			c.setImgBlob(tools.StreamTools.getByteFromInput(rs.getBinaryStream("image_blob")));
 			categories.add(c);
 		}
 		return categories;
@@ -126,7 +135,7 @@ public class InitBDManager extends ConnectionManager {
 	 * 
 	 * Estos datos se encuentran en la tabla productos de la base de datos.
 	 */
-	public static ArrayList<Product> getProductsFromCategory(int categoryId) throws SQLException {
+	public static ArrayList<Product> getProductsFromCategory(int categoryId) throws SQLException, IOException {
 		ArrayList<Product> products = new ArrayList<Product>();
 		String select = "SELECT * FROM productos WHERE id_categoria = " + categoryId;
 		Statement stmnt = getConnection().createStatement();
@@ -140,6 +149,7 @@ public class InitBDManager extends ConnectionManager {
 			p.setDescription(rs.getString("descripcion"));
 			p.setImage_Desktop(rs.getString("imagen"));
 			p.setImage_movil(rs.getString("image_movil"));
+			p.setImgBlob(tools.StreamTools.getByteFromInput(rs.getBinaryStream("image_blob")));
 			products.add(p);
 		}
 		return products;
@@ -148,7 +158,7 @@ public class InitBDManager extends ConnectionManager {
 	/*
 	 * Este metodo nos retorna todos los productos disponibles en la base de datos
 	 */
-	public static ArrayList<Product> getAllProducts() throws SQLException{
+	public static ArrayList<Product> getAllProducts() throws SQLException, IOException{
 		ArrayList<Product> aLP = new ArrayList<Product>();
 		String select = "SELECT * FROM productos";
 		Statement stmnt = getConnection().createStatement();
@@ -162,6 +172,7 @@ public class InitBDManager extends ConnectionManager {
 			p.setDescription(rs.getString("descripcion"));
 			p.setImage_Desktop(rs.getString("imagen"));
 			p.setImage_movil(rs.getString("image_movil"));
+			p.setImgBlob(tools.StreamTools.getByteFromInput(rs.getBinaryStream("image_blob")));
 			aLP.add(p);
 		}
 		return aLP;

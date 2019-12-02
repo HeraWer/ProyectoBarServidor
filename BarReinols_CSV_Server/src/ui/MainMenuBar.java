@@ -125,7 +125,7 @@ public class MainMenuBar extends JMenuBar {
 			}
 		});
 
-		testingMenuItem.addActionListener(new ActionListener() {
+		/*testingMenuItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
 				EventQueue.invokeLater(new Runnable() {
@@ -154,7 +154,7 @@ public class MainMenuBar extends JMenuBar {
 				});
 			}
 
-		});
+		});*/
 
 	}
 

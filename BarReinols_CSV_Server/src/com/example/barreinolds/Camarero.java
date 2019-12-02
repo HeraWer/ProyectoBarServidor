@@ -1,5 +1,6 @@
 package com.example.barreinolds;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 /*
@@ -16,6 +17,7 @@ public class Camarero implements Serializable {
 	private String nombre;
 	private String username;
 	private String password;
+	private byte[] imageEmployee;
 
 	/*
 	 * Constructor vacío.
@@ -27,11 +29,13 @@ public class Camarero implements Serializable {
 	 * Constructor en el que se le pasa el nombre y el numero
 	 * de mesa y se le asigna a sus atributos.
 	 */
-	public Camarero(int id, String nombre, String username) {
+	public Camarero(int id, String nombre, String username, String password, byte[] imageEmployee) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.username = username;
+		this.password = password;
+		this.imageEmployee = imageEmployee;
 	}
 
 	/*
@@ -67,6 +71,14 @@ public class Camarero implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public byte[] getImageEmployee() {
+		return imageEmployee;
+	}
+
+	public void setImageEmployee(byte[] imageEmployee) {
+		this.imageEmployee = imageEmployee;
 	}
 	
 	

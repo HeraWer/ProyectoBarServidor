@@ -10,10 +10,10 @@ package bbddManager;
 public interface ConnectionInterface {
 
 	String PORT = "3306";
-	String USER = "rxRaoXg53l";
-	String HOST = "remotemysql.com";
-	String PASSWORD = "CbnAIC1P5I";
-	String DATABASE = "rxRaoXg53l";
+	String USER = "admin";
+	String HOST = "localhost";
+	String PASSWORD = "P@ssw0rd";
+	String DATABASE = "bar_reinols";
 	String DRIVER = "com.mysql.cj.jdbc.Driver";
 	String CONNSTRING = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
 

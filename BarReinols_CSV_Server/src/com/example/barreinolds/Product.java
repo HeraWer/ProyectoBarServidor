@@ -1,5 +1,6 @@
 package com.example.barreinolds;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 /*
@@ -21,6 +22,7 @@ public class Product implements Serializable {
 	private String image_desktop;
 	private String image_movil;
 	private boolean served;
+	private byte[] imgBlob; 
 	
 	/*
 	 * Constructor vacio en el que se inicializa
@@ -40,7 +42,6 @@ public class Product implements Serializable {
 		this.cantidad = cantidad;
 		this.image_desktop = image_desktop;
 		this.image_movil = image_movil;
-		
 	}
 
 	public int getId() {
@@ -106,6 +107,14 @@ public class Product implements Serializable {
     public boolean isServed() { return served; }
     
     public void setServed(boolean served) { this.served = served; }
+
+	public byte[] getImgBlob() {
+		return imgBlob;
+	}
+
+	public void setImgBlob(byte[] imgBlob) {
+		this.imgBlob = imgBlob;
+	}
 	
 	
 

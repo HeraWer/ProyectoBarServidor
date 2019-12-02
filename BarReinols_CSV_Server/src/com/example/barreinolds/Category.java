@@ -1,5 +1,6 @@
 package com.example.barreinolds;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 /*
@@ -18,6 +19,7 @@ public class Category implements Serializable {
 	private int id;
 	private String nCategory;
 	private ArrayList<Product> listProducts;
+	private byte[] imgBlob;
 	
 	public Category() {
 		listProducts = new ArrayList<Product>();
@@ -57,6 +59,16 @@ public class Category implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public byte[] getImgBlob() {
+		return imgBlob;
+	}
+
+	public void setImgBlob(byte[] imgBlob) {
+		this.imgBlob = imgBlob;
+	}
+	
+	
 	
 	
 	

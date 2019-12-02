@@ -151,7 +151,7 @@ public class MainServer {
 					m.resetUIForUpdates();
 				} else if(received.getClass().equals(Camarero.class)){
 					// Añadir camarero a la bbdd
-					System.out.println("Se ha recibido un camarero!");
+					bbddManager.CamareroDBManager.insertCamarero((Camarero)received);
 				}
 			} else {
 				System.out.println("Se ha recibido una comanda nula!");

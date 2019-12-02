@@ -71,6 +71,8 @@ public class MainWindow extends JFrame {
 		Image img = kit.createImage("res/img/init_loading_logo.png");
 		this.setIconImage(img);
 		// setListeners();
+		
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 	/*

@@ -7,8 +7,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,14 +24,23 @@ public class CategoryButton extends JPanel {
 	
 	private Category c;
 	private JLabel catName;
+	private JLabel imgCategory;
 	
-	public CategoryButton(Category c) {
+	public CategoryButton(Category c) throws IOException {
 		super(new GridBagLayout());
 		this.c = c;
 		this.catName = new JLabel(c.getNombre());
 		this.setPreferredSize(new Dimension(210, 75));
 		this.setMaximumSize(new Dimension(210, 75));
 		this.setMinimumSize(new Dimension(210, 75));
+		ByteArrayInputStream bais = new ByteArrayInputStream(c.getImgBlob());
+		BufferedImage catImg = ImageIO.read(bais);
+		BufferedImage catImgResized = tools.UIMethods.resizeToJLabel(catImg);
+		imgCategory = new JLabel(new ImageIcon(catImgResized));
+		imgCategory.setPreferredSize(new Dimension(55, 55));
+		imgCategory.setMinimumSize(new Dimension(55, 55));
+		imgCategory.setMaximumSize(new Dimension(55, 55));
+		
 		CategoryButton.this.setBackground(ColorsClass.DARKBLUE);
 		CategoryButton.this.setBorder(BorderFactory.createLineBorder(ColorsClass.ROWSBACKGROUND, 1, true));
 		this.catName.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -62,10 +76,7 @@ public class CategoryButton extends JPanel {
 	public void prepareGridBag() {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5,5,5,5);
-		
-		JButton button = new JButton();
-		button.setPreferredSize(new Dimension(55,55));
-		this.add(button, gbc);
+		this.add(imgCategory, gbc);
 		
 		gbc.gridx = 1;
 		gbc.anchor = GridBagConstraints.CENTER;

@@ -3,6 +3,7 @@ package ui;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.Box;
@@ -24,7 +25,13 @@ public class PanelSelectCategoryBarra extends JPanel {
 		super();
 		botonesCategoria = new ArrayList<CategoryButton>();
 		initialize();
-		createCategoryButtons();
+		
+		try {
+			createCategoryButtons();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		modify();
 		//mainPanel.add(panelCategories, "Categorias");
 		this.setBackground(ColorsClass.DARKBACKGROUND);
@@ -38,7 +45,7 @@ public class PanelSelectCategoryBarra extends JPanel {
 		this.setBackground(ColorsClass.DARKBACKGROUND);
 	}
 	
-	private void createCategoryButtons() {
+	private void createCategoryButtons() throws IOException {
 		CategoryButton cb;
 		for(Category c : Main.getCategoriasBar()) {
 			cb = new CategoryButton(c);
