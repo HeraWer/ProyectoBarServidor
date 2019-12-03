@@ -66,7 +66,7 @@ public class InitApp extends JWindow {
 	}
 
 	private void initialize() throws IOException {
-		loadingBar = new JProgressBar(0, 9);
+		loadingBar = new JProgressBar(0, 10);
 		title = new JLabel("Cargando TPV...");
 		BufferedImage logo = ImageIO.read(new File("res/img/init_loading_logo.png"));
 		init_loading_logo = new JLabel(new ImageIcon(logo));
@@ -121,6 +121,10 @@ public class InitApp extends JWindow {
 		loadingBar.setValue(progressBarValue);
 		infoLabel.setText("Comprobando tablas en la base de datos...");
 		bbddManager.TablesManager.initializeDatabase();
+		progressBarValue++;
+		loadingBar.setValue(progressBarValue);
+		infoLabel.setText("Comprobando procedure en la base de datos...");
+		bbddManager.TablesManager.createProcedure();
 		progressBarValue++;
 		loadingBar.setValue(progressBarValue);
 		infoLabel.setText("Recuperando numero de mesas de la base de datos...");

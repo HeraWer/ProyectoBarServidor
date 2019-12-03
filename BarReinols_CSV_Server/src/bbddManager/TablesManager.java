@@ -21,6 +21,8 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 			"mesa_maestra_configuracion", 
  	};
 	
+	static String procedureName = "insert_employee";
+	
 	public static void initializeDatabase() throws SQLException, FileNotFoundException {
 		for(int i = 0; i < tableNames.length; i++) {
 			if(!tableExists(tableNames[i])) {
@@ -32,9 +34,12 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 		}
 	}
 	
+	
+	
 	public static boolean tableExists(String table) throws SQLException {
 		DatabaseMetaData dbm = getConnection().getMetaData();
 		ResultSet getTable = dbm.getTables(null, null, table, null);
+		
 		if(getTable.next())
 			return true;
 		return false;
@@ -100,6 +105,19 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 			}
 			break;
 		}
+	}
+	
+	public static void createProcedure() throws SQLException {
+		if(!existsProcedure())
+			getConnection().createStatement().execute(createProcedureInsertEmployee);
+	}
+	
+	public static boolean existsProcedure() throws SQLException {
+		DatabaseMetaData dbm = getConnection().getMetaData();
+		ResultSet rs = dbm.getProcedures(null, null, procedureName);
+		if(rs.next())
+			return true;
+		return false;
 	}
 	
 }

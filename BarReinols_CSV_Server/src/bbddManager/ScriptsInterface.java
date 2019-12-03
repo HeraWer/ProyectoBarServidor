@@ -204,13 +204,13 @@ public interface ScriptsInterface {
 			"INSERT INTO productos (nombre, precio_producto, descripcion, imagen, image_movil, image_blob, id_categoria) VALUES ('Crema catalana', 4.95, 'Crema catalana casera con azúcar cremat.','..\\\\res\\\\img\\\\imgCremaCatalana.jpg', 'imgcremacatalana', ?, 7)"
 	};
 	
-	String createProcedureInsertEmployee = "CREATE PROCEDURE insert_employee ("+
+	String createProcedureInsertEmployee = "CREATE PROCEDURE `insert_employee` ("+
 			" IN nameC VARCHAR(50)," + 
 			" IN usernameC VARCHAR(50)," +
 			" IN passwordC VARCHAR(50)," + 
 			" IN image_blobC longblob)"  +
 			" BEGIN" +
-			" INSER INTO camareros (" +
+			" INSERT INTO camareros (" +
 			" nombre," +
 			" username," +
 			" password," +
@@ -221,5 +221,4 @@ public interface ScriptsInterface {
 			" MD5(passwordC)," +
 			" image_blobC); " +
 			"END";
-			
 }
