@@ -15,6 +15,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ import javax.xml.bind.DatatypeConverter;
 import com.example.barreinolds.Camarero;
 import com.example.barreinolds.Main;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class LoginFrame extends JInternalFrame {
@@ -43,9 +47,9 @@ public class LoginFrame extends JInternalFrame {
 	private JButton deleteButton;
 	private JButton whiteSpaceButton;
 	private JButton enter;
-	
+
 	private JButton mayus;
-	
+
 	private int inputFocus = 0;
 	private boolean upperActivated;
 
@@ -81,20 +85,20 @@ public class LoginFrame extends JInternalFrame {
 		mayus = new JButton("\u25B2");
 
 	}
-	
+
 	public void setUppercase() {
-		for(JButton b : aLButtonsLetras)
+		for (JButton b : aLButtonsLetras)
 			b.setText(b.getText().toUpperCase());
 	}
-	
+
 	public void setLowercase() {
-		for(JButton b : aLButtonsLetras)
+		for (JButton b : aLButtonsLetras)
 			b.setText(b.getText().toLowerCase());
 	}
 
 	public void createButtonsForLettersPanel() {
 		JButton charButton;
-		for(int i = 0; i <= 9; i++) {
+		for (int i = 0; i <= 9; i++) {
 			charButton = new JButton(String.valueOf(i));
 			configButton(charButton);
 			setListenerForCharButton(charButton);
@@ -115,7 +119,7 @@ public class LoginFrame extends JInternalFrame {
 				configButton(charButton);
 				aLButtonsLetras.add(charButton);
 				setListenerForCharButton(charButton);
-				
+
 				charButton = new JButton("ñ");
 				lettersPanel.add(charButton);
 				configButton(charButton);
@@ -123,7 +127,7 @@ public class LoginFrame extends JInternalFrame {
 				setListenerForCharButton(charButton);
 			}
 		}
-		
+
 		configButton(mayus);
 		mayus.setFont(new Font("Arial", Font.BOLD, 10));
 		lettersPanel.add(mayus);
@@ -135,7 +139,7 @@ public class LoginFrame extends JInternalFrame {
 		lettersPanel.add(deleteButton);
 
 	}
-	
+
 	public void configButton(JButton button) {
 		button.setPreferredSize(new Dimension(75, 75));
 		button.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -211,7 +215,7 @@ public class LoginFrame extends JInternalFrame {
 		charButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				if(inputFocus == 0)
+				if (inputFocus == 0)
 					inputCamarero.setText(inputCamarero.getText() + charButton.getText());
 				else
 					passCamarero.setText(getPassword() + charButton.getText());
@@ -224,16 +228,28 @@ public class LoginFrame extends JInternalFrame {
 		deleteButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
-				if (inputCamarero.getText().length() != 0)
-					inputCamarero.setText(inputCamarero.getText().substring(0, inputCamarero.getText().length() - 1));
+				if (inputFocus == 0) {
+					if (inputCamarero.getText().length() != 0)
+						inputCamarero
+								.setText(inputCamarero.getText().substring(0, inputCamarero.getText().length() - 1));
+				} else {
+					if (getPassword().length() != 0)
+						passCamarero.setText(getPassword().substring(0, getPassword().length() - 1));
+				}
 			}
 		});
 
 		whiteSpaceButton.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				String text = inputCamarero.getText();
-				inputCamarero.setText(text + String.valueOf(" "));
+				String text;
+				if (inputFocus == 0) {
+					text = inputCamarero.getText();
+					inputCamarero.setText(text + String.valueOf(" "));
+				} else {
+					text = getPassword();
+					passCamarero.setText(text + " ");
+				}
 			}
 		});
 
@@ -251,19 +267,28 @@ public class LoginFrame extends JInternalFrame {
 					} catch (NoSuchAlgorithmException e1) {
 						e1.printStackTrace();
 					}
-					
+
 					byte[] passMD5 = m.digest(getPassword().getBytes());
-					
+
 					if (c.getPassword().equals(DatatypeConverter.printHexBinary(passMD5).toLowerCase())) {
+
 						Main.camareroSeleccionado = c;
+						ByteArrayInputStream bais = new ByteArrayInputStream(c.getImageEmployee());
+						ImageIcon iconEmployee = null;
+						try {
+							iconEmployee = new ImageIcon(ImageIO.read(bais));
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 						JOptionPane.showMessageDialog(LoginFrame.this, "Iniciada sesion como " + c.getNombre(),
-								"Login correcto", JOptionPane.INFORMATION_MESSAGE);
+								"Login correcto", JOptionPane.INFORMATION_MESSAGE, iconEmployee);
 						((MainMenuBar) Main.m.getJMenuBar()).getConfigMenu().setEnabled(true);
 						((MainMenuBar) Main.m.getJMenuBar()).getVentanaMenu().setEnabled(true);
 						((CardLayout) Main.m.getMainPanel().getLayout()).show(Main.m.getMainPanel(),
 								MainWindow.COCINAFRAMECARD);
-
-					}else
+						inputCamarero.setText("");
+						passCamarero.setText("");
+					} else
 						infoLabel.setText("Contraseña incorrecta!");
 				}
 
@@ -278,7 +303,7 @@ public class LoginFrame extends JInternalFrame {
 			}
 
 		});
-		
+
 		inputCamarero.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				inputFocus = 0;
@@ -293,30 +318,29 @@ public class LoginFrame extends JInternalFrame {
 			}
 
 		});
-		
+
 		passCamarero.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				inputFocus = 1;
 			}
 		});
-		
+
 		mayus.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
-				if(upperActivated) {
+				if (upperActivated) {
 					upperActivated = false;
 					setLowercase();
 					mayus.setBackground(ColorsClass.DARKBLUE);
-				}else {
+				} else {
 					upperActivated = true;
 					setUppercase();
 					mayus.setBackground(ColorsClass.ACTIVATED);
 				}
-					
+
 			}
 		});
-			
-			
+
 	}
 
 	public String getPassword() {

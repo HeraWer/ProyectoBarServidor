@@ -36,6 +36,7 @@ public class MainMenuBar extends JMenuBar {
 	private JMenu ventanaMenu;
 	private JMenuItem switchTicketsCocinaFrame;
 	private JMenuItem switchTablesFrame;
+	private JMenuItem switchLoginFrame;
 
 	private JMenuItem testingMenuItem;
 
@@ -71,6 +72,7 @@ public class MainMenuBar extends JMenuBar {
 		ventanaMenu = new JMenu("Ventana");
 		switchTicketsCocinaFrame = new JMenuItem(MainWindow.COCINAFRAMECARD);
 		switchTablesFrame = new JMenuItem(MainWindow.BARRAFRAMECARD);
+		switchLoginFrame = new JMenuItem(MainWindow.LOGINFRAMECARD);
 
 		testingMenuItem = new JMenuItem("Testing");
 
@@ -87,6 +89,7 @@ public class MainMenuBar extends JMenuBar {
 		this.add(ventanaMenu);
 		ventanaMenu.add(switchTicketsCocinaFrame);
 		ventanaMenu.add(switchTablesFrame);
+		ventanaMenu.add(switchLoginFrame);
 	}
 
 	/*
@@ -125,6 +128,13 @@ public class MainMenuBar extends JMenuBar {
 			}
 		});
 
+		switchLoginFrame.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				CardLayout cLayout = (CardLayout) parent.getMainPanel().getLayout();
+				cLayout.show(parent.getMainPanel(), MainWindow.LOGINFRAMECARD);
+			}
+		});
 		/*testingMenuItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent arg0) {
