@@ -99,11 +99,18 @@ public class InitBDManager extends ConnectionManager {
 			p.setPrice(String.valueOf(rs.getFloat("precio_producto")));
 			p.setImage_Desktop(tools.Search.getProductImageById(p.getId()));
 			p.setImage_movil(tools.Search.getProductAppImageById(p.getId()));
-			p.setImgBlob(tools.StreamTools.getByteFromInput(rs.getBinaryStream("image_blob")));
+			p.setImgBlob(tools.StreamTools.getByteFromInput(getImageBlobForTicket(p)));
 			p.setServed(rs.getBoolean("servido"));
 			products.add(p);
 		}
 		return products;
+	}
+	
+	public static InputStream getImageBlobForTicket(Product p) throws SQLException {
+		String select = "SELECT image_blob FROM productos WHERE id_producto = " + p.getId();
+		ResultSet rs = getConnection().createStatement().executeQuery(select);
+		rs.next();
+		return rs.getBinaryStream("image_blob");
 	}
 
 	/*

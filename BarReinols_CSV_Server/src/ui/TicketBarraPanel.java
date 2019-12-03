@@ -63,7 +63,7 @@ public class TicketBarraPanel extends JPanel {
 	private int numMesa;
 
 
-	public static float totalIVA;
+	public float totalIVA;
 	
 	private String[] titlesTable = { "ID", "Nombre", "Precio", "Cantidad", "Total" };
 	
@@ -118,7 +118,7 @@ public class TicketBarraPanel extends JPanel {
 
 		jScroll = new JScrollPane(ticketTable);
 		
-		cambioWindow = new CambioWindow();
+		cambioWindow = new CambioWindow(totalIVA);
 		
 	}
 
@@ -153,6 +153,7 @@ public class TicketBarraPanel extends JPanel {
 			totalTicket = getTotalTicket(t);
 			totalSinIva.setText(TOTALSINIVA + String.valueOf(totalTicket) + " €");
 			totalIVA = tools.NumberFormat.round(totalTicket + (totalTicket * 0.1f));
+			cambioWindow.setTotalIva(totalIVA);
 			totalConIva.setText(
 					TOTALCONIVA + String.valueOf(totalIVA) + " €");
 		} else {

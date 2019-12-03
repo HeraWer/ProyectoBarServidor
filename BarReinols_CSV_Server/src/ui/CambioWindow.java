@@ -28,9 +28,11 @@ public class CambioWindow extends JPanel {
 	private JLabel devolverLabel;
 	
 	private JButton aceptar;
+	private float totalIva;
 	
-	public CambioWindow() {
+	public CambioWindow(float totalIva) {
 		super();
+		this.totalIva = totalIva;
 		this.setLayout(new GridBagLayout());
 		
 		panelButtons = new JPanel(new GridLayout(0, 3, 5, 5));
@@ -59,7 +61,7 @@ public class CambioWindow extends JPanel {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(tools.Validations.checkParseInt(entregadoCliente.getText().replace(',', '.'))) {
-					float aDevolver = Float.parseFloat(entregadoCliente.getText().replace(',', '.')) - TicketBarraPanel.totalIVA;
+					float aDevolver = Float.parseFloat(entregadoCliente.getText().replace(',', '.')) - CambioWindow.this.totalIva;
 					devolverCliente.setText(String.valueOf(aDevolver));
 				}else {
 					JOptionPane.showMessageDialog(Main.m, "Debe ser un numero!", "Error de formato!", JOptionPane.ERROR_MESSAGE);
@@ -185,5 +187,8 @@ public class CambioWindow extends JPanel {
 		this.devolverCliente = devolverCliente;
 	}
 	
+	public void setTotalIva(float totalIva) {
+		this.totalIva = totalIva;
+	}
 	
 }

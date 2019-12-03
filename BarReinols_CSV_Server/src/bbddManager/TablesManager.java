@@ -71,7 +71,7 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 	}
 	
 	public static void insertDataOnTable(String table) throws SQLException, FileNotFoundException {
-		Statement stmnt = getConnection().createStatement();
+		//Statement stmnt = getConnection().createStatement();
 		PreparedStatement pstmnt;
 		FileInputStream fis;
 		switch(table) {
@@ -91,11 +91,11 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 				pstmnt.executeUpdate();
 			}
 			break;
-		case "camareros":
+		/*case "camareros":
 			for(int i = 0; i < insertIntoCamareros.length; i++) {
 				stmnt.executeUpdate(insertIntoCamareros[i]);
 			}
-			break;
+			break;*/
 		}
 	}
 	

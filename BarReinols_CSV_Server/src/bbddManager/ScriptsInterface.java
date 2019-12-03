@@ -82,11 +82,19 @@ public interface ScriptsInterface {
 			"   CONSTRAINT id_factura_fk FOREIGN KEY (id_factura) REFERENCES facturas (id_factura)" + 
 			")";
 	
+	File[] camareroImages = {
+			new File(rutaImgFolder + "ecabezue.jpg"),
+			new File(rutaImgFolder + "dsalas.jpg"),
+			new File(rutaImgFolder + "jvalle.jpg"),
+			new File(rutaImgFolder + "dvaquer.jpg")
+	};
+	
 	String[] insertIntoCamareros = {
-			"INSERT INTO camareros (nombre, username, password) VALUES ('Jonatan Valle', 'jvalle', 'P@ssw0rd')",
-			"INSERT INTO camareros (nombre, username, password) VALUES ('David Salas', 'dsalas', 'P@ssw0rd')",
-			"INSERT INTO camareros (nombre, username, password) VALUES ('Erik Cabezuelo', 'ecabezue', 'P@ssw0rd')"
-			};
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)"
+	};
 	
 	File[] categoryImages = {
 			new File(rutaImgFolder + "catbebidas.jpg"),
