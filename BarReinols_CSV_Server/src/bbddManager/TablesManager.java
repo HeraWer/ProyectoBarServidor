@@ -91,11 +91,14 @@ public class TablesManager extends ConnectionManager implements ScriptsInterface
 				pstmnt.executeUpdate();
 			}
 			break;
-		/*case "camareros":
+		case "camareros":
 			for(int i = 0; i < insertIntoCamareros.length; i++) {
-				stmnt.executeUpdate(insertIntoCamareros[i]);
+				fis = new FileInputStream(camareroImages[i]);
+				pstmnt =  getConnection().prepareStatement(insertIntoCamareros[i]);
+				pstmnt.setBinaryStream(1, fis);
+				pstmnt.executeUpdate();
 			}
-			break;*/
+			break;
 		}
 	}
 	

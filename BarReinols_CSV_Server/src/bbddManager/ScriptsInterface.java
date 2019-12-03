@@ -90,10 +90,10 @@ public interface ScriptsInterface {
 	};
 	
 	String[] insertIntoCamareros = {
-			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
-			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
-			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)",
-			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', '123456', ?)"
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Erik Cabezuelo', 'ecabezue', MD5('123456'), ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('David Salas', 'dsalas', MD5('123456'), ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Jonatan Valle', 'jvalle', MD5('123456'), ?)",
+			"INSERT INTO camareros(nombre, username, password, image_blob) VALUES ('Daniel Vaquer', 'dvaquer', MD5('123456'), ?)"
 	};
 	
 	File[] categoryImages = {

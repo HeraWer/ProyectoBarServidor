@@ -15,6 +15,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.xml.bind.DatatypeConverter;
 
 import com.example.barreinolds.Camarero;
 import com.example.barreinolds.Main;
@@ -242,8 +245,16 @@ public class LoginFrame extends JInternalFrame {
 				if (c == null) {
 					infoLabel.setText("No se ha encontrado el camarero introducido!");
 				} else {
-
-					if (c.getPassword().equals(getPassword())) {
+					MessageDigest m = null;
+					try {
+						m = MessageDigest.getInstance("MD5");
+					} catch (NoSuchAlgorithmException e1) {
+						e1.printStackTrace();
+					}
+					
+					byte[] passMD5 = m.digest(getPassword().getBytes());
+					
+					if (c.getPassword().equals(DatatypeConverter.printHexBinary(passMD5).toLowerCase())) {
 						Main.camareroSeleccionado = c;
 						JOptionPane.showMessageDialog(LoginFrame.this, "Iniciada sesion como " + c.getNombre(),
 								"Login correcto", JOptionPane.INFORMATION_MESSAGE);
