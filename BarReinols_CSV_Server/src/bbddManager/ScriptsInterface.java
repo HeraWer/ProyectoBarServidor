@@ -9,7 +9,7 @@ import java.io.File;
 public interface ScriptsInterface {
 	
 	String rutaImgFolder = "res/img/";
-
+	
 	String createCategorias = "CREATE TABLE categorias (" + 
 			"	id_categoria INT NOT NULL AUTO_INCREMENT," + 
 			"   nombre VARCHAR(50)," + 

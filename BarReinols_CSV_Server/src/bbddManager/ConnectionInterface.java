@@ -11,7 +11,7 @@ public interface ConnectionInterface {
 
 	String PORT = "3306";
 	String USER = "admin";
-	String HOST = "192.168.40.202";
+	String HOST = "localhost";
 	String PASSWORD = "P@ssw0rd";
 	String DATABASE = "bar_reinols";
 	String DRIVER = "com.mysql.cj.jdbc.Driver";

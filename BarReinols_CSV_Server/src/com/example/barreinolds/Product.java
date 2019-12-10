@@ -33,7 +33,7 @@ public class Product implements Serializable {
 		served = false;
 	}
 
-	public Product(int id, String name, String description, String price, int cantidad, String image_desktop, String image_movil) {
+	public Product(int id, String name, String description, String price, int cantidad, String image_desktop, String image_movil, byte[] imgBlob) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -42,6 +42,7 @@ public class Product implements Serializable {
 		this.cantidad = cantidad;
 		this.image_desktop = image_desktop;
 		this.image_movil = image_movil;
+		this.imgBlob = imgBlob;
 	}
 
 	public int getId() {

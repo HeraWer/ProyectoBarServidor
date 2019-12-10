@@ -29,4 +29,18 @@ public class Validations {
 		}
 	}
 	
+	public static boolean checkParseFloat(String num) {
+		if(num.equals(""))
+			return false;
+		try {
+			Float.parseFloat(num);
+			return true;
+		}catch(InputMismatchException e) {
+			return false;
+		}catch(NumberFormatException e) {
+			System.out.println("Hola :) " + num);
+			return false;
+		}
+	}
+	
 }

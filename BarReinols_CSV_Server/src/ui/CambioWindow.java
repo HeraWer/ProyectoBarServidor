@@ -60,9 +60,9 @@ public class CambioWindow extends JPanel {
 		aceptar.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				if(tools.Validations.checkParseInt(entregadoCliente.getText().replace(',', '.'))) {
+				if(tools.Validations.checkParseFloat(entregadoCliente.getText().replace(',', '.'))) {
 					float aDevolver = Float.parseFloat(entregadoCliente.getText().replace(',', '.')) - CambioWindow.this.totalIva;
-					devolverCliente.setText(String.valueOf(aDevolver));
+					devolverCliente.setText(String.valueOf(tools.NumberFormat.round(aDevolver)));
 				}else {
 					JOptionPane.showMessageDialog(Main.m, "Debe ser un numero!", "Error de formato!", JOptionPane.ERROR_MESSAGE);
 				}

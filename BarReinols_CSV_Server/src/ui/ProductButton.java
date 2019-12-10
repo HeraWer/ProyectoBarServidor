@@ -92,7 +92,7 @@ public class ProductButton extends JPanel {
 					} else {
 						Product p = new Product(product.getId(), product.getName(), product.getDescription(),
 								product.getPrice(), Integer.parseInt(QuantityPanel.quantityField.getText()),
-								product.getImage_Desktop(), product.getImage_movil());
+								product.getImage_Desktop(), product.getImage_movil(), product.getImgBlob());
 						t.getProductosComanda().add(p);
 					}
 					try {
