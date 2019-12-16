@@ -40,6 +40,7 @@ public class CategoryButton extends JPanel {
 		imgCategory.setPreferredSize(new Dimension(55, 55));
 		imgCategory.setMinimumSize(new Dimension(55, 55));
 		imgCategory.setMaximumSize(new Dimension(55, 55));
+		this.setToolTipText(c.getNombre());
 		
 		CategoryButton.this.setBackground(ColorsClass.DARKBLUE);
 		CategoryButton.this.setBorder(BorderFactory.createLineBorder(ColorsClass.ROWSBACKGROUND, 1, true));
